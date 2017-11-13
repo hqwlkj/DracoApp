@@ -19,3 +19,8 @@ export async function queryErrorRecord(params) {
 export async function queryErrorRecordNum() {
   return request('/api/query_error_record_num')
 }
+
+
+export async function getAllMessages() {
+  return request('/api/query_all_message')
+}

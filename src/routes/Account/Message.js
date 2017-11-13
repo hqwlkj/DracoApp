@@ -3,13 +3,11 @@ import ReactDOM from 'react-dom';
 import {connect} from 'dva';
 import {NavBar, Popover, Icon, List, PullToRefresh, Badge, ListView} from 'antd-mobile';
 import classnames from 'classnames';
-import SS from 'parsec-ss';
-import Config from '../../utils/config';
 import styles from './Message.less';
 
 
 @connect(state => ({
-  exam: state.exam
+  messages:state.messages
 }))
 export default class Message extends React.Component {
   constructor(props) {
@@ -43,7 +41,7 @@ export default class Message extends React.Component {
       pageSize: 10,
     };
     dispatch({
-      type: 'exam/fetch',
+      type: 'messages/fetch',
       payload: params,
     });
   }
@@ -63,7 +61,8 @@ export default class Message extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    let data = nextProps.exam.data;
+    let data = nextProps.messages.data;
+    console.log('componentWillReceiveProps',data);
     this.setState({
       dataSource: this.state.dataSource.cloneWithRows((data || {}).list),
     });
@@ -143,7 +142,8 @@ export default class Message extends React.Component {
   };
 
   render() {
-    const {exam: {loading: refreshing, data}} = this.props;
+    console.log(this.props);
+    const {messages: {loading: refreshing, data}} = this.props;
     const separator = (sectionID, rowID) => (
       <div
         key={`${sectionID}-${rowID}`}
