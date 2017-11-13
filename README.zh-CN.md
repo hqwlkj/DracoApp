@@ -1,17 +1,8 @@
 [English](./README.md) | 简体中文
 
-# Ant Design Pro
+# DracoApp
 
-[![](https://img.shields.io/travis/ant-design/ant-design-pro.svg?style=flat-square)](https://travis-ci.org/ant-design/ant-design-pro) [![Build status](https://ci.appveyor.com/api/projects/status/67fxu2by3ibvqtat/branch/master?svg=true)](https://ci.appveyor.com/project/afc163/ant-design-pro/branch/master)  [![Gitter](https://badges.gitter.im/ant-design/ant-design-pro.svg)](https://gitter.im/ant-design/ant-design-pro?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
-
-开箱即用的中台前端/设计解决方案。
-
-![](https://gw.alipayobjects.com/zos/rmsportal/xEdBqwSzvoSapmnSnYjU.png)
-
-- 预览：http://preview.pro.ant.design
-- 首页：http://pro.ant.design
-- 使用文档：http://pro.ant.design/docs/getting-started
-- 常见问题：http://pro.ant.design/docs/faq
+- 基于：http://pro.ant.design
 
 ## 特性
 
@@ -25,45 +16,14 @@
 - :1234: **Mock 数据**：实用的本地数据调试方案
 - :white_check_mark: **UI 测试**：自动化测试保障前端产品质量
 
-## 模板
-
-```
-- Dashboard
-  - 分析页
-  - 监控页
-  - 工作台
-- 表单页
-  - 基础表单页
-  - 分步表单页
-  - 高级表单页
-- 列表页
-  - 查询表格
-  - 标准列表
-  - 卡片列表
-  - 搜索列表（项目/应用/文章）
-- 详情页
-  - 基础详情页
-  - 高级详情页
-- 结果
-  - 成功页
-  - 失败页
-- 异常
-  - 403 无权限
-  - 404 找不到
-  - 500 服务器出错
-- 帐户
-  - 登录
-  - 注册
-  - 注册成功
-```
 
 ## 使用
 
-```bash
-$ git clone git@github.com:ant-design/ant-design-pro --depth=1
-$ cd ant-design-pro
+```bash 
+$ git clone git@gitlab.parsec.com.cn:Yanghc/DracoMobile
+$ cd DracoMobile
 $ npm install
-$ npm start         # 访问 http://localhost:8000
+$ npm start         # 访问 http://localhost:8002
 ```
 
 也可以使用集成化的 [ant-design-pro-cli](https://github.com/ant-design/ant-design-pro-cli) 工具。
@@ -84,6 +44,6 @@ $ pro new
 
 我们非常欢迎你的贡献，你可以通过以下方式和我们一起共建 :smiley:：
 
-- 在你的公司或个人项目中使用 Ant Design Pro。
-- 通过 [Issue](http://github.com/ant-design/ant-design-pro/issues) 报告 bug 或进行咨询。
-- 提交 [Pull Request](http://github.com/ant-design/ant-design-pro/pulls) 改进 Pro 的代码。
+
+- 通过 [Issue](http://gitlab.parsec.com.cn/Yanghc/DracoMobile/issues) 报告 bug 或进行咨询。
+- 提交 [Pull Request](http://gitlab.parsec.com.cn/Yanghc/DracoMobile/pulls) 改进 Pro 的代码。
