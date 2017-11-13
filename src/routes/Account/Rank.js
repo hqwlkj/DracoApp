@@ -152,7 +152,7 @@ export default class Rank extends React.Component{
         <p className={styles.rank_header_desc}>只有认真学习、认真答题，你的名字才会出现在这里哦~</p>
       </div>
       <div className={styles.rank_body}>
-        <Tabs initialPage={this.state.tabActiveKey} tabs={[{title:'学分排名'},{title:'学习进度排名'},{title:'考试成绩排名'}]} animated={true} onTabClick={() => {
+        <Tabs initialPage={this.state.tabActiveKey} tabs={[{title:'学分排名'}]} animated={true} onTabClick={() => {
           this.handleTabClick.bind(this)
         }}>
           <div style={{
@@ -188,73 +188,7 @@ export default class Rank extends React.Component{
                     </div>
                   </div>)}
             />
-          </div><div style={{
-          display: 'flex',
-          backgroundColor: '#fff',
-          overflowY: 'scroll',
-          minHeight: '8rem'
-        }}>
-          <ListView
-            ref={el => this.lv = el}
-            dataSource={this.state.dataSource}
-            renderRow={row}
-            renderSeparator={separator}
-            initialListSize={10}
-            pageSize={10}
-            scrollRenderAheadDistance={200}
-            onEndReachedThreshold={50}
-            scrollEventThrottle={20}
-            style={{height: this.state.height, overflow: 'auto'}}
-            scrollerOptions={{scrollbars: true}}
-            pullToRefresh={<PullToRefresh
-              refreshing={refreshing}
-              onRefresh={this.onRefresh}
-            />}
-            onEndReached={this.onEndReached}
-            renderFooter={() => refreshing ?
-              <div className={styles.loadMore}><Icon type='loading' size='xs'/> 数据加载中...</div> :
-              (((data || {}).list || []).length > 0 ? <div className={styles.noMore}>我是有底线的</div> :
-                <div className={styles.noDataContainer} style={{height: (this.state.height - 100)}}>
-                  <div className={styles.noDataContent}>
-                    <i className={styles.carmeIcon}>&#xe6f7;</i>
-                    <div className={styles.info}>没有任何数据</div>
-                  </div>
-                </div>)}
-          />
-        </div><div style={{
-          display: 'flex',
-          backgroundColor: '#fff',
-          overflowY: 'scroll',
-          minHeight: '8rem'
-        }}>
-          <ListView
-            ref={el => this.lv = el}
-            dataSource={this.state.dataSource}
-            renderRow={row}
-            renderSeparator={separator}
-            initialListSize={10}
-            pageSize={10}
-            scrollRenderAheadDistance={200}
-            onEndReachedThreshold={50}
-            scrollEventThrottle={20}
-            style={{height: this.state.height, overflow: 'auto'}}
-            scrollerOptions={{scrollbars: true}}
-            pullToRefresh={<PullToRefresh
-              refreshing={refreshing}
-              onRefresh={this.onRefresh}
-            />}
-            onEndReached={this.onEndReached}
-            renderFooter={() => refreshing ?
-              <div className={styles.loadMore}><Icon type='loading' size='xs'/> 数据加载中...</div> :
-              (((data || {}).list || []).length > 0 ? <div className={styles.noMore}>我是有底线的</div> :
-                <div className={styles.noDataContainer} style={{height: (this.state.height - 100)}}>
-                  <div className={styles.noDataContent}>
-                    <i className={styles.carmeIcon}>&#xe6f7;</i>
-                    <div className={styles.info}>没有任何数据</div>
-                  </div>
-                </div>)}
-          />
-        </div>
+          </div>
         </Tabs>
       </div>
     </div>);
