@@ -1,0 +1,152 @@
+@import "~antd-mobile/dist/antd-mobile.less";
+// 引入官方提供的 less 样式入口文件
+@import "../../utils/App.less"; // 用于覆盖上面定义的变量
+
+.error_record_component {
+  min-height: calc(100vh - 2.5rem);
+  .error_header {
+    width: 100%;
+    background: @color-link;
+    padding: 60px 0;
+    .error_header_content {
+      margin: 0 auto;
+      width: 200px;
+      height: 200px;
+      position: relative;
+      border: 12px solid rgba(255, 255, 255, .5);
+      border-radius: 50%;
+      text-align: center;
+      color: #ffffff;
+      &:before {
+        content: '';
+        width: 250px;
+        height: 250px;
+        position: absolute;
+        top: -26px;
+        left: -26px;
+        border: 1px solid rgba(255, 255, 255, .8);
+        border-radius: 50%;
+      }
+      .rond {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 200px;
+        height: 200px;
+        animation: rond 3s infinite;
+        &:after {
+          content: '';
+          width: 20px;
+          height: 20px;
+          position: absolute;
+          border: none;
+          top: 0;
+          left: 0;
+          background: #ffffff;
+          border-radius: 50%;
+        }
+      }
+      p {
+        font-size: 28px;
+        font-weight: 300;
+        margin-top: 35px;
+      }
+      .num {
+        position: absolute;
+        text-align: right;
+        font-size: 62px;
+        font-weight: 700;
+        right: 12%;
+        //top:75%;
+        //left: 38%;
+        //transform: translate(-75%,-38%);
+        span {
+          display: inline-block;
+          font-size: 26px;
+          font-weight: 300;
+          left: -5px;
+        }
+      }
+    }
+    .error_header_learn {
+      width: 40%;
+      height: 55px;
+      line-height: 55px;
+      text-align: center;
+      margin: 35px auto;
+      border-radius: 50px;
+      color: @color-link;
+      font-size: 32px;
+      font-weight: 300;
+    }
+    .error_header_desc {
+      font-size: 22px;
+      margin: 35px 0 0;
+      text-align: center;
+      color: #ffffff;
+    }
+  }
+  .error_body {
+    .test_header_title{
+      height: 42px;
+      line-height: 42px;
+      text-align: center;
+      color: @color-link;
+      position: relative;
+      font-weight: 300;
+      .carmeIcon{
+        display: inline-block;
+        vertical-align: middle;
+        font-size: 36px;
+        margin-right: 15px;
+        top:-2px;
+        position: relative;
+      }
+      &:before,&:after{
+        content: '';
+        position: absolute;
+        top:50%;
+        width: 20%;
+        height: 1px;
+        background: @color-link;
+      }
+      &:before{
+        left: 5%;
+      }
+      &:after{
+        right: 5%;
+      }
+    }
+    .am-list-content {
+      font-size: 30px;
+      color: #474747;
+      font-weight: 400;
+      .am-badge{
+        top:-3px;
+      }
+      .test_title {
+        width: auto;
+        max-width: 580px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+      .am-list-brief {
+        font-size: 24px;
+      }
+    }
+    .my_list{
+
+    }
+  }
+}
+
+@keyframes rond {
+  0% {
+    transform: rotate(0deg)
+  }
+
+  100% {
+    transform: rotate(360deg)
+  }
+}

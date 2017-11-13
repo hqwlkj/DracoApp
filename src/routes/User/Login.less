@@ -1,0 +1,145 @@
+@import "~antd-mobile/dist/antd-mobile.less";
+// 引入官方提供的 less 样式入口文件
+@import "../../utils/App.less"; // 用于覆盖上面定义的变量
+
+.main {
+  margin: 0 auto;
+  padding: 0 50px;
+  :global {
+    .am-list{
+      padding-top: 120px;
+      .am-list-body{
+        background:transparent;
+        &:after,&:before{
+          background:transparent;
+        }
+        .am-list-item{
+          background: transparent;
+          &:last-child{
+            margin-bottom: 45px;
+            .am-list-line{
+              border-bottom: 1px solid #ddd;
+            }
+          }
+          .am-input-label{
+            font-size: 34px;
+            color: #ffffff;
+          }
+          .am-input-control{
+            input{
+              text-align: left;
+              font-weight: 300;
+              color: #ffffff;
+              font-size: 32px;
+              &::placeholder{
+                color: #ffffff;
+                font-weight: 200;
+              }
+            }
+          }
+        }
+      }
+    }
+    .am-flexbox{
+      margin-top: 45px;
+      .am-flexbox-item{
+        .am-checkbox-agree{
+          .am-checkbox-agree-label{
+            color: #ffffff;
+            font-size: 30px;
+            .am-checkbox-inner{
+              border-color: #ffffff;
+            }
+            .am-checkbox-checked{
+              .am-checkbox-inner{
+                &:after{
+                  border-color: #ffffff;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .prefixIcon {
+    font-size: @font-size-base;
+    color: @brand-primary;
+  }
+
+  .getCaptcha {
+    display: block;
+    width: 100%;
+  }
+
+  .additional {
+    text-align: left;
+
+    .forgot {
+      float: right;
+      color: #ffffff;
+    }
+
+    .submit {
+      background: transparent;
+      border-radius: 50px;
+      color: #ffffff;
+      margin: 24px 0;
+      font-size: 36px;
+      font-weight: 300;
+      border: 1px solid #ffffff;
+    }
+
+    :global {
+      .ant-form-item-control {
+        line-height: 22px;
+      }
+    }
+  }
+
+  .iconAlipay, .iconTaobao, .iconWeibo {
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    background: url('https://gw.alipayobjects.com/zos/rmsportal/itDzjUnkelhQNsycranf.svg');
+    margin-left: 16px;
+    vertical-align: middle;
+    cursor: pointer;
+  }
+
+  .iconAlipay {
+    background-position: -24px 0;
+
+    &:hover {
+      background-position: 0 0;
+    }
+  }
+
+  .iconTaobao {
+    background-position: -24px -24px;
+
+    &:hover {
+      background-position: 0 -24px;
+    }
+  }
+
+  .iconWeibo {
+    background-position: -24px -48px;
+
+    &:hover {
+      background-position: 0 -48px;
+    }
+  }
+
+  .other {
+    text-align: left;
+    margin-top: 24px;
+    line-height: 22px;
+    font-size: 22px;
+    display: none;
+    .register {
+      float: right;
+    }
+  }
+}

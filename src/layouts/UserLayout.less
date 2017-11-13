@@ -1,0 +1,55 @@
+@import "~antd-mobile/dist/antd-mobile.less";
+// 引入官方提供的 less 样式入口文件
+@import "../utils/App.less"; // 用于覆盖上面定义的变量
+
+.container {
+  background: #3cbaff url('https://gw.alipayobjects.com/zos/rmsportal/TVYTbAXWheQpRcWDaDMu.svg') no-repeat center;
+  width: 100%;
+  min-height: 100%;
+  background-size: 100%;
+  padding:0;
+  position: relative;
+}
+
+.top {
+  text-align: center;
+  padding-top: 150px;
+}
+
+.header {
+  height: 64px;
+  line-height: 64px;
+  a {
+    text-decoration: none;
+  }
+}
+
+.logo {
+  height: 64px;
+  vertical-align: top;
+  margin-right: 16px;
+}
+
+.title {
+  font-size: 33px;
+  color: #ffffff;
+  font-family: 'Myriad Pro', 'Helvetica Neue', Arial, Helvetica, sans-serif;
+  font-weight: 600;
+  position: relative;
+  top: 2px;
+}
+
+.desc {
+  font-size: 26px;
+  color: #ffffff;
+  margin-top: 22px;
+  margin-bottom: 40px;
+}
+
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 90%;
+  left: 50%;
+  transform: translateX(-50%);
+}

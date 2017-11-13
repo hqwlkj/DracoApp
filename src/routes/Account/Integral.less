@@ -1,0 +1,38 @@
+@import "~antd-mobile/dist/antd-mobile.less";
+// 引入官方提供的 less 样式入口文件
+@import "../../utils/App.less"; // 用于覆盖上面定义的变量
+
+.credit_component {
+  min-height: calc(100vh - 2rem);
+  .credit_head {
+    border-bottom: 1px solid #e5e5e5;
+    padding: 50px 15px;
+    background-color: @brand-primary;
+    text-align: center;
+    p {
+      padding: 5px 0;
+      margin-bottom: 35px;
+      display: block;
+      color: #ffffff;
+      font-size: 36px;
+    }
+    .total_score {
+      color: #ffffff;
+      font-size: 58px;
+      background: #f40;
+      border-radius: 10px;
+      padding: 0 15px;
+      min-width: 100px;
+      font-weight: 900;
+    }
+    .credit_header_desc {
+      font-size: 22px;
+      margin: 35px 0 0;
+      text-align: center;
+      color: #ffffff;
+    }
+  }
+  .credit_body {
+
+  }
+}

@@ -1,0 +1,81 @@
+@import "~antd-mobile/dist/antd-mobile.less";
+// 引入官方提供的 less 样式入口文件
+@import "../../utils/App.less"; // 用于覆盖上面定义的变量
+
+
+.rank_component {
+  .rank_header {
+    width: 100%;
+    background: @color-link;
+    padding: 60px 0;
+    .rank_header_content {
+      margin: 0 auto;
+      width: 200px;
+      height: 200px;
+      position: relative;
+      text-align: center;
+      line-height: 200px;
+      color: #ffffff;
+      .carmeIcon{
+        font-size: 128px;
+        animation: change 1s  ease-in  infinite ;
+      }
+      .flashing{
+        position: absolute;
+        width: 200px;
+        height: 200px;
+        top:0;
+        left: 0;
+        .carmeIcon{
+          position: absolute;
+          &:nth-child(1){
+            font-size: 28px;
+            top:50%;
+            left: 0;
+            animation: twinkling 1.2s infinite ease-in-out;
+          }
+          &:nth-child(2){
+            font-size: 58px;
+            top:-30px;
+            left: 50%;
+            animation: twinkling 1s infinite ease-in-out;
+          }
+          &:nth-child(3){
+            font-size: 48px;
+            top:55%;
+            right: 10px;
+            animation: twinkling 1.3s infinite ease-in-out;
+          }
+        }
+      }
+    }
+    .rank_header_desc {
+      font-size: 22px;
+      text-align: center;
+      color: #ffffff;
+    }
+  }
+  .rank_body{
+    .am-table{
+      td{
+        padding: 30px 16px;
+        text-align: center;
+      }
+    }
+  }
+}
+
+@keyframes change {
+  0%{ text-shadow: 0 0 4px #fff}
+  50%{ text-shadow: 0 0 40px #fff}
+  100%{ text-shadow: 0 0 4px #fff}
+}
+
+@-webkit-keyframes twinkling{
+  0%{
+    opacity:0;
+  }
+  100%{
+    opacity:1;
+  }
+}

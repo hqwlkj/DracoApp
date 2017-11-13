@@ -1,0 +1,227 @@
+@import "~antd-mobile/dist/antd-mobile.less";
+// 引入官方提供的 less 样式入口文件
+@import "../../utils/App.less"; // 用于覆盖上面定义的变量
+@import "../../utils/utils";
+
+.error_details_component {
+  background-color: white;
+  min-height: calc(100vh - 2rem);
+  overflow: hidden;
+  .am_navbar{
+    position: fixed;
+    width: 100%;
+  }
+  .error_paper{
+    padding: 125px 25px 0;
+    .question_title {
+      margin-bottom: 25px;
+      line-height: 1.7;
+      span {
+        display: inline-block;
+        vertical-align: middle;
+      }
+    }
+    .question_content {
+      .am-checkbox-agree {
+        margin-left: 0;
+        .am-checkbox-wrapper {
+          font-size: 34px;
+          word-break: break-all; /* 只对英文起作用，以字母作为换行依据。 */
+          word-wrap: break-word; /* 只对英文起作用，以单词作为换行依据。*/
+          white-space: pre-wrap; /* 只对中文起作用，强制换行。*/
+          .am-checkbox {
+            .am-checkbox-inner {
+              border-radius: 5px;
+            }
+          }
+        }
+      }
+      .my_radio {
+        padding: 18px 0;
+        position: relative;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: -webkit-flex;
+        display: flex;
+        -webkit-box-align: stretch;
+        -ms-flex-align: stretch;
+        -webkit-align-items: stretch;
+        align-items: stretch;
+        margin-left: 0;
+        .am-radio-wrapper {
+          display: inline-block;
+          color: #000;
+          line-height: 1.5;
+          margin-left: 0.6rem;
+          margin-top: 0.02rem;
+          font-size: 34px;
+          word-break: break-all; /* 只对英文起作用，以字母作为换行依据。 */
+          word-wrap: break-word; /* 只对英文起作用，以单词作为换行依据。*/
+          white-space: pre-wrap; /* 只对中文起作用，强制换行。*/
+          .am-radio {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 0.6rem;
+            height: 100%;
+            display: inline-block;
+            vertical-align: middle;
+            .am-radio-inner {
+              position: absolute;
+              right: 0;
+              left: 0;
+              top: 24px;
+              width: 42px;
+              height: 42px;
+              border: 3px solid #888;
+              border-radius: 50%;
+              transform: rotate(0deg);
+              box-sizing: border-box;
+            }
+            &.am-radio-checked {
+              .am-radio-inner {
+                border-color: @brand-primary;
+                &:after {
+                  width: 25px;
+                  height: 25px;
+                  border: none;
+                  background-color: @brand-primary;
+                  border-radius: 50%;
+                  top: 50%;
+                  right: 0;
+                  transform: translate(-22%, -48%);
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    .noData {
+      position: absolute;
+      text-align: center;
+      width: 70%;
+      top: 30%;
+      left: 50%;
+      transform: translate(-50%, -30%);
+      color: #9f9f9f;
+      font-weight: 200;
+      .carmeIcon {
+        float: left;
+        font-size: 150px;
+      }
+      .noDataText {
+        float: left;
+        margin-top: .5rem;
+        text-align: left;
+        p {
+          font-size: 38px;
+          font-weight: 400;
+          &:last-child {
+            font-size: 32px;
+            font-weight: 200;
+            margin-top: 15px;
+          }
+        }
+      }
+    }
+    .question_analysis {
+      margin-top: 100px;
+      .analysis_title {
+        position: relative;
+        width: 100%;
+        height: 35px;
+        line-height: 35px;
+        margin-bottom: .5rem;
+        font-size: 28px;
+        text-align: center;
+        &:after, &:before {
+          content: '';
+          width: 38%;
+          height: 1px;
+          position: absolute;
+          background: rgba(176, 176, 176, 0.5);
+          top: 50%;
+        }
+        &:before {
+          left: 0;
+        }
+        &:after {
+          right: 0;
+        }
+      }
+      .analysis_info {
+        text-align: left;
+        width: 100%;
+        .clearfix();
+        .analysis_answer {
+          float: left;
+          width: 59%;
+          font-size: 28px;
+        }
+        .analysis_difficulty {
+          float: right;
+          width: 39%;
+          font-size: 28px;
+          color: #9f9f9f;
+        }
+      }
+      .analysis_desc {
+        margin: .5rem 0;
+        //font-size: 26px;
+        font-size: medium;
+        position: relative;
+        width: 100%;
+        min-height: 5rem;
+        * {
+          margin: 0;
+          padding: 0;
+          box-sizing: border-box;
+          line-height: 1;
+        }
+        img, iframe {
+          width: 100% !important;
+        }
+        h1, h2, h3, h4, h5, p {
+          width: 100%;
+          margin: 10px 0;
+          line-height: 1.8;
+        }
+        p {
+          word-break: break-all; /* 只对英文起作用，以字母作为换行依据。 */
+          word-wrap: break-word; /* 只对英文起作用，以单词作为换行依据。*/
+          white-space: pre-wrap; /* 只对中文起作用，强制换行。*/
+          img, iframe {
+            width: 100% !important;
+          }
+        }
+        pre {
+          width: 100%;
+          border: 1px solid #ccc;
+          background-color: #f8f8f8;
+          padding: 10px;
+          margin: 5px 0;
+          font-size: .8em;
+          border-radius: 3px;
+          code {
+            width: 100%;
+            line-height: 1.5;
+            word-break: break-all; /* 只对英文起作用，以字母作为换行依据。 */
+            word-wrap: break-word; /* 只对英文起作用，以单词作为换行依据。*/
+            white-space: pre-wrap; /* 只对中文起作用，强制换行。*/
+          }
+        }
+      }
+    }
+    .tags {
+      background: #3cbaff;
+      padding: 3px 15px;
+      border: none;
+      border-radius: 5px;
+      color: #fff;
+      font-size: 24px;
+      font-weight: 200;
+      margin-right: 15px;
+    }
+  }
+}

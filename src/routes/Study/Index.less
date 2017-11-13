@@ -1,0 +1,99 @@
+@import "~antd-mobile/dist/antd-mobile.less";
+// 引入官方提供的 less 样式入口文件
+@import "../../utils/App.less"; // 用于覆盖上面定义的变量
+@import "../../utils/utils";
+
+.courseComponent {
+  min-height: ~"calc(100vh - 2rem)";
+  .courseHeader {
+    width: 100%;
+    height: 300px;
+    background: @brand-primary;
+    padding-top:50px;
+    .courseInfoBox{
+      p{
+        margin: 5px 0;
+        padding: 0;
+        color: #ffffff;
+        font-size: 28px;
+      }
+    }
+    .coursePieChart{
+      width: 100%;
+    }
+  }
+  .courseBody {
+    .myAccordion {
+      .amAccordionHeader{
+        font-size: 30px;
+        color: #474747;
+      }
+      .searchContent {
+        display: flex;
+        border-bottom: 1px solid #ddd;
+        padding: 25px;
+        >ul{
+          >li{
+            float: left;
+            flex: 1;
+            height: 30px;
+            min-width: 150px;
+            padding: 15px 25px;
+            line-height: 30px;
+            font-size: 28px;
+            color: #4c4c4c;
+            cursor: pointer;
+            margin: 15px 20px 0 10px;
+            border-radius: 5px;
+            text-align: center;
+            &.cur {
+              background-color: @brand-primary;
+              color: #fff;
+            }
+          }
+        }
+      }
+      .courseList {
+        padding: 25px;
+        width: clac(100% - 50px);
+        .courseItem{
+          width: 100%;
+          height: 50px;
+          line-height: 50px;
+          padding: 15px 0;
+          .clearfix();
+          .courseTitle{
+            float: left;
+            width: 70%;
+            font-size: 32px;
+            color: #474747;
+            white-space:nowrap;
+            overflow:hidden;
+            text-overflow:ellipsis;
+            font-weight: 300;
+          }
+          .courseScore{
+            float: left;
+            width: 15%;
+            color: #d52323;
+            font-size: 28px;
+            .unit{
+              font-size: 20px;
+            }
+          }
+          .courseState{
+            float: right;
+            width: 15%;
+            text-align: right;
+            font-size: 28px;
+            color: #aaaaaa;
+            &.unread{
+              color: #f38b6b;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+

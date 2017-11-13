@@ -1,0 +1,30 @@
+@import "~antd-mobile/dist/antd-mobile.less";
+// 引入官方提供的 less 样式入口文件
+@import "../../../utils/App.less"; // 用于覆盖上面定义的变量
+
+.waterWave {
+  display: inline-block;
+  position: relative;
+  transform-origin: left;
+  .text {
+    position: absolute;
+    left: 0;
+    top: 32px;
+    text-align: center;
+    width: 100%;
+    span {
+      color: @text-color-secondary;
+      font-size: 14px;
+      line-height: 22px;
+    }
+    h4 {
+      color: @heading-color;
+      line-height: 32px;
+      font-size: 24px;
+    }
+  }
+  .waterWaveCanvasWrapper {
+    transform: scale(.5);
+    transform-origin: 0 0;
+  }
+}

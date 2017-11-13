@@ -1,0 +1,29 @@
+@import "~antd-mobile/dist/antd-mobile.less";
+// 引入官方提供的 less 样式入口文件
+@import "../../utils/App.less"; // 用于覆盖上面定义的变量
+
+.message_details_component {
+  background-color: white;
+  height: calc(100% - 1rem);
+  min-height: calc(100% - 1rem);
+  .message_details_container {
+    padding: 25px;
+    .msg_title {
+      font-size: 38px;
+      font-weight: 600;
+      text-align: center;
+    }
+    .msg_time {
+      padding: 15px 0 25px 0;
+      margin-bottom: 25px;
+      font-size: 24px;
+      color: #727272;
+      border-bottom: 1px solid #e5e5e5;
+      text-align: center;
+    }
+    .msg_content {
+      text-align: left;
+      font-size: 26px;
+    }
+  }
+}

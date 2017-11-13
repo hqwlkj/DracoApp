@@ -1,0 +1,28 @@
+@import "~antd-mobile/dist/antd-mobile.less";
+// 引入官方提供的 less 样式入口文件
+@import "../../utils/App.less"; // 用于覆盖上面定义的变量
+
+
+.wrong_title_component {
+  min-height: calc(100vh - 2rem);
+  .error_body {
+    :global{
+      .am-list-content {
+        font-size: 30px;
+        color: #474747;
+        font-weight: 400;
+        .error_title {
+          width: auto;
+          max-width: 580px;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        }
+        .am-list-brief {
+          font-size: 24px;
+        }
+      }
+    }
+  }
+}
+

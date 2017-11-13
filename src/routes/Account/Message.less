@@ -1,0 +1,65 @@
+@import "~antd-mobile/dist/antd-mobile.less";
+// 引入官方提供的 less 样式入口文件
+@import "../../utils/App.less"; // 用于覆盖上面定义的变量
+
+
+.message_component {
+  min-height: calc(100vh - 2rem);
+  .message_body {
+    .unread_badge{
+      padding-left: 0 !important;
+      &.have_read_badge {
+        :global{
+          .am-badge-text{
+            background-color: #d2d2d2
+          }
+        }
+      }
+      :global{
+        .am-list-line{
+          padding-left: 40px;
+          .am-list-extra {
+            padding: 0;
+            height: 100%;
+          }
+        }
+        .am-badge {
+          position: absolute;
+          transform: rotate(-45deg);
+          transform-origin: left bottom;
+          left: 0;
+          top: 50px;
+          width: 120px;
+        }
+        .am-badge-text {
+          border-radius: 0.02rem;
+        }
+      }
+    }
+    :global{
+      .am-list-content{
+        font-size: 30px;
+        color: #474747;
+        font-weight: 400;
+        .message_title{
+          width: auto;
+          max-width: 580px;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        }
+        .message_content{
+          width: auto;
+          max-width: 580px;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        }
+        .am-list-brief{
+          font-size: 24px;
+        }
+      }
+    }
+  }
+}
+

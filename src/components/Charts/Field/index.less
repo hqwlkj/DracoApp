@@ -1,0 +1,17 @@
+@import "~antd-mobile/dist/antd-mobile.less";
+// 引入官方提供的 less 样式入口文件
+@import "../../../utils/App.less"; // 用于覆盖上面定义的变量
+
+.field {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  span {
+    font-size: @font-size-base;
+    line-height: 22px;
+  }
+  span:last-child {
+    margin-left: 8px;
+    color: @heading-color;
+  }
+}
