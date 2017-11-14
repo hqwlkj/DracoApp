@@ -68,9 +68,11 @@ class TestComponent extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
+    let props = this.props;
     let data = nextProps.exam.data;
+    debugger;
     this.setState({
-      currentDayPaper: (data || {}).list.filter(s=>s.maxCount>0).length,
+      currentDayPaper: (data || {}).result.list.filter(s=>s.maxCount>0).length,
       allCurrentDayPaper: (data || {}).list.length,
       dataSource: this.state.dataSource.cloneWithRows((data || {}).list),
       refreshing: false,
@@ -96,7 +98,7 @@ class TestComponent extends React.Component {
       this.manuallyRefresh = false;
     }
     this.loadData({current:1,pageSize:10});
-  }
+  };
 
   /**
    * 跳转到试卷页面
@@ -129,11 +131,11 @@ class TestComponent extends React.Component {
       switch (state) {
         case -1:
           badge = <Badge text='未开始'
-                         style={{marginRight: 12, padding: '0 0.06rem', backgroundColor: '#f19736', borderRadius: 2}}/>
+                         style={{marginRight: 12, padding: '0 0.06rem', backgroundColor: '#f19736', borderRadius: 2}}/>;
           break;
         case 0:
           badge = <Badge text='进行中...'
-                         style={{marginRight: 12, padding: '0 0.06rem', backgroundColor: '#21b68a', borderRadius: 2}}/>
+                         style={{marginRight: 12, padding: '0 0.06rem', backgroundColor: '#21b68a', borderRadius: 2}}/>;
           break;
         case 1:
           badge = <Badge text='已完成' style={{
