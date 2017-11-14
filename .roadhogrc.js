@@ -42,7 +42,7 @@ export default {
       target: "http://localhost:9002/",// 正式服务器地址
       changeOrigin: true,
       secure: false,
-      pathRewrite: { "^/api": "" }
+      // pathRewrite: { "^/api": "" }
     }
   }
 }
