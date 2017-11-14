@@ -56,6 +56,9 @@ const proxy = {
   'GET /api/query_error_record_num': (req, res) => {
     res.send({code: 200, allNum: 20, radioNum: 15, checkboxNum: 5});
   },
+  'GET /api/findTestPaper':getExam,
+  'GET /api/findStudyPaper':getExam,
+  }
   'GET /api/query_all_message':getExam
 };
 
