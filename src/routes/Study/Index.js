@@ -64,14 +64,21 @@ class CourseComponent extends React.Component {
   }
 
   componentWillMount() {
-    this.loadData();
+    this.loadStudyDirectory();
+    this.loadDirectory();
   }
 
   componentWillUnmount() {
 
   }
 
-  loadData() {
+  loadStudyDirectory() {
+    const {dispatch} = this.props;
+    dispatch({
+      type: 'study/feacthStudyDirectory',
+    });
+  }
+  loadDirectory() {
     const {dispatch} = this.props;
     const params = {type:2};
     dispatch({
@@ -119,7 +126,7 @@ class CourseComponent extends React.Component {
   };
 
   render() {
-    const {study: {loading: refreshing, data = []}} = this.props;
+    // const {study: {loading: refreshing, data = []}} = this.props;
     const separator = (sectionID, rowID) => (
       <div
         key={`${sectionID}-${rowID}`}

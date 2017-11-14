@@ -4,11 +4,12 @@
 
 
 import request from "../utils/request";
+import qs from "qs";
 
-
-export async function getdirectory(options) {
-  return request('/api/directory/list',options);
+export async function getDirectory(options) {
+  return request(`/api/directory/list?${qs.stringify(options)}`);
 }
-// export async function getStudyDirectory() {
-//   return request('/api/findStudyPaper');
-// }
+
+export async function getStudyDirectory(options) {
+  return request('/api/study_directory');
+}

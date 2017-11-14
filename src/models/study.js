@@ -1,4 +1,4 @@
-import { getdirectory} from "../services/study";
+import { getStudyDirectory,getDirectory} from "../services/study";
 
 
 export default {
@@ -8,16 +8,17 @@ export default {
     loading: true,
   },
   effects: {
-    * feacthDirectory({payload}, {call, put}){
+    *feacthDirectory({payload}, {call, put}){
       //启用加载状态
       yield put({
         type: "checkLoading",
         payload: true,
       })
       //发起请求
-      const response = yield call(getdirectory, payload);
+      const response = yield call(getDirectory, payload);
+      debugger;
       yield put({
-        type: "saveData",
+        type: "saveDirectoryData",
         payload: response,
       })
       //关闭加载状态
@@ -28,6 +29,25 @@ export default {
 
     },
 
+    *feacthStudyDirectory({payload}, {call, put}){
+      //启用加载状态
+      yield put({
+        type: "checkLoading",
+        payload: true,
+      })
+      //发起请求
+      const response = yield call(getStudyDirectory, payload);
+      yield put({
+        type: "saveStudyDirectory",
+        payload: response,
+      })
+      //关闭加载状态
+      yield put({
+        type: "checkLoading",
+        payload: false,
+      })
+    },
+
   },
   reducers: {
     checkLoading(state, payload){
@@ -36,7 +56,15 @@ export default {
         loading: payload
       }
     },
-    saveData(state, payload){
+    saveDirectoryData(state, payload){
+      debugger;
+      return {
+        ...state,
+        dataList: payload
+      }
+    },
+    saveStudyDirectory(state, payload){
+      debugger;
       return {
         ...state,
         dataList: payload
