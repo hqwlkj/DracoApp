@@ -10,13 +10,15 @@ const noProxy = process.env.NO_PROXY === 'true';
 const proxy = {
   // 支持值为 Object 和 Array
   'GET /api/currentUser': {
-    $desc: "获取当前用户接口",
+    $desc: "获取当前用户接口", //接口说明
+    //接口参数说明，对象描述各个参数的意义
     $params: {
       pageSize: {
         desc: '分页',
         exp: 2,
       },
     },
+    //数据返回结果，通常就是 mock 的数据
     $body: {
       name: '张三',
       avatar: imgMap.user,
