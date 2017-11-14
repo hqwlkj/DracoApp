@@ -37,12 +37,12 @@ export default {
   },
   ignoreMomentLocale:true,
   theme: "./src/theme.js",
-  proxy: {
-    "/api": {
-      target: "http://115.29.239.213:9002/",// 正式服务器地址
-      changeOrigin: true,
-      secure: false,
-      pathRewrite: { "^/api": "" }
-    }
-  }
+  // proxy: {
+  //   "/api": {
+  //     target: "http://115.29.239.213:9002/",// 正式服务器地址
+  //     changeOrigin: true,
+  //     secure: false,
+  //     pathRewrite: { "^/api": "" }
+  //   }
+  // }
 }
