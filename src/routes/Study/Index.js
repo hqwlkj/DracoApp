@@ -1,15 +1,14 @@
 'use strict';
 
-import React from 'react';
-import ReactDOM from 'react-dom';
-import {connect} from 'dva';
-import {Link} from 'dva/router';
-import {PullToRefresh, ListView, Accordion, Flex, NavBar, Icon} from 'antd-mobile';
-import {Pie} from '../../components/Charts';
-import classnames from 'classnames';
+import React from "react";
+import ReactDOM from "react-dom";
+import {connect} from "dva";
+import {Link} from "dva/router";
+import {Accordion, Flex, Icon, ListView, NavBar, PullToRefresh} from "antd-mobile";
+import {Pie} from "../../components/Charts";
+import classnames from "classnames";
 
-import styles from './Index.less';
-
+import styles from "./Index.less";
 
 const data = [
   {
@@ -47,7 +46,7 @@ class CourseComponent extends React.Component {
       dataSource: dataSource.cloneWithRows(this.initData),
       refreshing: true,
       isLoading: true,
-      initData:this.initData,
+      initData: this.initData,
       height: document.documentElement.clientHeight
     };
   }
@@ -108,6 +107,8 @@ class CourseComponent extends React.Component {
   };
 
   render() {
+    const {study: {loading: refreshing, data=[]}} = this.props;
+    debugger;
     const separator = (sectionID, rowID) => (
       <div
         key={`${sectionID}-${rowID}`}
@@ -165,7 +166,7 @@ class CourseComponent extends React.Component {
 
     return (
       <div className={styles.courseComponent}>
-        <NavBar key='NavBar' icon={<Icon type="left" />}
+        <NavBar key='NavBar' icon={<Icon type="left"/>}
                 onLeftClick={() => window.history.go(-1)} rightContent={
           <i className={styles.carmeIcon} onClick={() => {
             window.location.href = '#/account';
@@ -203,7 +204,7 @@ class CourseComponent extends React.Component {
             scrollRenderAheadDistance={200}
             onEndReachedThreshold={50}
             scrollEventThrottle={20}
-            style={{height: this.state.height,overflow: 'auto'}}
+            style={{height: this.state.height, overflow: 'auto'}}
             scrollerOptions={{scrollbars: true}}
             pullToRefresh={<PullToRefresh
               refreshing={this.state.refreshing}
@@ -231,5 +232,6 @@ CourseComponent.displayName = 'PublicCourseComponent';
 // Uncomment properties you need
 // CourseComponent.propTypes = {};
 // CourseComponent.defaultProps = {};
-
-export default CourseComponent;
+export default connect(state => ({
+  study: state.study
+}))(CourseComponent);

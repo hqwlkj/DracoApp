@@ -3,12 +3,12 @@
  */
 
 
-import request from '../utils/request';
+import request from "../utils/request";
 
 
-export async function getTestPaper() {
-  return request('/api/findTestPaper');
+export async function getdirectory() {
+  return request('/directory/list');
 }
-export async function getStudyPaper() {
-  return request('/api/findStudyPaper');
-}
+// export async function getStudyDirectory() {
+//   return request('/api/findStudyPaper');
+// }
