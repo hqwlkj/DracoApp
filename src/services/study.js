@@ -7,7 +7,7 @@ import request from "../utils/request";
 
 
 export async function getdirectory(options) {
-  return request('/directory/list',options);
+  return request('api/directory/list',options);
 }
 // export async function getStudyDirectory() {
 //   return request('/api/findStudyPaper');
