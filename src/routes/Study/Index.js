@@ -47,7 +47,7 @@ class CourseComponent extends React.Component {
       refreshing: true,
       isLoading: true,
       initData: this.initData,
-      height: document.documentElement.clientHeight
+      height: document.documentElement.clientHeight,
     };
   }
 
@@ -64,31 +64,32 @@ class CourseComponent extends React.Component {
   }
 
   componentWillMount() {
-    this.loadStudyDirectory();
-    this.loadDirectory();
+    this.getDirectory();
+
   }
 
   componentWillUnmount() {
 
   }
 
-  loadStudyDirectory() {
+  getCourseList() {
     const {dispatch} = this.props;
     dispatch({
       type: 'study/feacthStudyDirectory',
     });
   }
-  loadDirectory() {
+
+  getDirectory() {
     const {dispatch} = this.props;
-    const params = {type:2};
+    const params = {type: 1};
     dispatch({
       type: 'study/feacthDirectory',
       payload: params,
     });
+    this.getCourseList();
   }
 
   onRefresh = () => {
-    console.log('onRefresh');
     this.setState({refreshing: true, isLoading: true});
     // simulate initial Ajax
     setTimeout(() => {
