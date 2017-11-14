@@ -1,4 +1,4 @@
-const path = require('path');
+// const path = require('path');
 
 export default {
   entry: "src/index.js",
@@ -20,7 +20,7 @@ export default {
   ],
   svgSpriteLoaderDirs:[
     require.resolve('antd-mobile').replace(/warn\.js$/, ''), // antd-mobile 内置svg
-    path.resolve(__dirname, 'src/assets/svg'),  // 业务代码本地私有 svg 存放目录
+    // path.resolve(__dirname, 'src/assets/svg'),  // 业务代码本地私有 svg 存放目录
   ],
   env:{
     development: {
