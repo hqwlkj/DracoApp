@@ -8,13 +8,14 @@ export default {
     loading: true,
   },
   effects: {
-    *feacthDirectory({payload}, {call, put}){
+    * feacthDirectory({payload}, {call, put}){
       //启用加载状态
       yield put({
         type: "checkLoading",
         payload: true,
       })
       //发起请求
+      debugger;
       const response = yield call(getdirectory, payload);
       yield put({
         type: "saveData",

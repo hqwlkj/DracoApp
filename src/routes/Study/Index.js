@@ -10,7 +10,7 @@ import classnames from "classnames";
 
 import styles from "./Index.less";
 
-const data = [
+const dataList = [
   {
     img: 'https://zos.alipayobjects.com/rmsportal/dKbkpPXKfvZzWCM.png',
     title: '一级分类名称',
@@ -27,7 +27,7 @@ const data = [
     des: '不是所有的兼职汪都需要风吹日晒',
   },
 ];
-let index = data.length - 1;
+let index = dataList.length - 1;
 
 let pageIndex = 0;
 
@@ -55,7 +55,7 @@ class CourseComponent extends React.Component {
     const hei = this.state.height - ReactDOM.findDOMNode(this.lv).offsetTop;
     setTimeout(() => {
       this.setState({
-        dataSource: this.state.dataSource.cloneWithRows(data),
+        dataSource: this.state.dataSource.cloneWithRows(dataList),
         height: hei,
         refreshing: false,
         isLoading: false,
@@ -63,17 +63,30 @@ class CourseComponent extends React.Component {
     }, 1500);
   }
 
-
-  componentWillUnmount() {
+  componentWillMount() {
+    this.loadData();
   }
 
+  componentWillUnmount() {
+
+  }
+
+  loadData() {
+    debugger;
+    const {dispatch} = this.props;
+    const params = {type:2};
+    dispatch({
+      type: 'study/feacthDirectory',
+      payload: params,
+    });
+  }
 
   onRefresh = () => {
     console.log('onRefresh');
     this.setState({refreshing: true, isLoading: true});
     // simulate initial Ajax
     setTimeout(() => {
-      this.rData = data;
+      this.rData = dataList;
       this.setState({
         dataSource: this.state.dataSource.cloneWithRows(this.rData),
         refreshing: false,
@@ -100,14 +113,14 @@ class CourseComponent extends React.Component {
     this.setState({isLoading: true});
     setTimeout(() => {
       this.setState({
-        dataSource: this.state.dataSource.cloneWithRows(data),
+        dataSource: this.state.dataSource.cloneWithRows(dataList),
         isLoading: false,
       });
     }, 1000);
   };
 
   render() {
-    const {study: {loading: refreshing, data=[]}} = this.props;
+    const {study: {loading: refreshing, data = []}} = this.props;
     debugger;
     const separator = (sectionID, rowID) => (
       <div
@@ -120,9 +133,9 @@ class CourseComponent extends React.Component {
     );
     const row = (rowData, sectionID, rowID) => {
       if (index < 0) {
-        index = data.length - 1;
+        index = dataList.length - 1;
       }
-      const obj = data[index--];
+      const obj = dataList[index--];
       return (
         <Accordion defaultActiveKey='0' accordion openAnimation={{}} className={styles.myAccordion}
                    onChange={this.onChange}
