@@ -72,7 +72,6 @@ class CourseComponent extends React.Component {
   }
 
   loadData() {
-    debugger;
     const {dispatch} = this.props;
     const params = {type:2};
     dispatch({
@@ -121,7 +120,6 @@ class CourseComponent extends React.Component {
 
   render() {
     const {study: {loading: refreshing, data = []}} = this.props;
-    debugger;
     const separator = (sectionID, rowID) => (
       <div
         key={`${sectionID}-${rowID}`}
