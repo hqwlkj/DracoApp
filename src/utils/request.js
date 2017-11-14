@@ -24,8 +24,13 @@ export default function request(url, options) {
   const defaultOptions = {
     credentials: 'include',
   };
+  const newOptions = {...defaultOptions, ...options};
   debugger;
-  const newOptions = { ...defaultOptions, ...options };
+  newOptions.headers = {
+    token: SS.get(Config.USER_TOKEN) === null ? 'eyJhbGciOiJIUzUxMiIsImNhbGciOiJHWklQIn0.H4sIAAAAAAAAAKtWyiwuVrJSSk4syk1V0lFKLE0B8gwNgczi0iQQE8hKrShQsjI0NTAxNje3NDCpBQBXkyoONQAAAA.d7kc-sToeUYyCwWsTQLQU21Rjdaw-50drcVTgUt3L5JVqyTQWK8OXCQ99OstBhJQ8cpdrcTEOmuqH7zc1xtqFA' : SS.get(Config.USER_TOKEN),
+    tokenId: SS.get(Config.TOKEN_ID) === null ? '11' : SS.get(Config.TOKEN_ID),
+    userId: SS.get(Config.USER_ID) === null ? '18' : SS.get(Config.USER_ID)
+  }
   if (newOptions.method === 'POST' || newOptions.method === 'PUT') {
     newOptions.headers = {
       Accept: 'application/json',
