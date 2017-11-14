@@ -33,6 +33,8 @@ export default function request(url, options) {
     tokenId: SS.get(Config.TOKEN_ID) === null ? '11' : SS.get(Config.TOKEN_ID),
     userId: SS.get(Config.USER_ID) === null ? '18' : SS.get(Config.USER_ID)
   }
+  if (!newOptions.headers.tokenId) newOptions.headers['tokenId'] = SS.get(Config.TOKEN_ID) === null ? '11' : SS.get(Config.TOKEN_ID);
+  newOptions.headers.userId = SS.get(Config.USER_ID) === null ? '18' : SS.get(Config.USER_ID);
   if (newOptions.method === 'POST' || newOptions.method === 'PUT') {
     newOptions.headers = {
       Accept: 'application/json',
