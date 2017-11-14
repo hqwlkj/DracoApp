@@ -59,6 +59,7 @@ class TestComponent extends React.Component {
   componentDidMount() {
     const hei = this.state.height - ReactDOM.findDOMNode(this.lv).offsetTop;
     setTimeout(() => {
+      this.loadData({current:1,pageSize:10});
       this.setState({
         height: hei,
         refreshing: false,
@@ -68,13 +69,13 @@ class TestComponent extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    let props = this.props;
     let data = nextProps.exam.data;
-    debugger;
+    console.log('data',data);
+    console.log('data',((data || {}).result || {}).list);
     this.setState({
-      currentDayPaper: (data || {}).result.list.filter(s=>s.maxCount>0).length,
-      allCurrentDayPaper: (data || {}).list.length,
-      dataSource: this.state.dataSource.cloneWithRows((data || {}).list),
+      currentDayPaper: ((data || {}).result || {}).list.filter(s=>s.maxCount>0).length,
+      allCurrentDayPaper: ((data || {}).result || {}).list.length,
+      dataSource: this.state.dataSource.cloneWithRows(((data || {}).result || {}).list),
       refreshing: false,
       isLoading: false,
     });
@@ -85,9 +86,7 @@ class TestComponent extends React.Component {
   }
 
   componentWillMount() {
-    const {data} = this.props;
-    console.log('componentWillMount-data',data);
-    this.loadData({current:1,pageSize:10});
+
   }
 
   onRefresh = () => {
