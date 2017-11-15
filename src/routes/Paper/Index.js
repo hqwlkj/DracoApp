@@ -3,7 +3,7 @@ import {connect} from "dva";
 import {Badge, Carousel, Checkbox, Flex, Icon, Modal, NavBar, Pagination, Radio, Toast} from "antd-mobile";
 import _ from "lodash";
 import SS from "parsec-ss";
-
+import Config from 'config';
 import styles from "./Index.less";
 
 let timer = 0;
