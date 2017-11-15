@@ -93,7 +93,7 @@ class HomeIndex extends Component {
           <img src={require('../../assets/btns/account.png')} alt=""/>
         </div>
         <div className={styles.accountInfo}>
-          {currentUser.name ? (
+          {currentUser.userName ? (
             <span><span className={styles.userName}>{currentUser.userName}</span>
           <span className={styles.userScore}>学分：{currentUser.credit} 分</span></span>
           ) : <ActivityIndicator size="small" style={{ marginLeft: 8,marginTop:5 }} />}

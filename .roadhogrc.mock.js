@@ -1,7 +1,7 @@
-import {getExam} from './mock/exam';
-import {imgMap} from './mock/utils';
-import {getNotices} from './mock/notices';
-import {format, delay} from 'roadhog-api-doc';
+import {getExam} from "./mock/exam";
+import {imgMap} from "./mock/utils";
+import {getNotices} from "./mock/notices";
+import {delay} from "roadhog-api-doc";
 
 // 是否禁用代理
 const noProxy = process.env.NO_PROXY === 'true';
@@ -58,7 +58,9 @@ const proxy = {
   'GET /api/query_error_record_num': (req, res) => {
     res.send({code: 200, allNum: 20, radioNum: 15, checkboxNum: 5});
   },
-  'GET /api/query_all_message':getExam
+  'GET /api/findTestPaper': getExam,
+  'GET /api/findStudyPaper': getExam,
+  'GET /api/query_all_message': getExam,
 };
 
 export default noProxy ? {} : delay(proxy, 1000);

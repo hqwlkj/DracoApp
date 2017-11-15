@@ -75,22 +75,23 @@ export default class Index extends React.Component {
 
   doProps(props) {
     this.props = props;
-    let param = this.props.params;
+    let param = this.props.match.params;
     this.setState({params: param});
-    // switch (param.type) {
-    //   case '1':
-    //     loadUrl = api.daily.paper + param.id;
-    //     break;
-    //   case '3':
-    //     loadUrl = api.test.questions + param.id + '/questions';
-    //     break;
-    //   case '4':
-    //     loadUrl = api.course.paper + param.id;
-    //     break;
-    //   default:
-    //     loadUrl = '';
-    //     break;
-    // }
+    switch (param.type) {
+      case '1':
+        loadUrl = 'feacthTestPaper';
+        break;
+      case '3':
+        loadUrl = 'feacthStudyPaper';
+        break;
+      default:
+        loadUrl = '';
+        break;
+    }
+    this.props.dispatch({
+      type:`paper/${loadUrl}`,
+      payload:''//参数
+    })
     // request.get(loadUrl).then(data => {
     //   if (data.code === 200 && data.result && data.result) {
     //     let completeData = [];
@@ -458,6 +459,8 @@ export default class Index extends React.Component {
 
   render() {
     const {dataList = []} = this.props.paper;
+
+    console.table(dataList.list);
 
     const hProp = this.state.initialHeight ? {padding: '5px'} : {};
 
