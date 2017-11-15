@@ -1,10 +1,10 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import {connect} from 'dva';
-import {Badge, Carousel, Checkbox, Flex, Modal, NavBar, Pagination, Radio, Toast, Icon} from 'antd-mobile';
-import _ from 'lodash';
+import React from "react";
+import {connect} from "dva";
+import {Badge, Carousel, Checkbox, Flex, Icon, Modal, NavBar, Pagination, Radio, Toast} from "antd-mobile";
+import _ from "lodash";
+import SS from "parsec-ss";
 
-import styles from './Index.less';
+import styles from "./Index.less";
 
 let timer = 0;
 let loadUrl = null;
@@ -29,9 +29,7 @@ export default class Index extends React.Component {
       answerTime: null,//每道题的答题开始时间
       recordTime: null,//每道题道题时长,单位s
       questionTypeMap: {1: '单选题', 2: '多选题'},
-
       difficulty: [],//难度对象数组
-      showDifficulty: [],//显示解析页面的控制开关
     }
 
     this.countdown = this.countdown.bind(this);
@@ -47,10 +45,12 @@ export default class Index extends React.Component {
     this.endOneQuestion = this.endOneQuestion.bind(this);
     this.computeTrueOrFalseThenCommit = this.computeTrueOrFalseThenCommit.bind(this);
     this.updateAnswerTime = this.updateAnswerTime.bind(this);
+    this.assembleQuestion = this.assembleQuestion.bind(this);
   }
 
 
   componentDidMount() {
+    this.assembleQuestion();
     let navbarTitle = this.state.navbarTitle;
     if (this.props.match.params.type !== '4') {
       navbarTitle = '倒计时 00:00';
@@ -69,28 +69,70 @@ export default class Index extends React.Component {
     }, 100);
   }
 
+  //装配习题
+  assembleQuestion() {
+    let param = this.props.match.params;
+    let dataList = this.state.dataList;
+    let completeData = [];
+    switch (param.type) {
+      case '2':
+        dataList.forEach((m, index) => {
+          completeData[index] = {
+            questionId: m.question.id,
+            category: param.type,
+            cateId: param.id,
+            questionOwner: SS.get(Config.USER_ID),
+            answererId: SS.get(Config.TOKEN_ID),
+            isCorrect: 0,
+            recordTime: null
+          };
+        });
+        break;
+      default:
+        break;
+    }
+
+    this.setState({
+      completeData
+    });
+    debugger;
+  }
+
   componentWillMount() {
     this.doProps(this.props);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    let {
+      paper: {
+        dataList = [],
+      }
+    } = nextProps;
+    this.setState({
+      dataList: dataList,
+    });
   }
 
   doProps(props) {
     this.props = props;
     let param = this.props.match.params;
     this.setState({params: param});
+    const queryString = {
+      id: param.id,
+    };
     switch (param.type) {
       case '1':
         loadUrl = 'feacthTestPaper';
         break;
-      case '3':
+      case '2':
         loadUrl = 'feacthStudyPaper';
         break;
       default:
-        loadUrl = '';
         break;
     }
     this.props.dispatch({
-      type:`paper/${loadUrl}`,
-      payload:''//参数
+      type: `paper/${loadUrl}`,
+      payload: queryString//参数
     })
     // request.get(loadUrl).then(data => {
     //   if (data.code === 200 && data.result && data.result) {

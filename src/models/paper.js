@@ -28,6 +28,7 @@ export default {
       })
 
     },
+
     *feacthStudyPaper({payload},{call,put}){
       //启用加载状态
       yield put({
@@ -59,7 +60,7 @@ export default {
     saveData(state,payload){
      return {
        ...state,
-       dataList:payload
+       dataList:payload.payload.result.list
      }
     }
   }
