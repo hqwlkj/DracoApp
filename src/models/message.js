@@ -1,21 +1,22 @@
-import {getAllMessages} from '../services/account';
+import { getAllMessages } from '../services/account';
 
 export default {
   namespace: 'messages',
   state: {
     data: {
-      list: []
+      list: [],
     },
-    loading: false
+    loading: false,
+    unReadNum: 0,
   },
   effects: {
-    //处理数据，和状态
-    * fetch({payload}, {call, put}) {
+    // 处理数据，和状态
+    * fetch({ payload }, { call, put }) {
       console.log('payload', payload);
       //  1,将数据加载状态 设置为：true
       yield put({
         type: 'checkLoading',
-        payload: true
+        payload: true,
       });
       //  2,发起请求，获取响应的数据
       // call  第一个参数默认是我们的请求方法，第二个是  请求参数 （非必填）
@@ -23,28 +24,50 @@ export default {
       console.log('request', response);
       yield put({
         type: 'saveData',
-        payload: response
+        payload: response,
       });
       //  3,将数据加载状态 设置为：false
       yield put({
         type: 'checkLoading',
-        payload: false
-      })
-    }
+        payload: false,
+      });
+    },
+    * fetchUnReadNum({ payload }, { call, put }) {
+      yield put({
+        type: 'checkLoading',
+        payload: true,
+      });
+      const response = yield call(queryUnReadNum, payload);
+      yield put({
+        type: 'unReadNum',
+        payload: response,
+      });
+      yield put({
+        type: 'checkLoading',
+        payload: false,
+      });
+    },
   },
   reducers: {
-    //处理响应结果和操作状态
+    // 处理响应结果和操作状态
     checkLoading(state, payload) {
       return {
         ...state,
-        loading: payload
-      }
+        loading: payload,
+      };
     },
     saveData(state, action) {
       return {
         ...state,
         data: action.payload,
-      }
-    }
-  }
-}
+      };
+    },
+    unReadNum(state, action) {
+      debugger;
+      return {
+        ...state,
+        unReadNum: action.payload.result,
+      };
+    },
+  },
+};
