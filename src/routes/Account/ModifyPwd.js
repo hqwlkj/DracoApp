@@ -24,6 +24,9 @@ class ModifyPwd extends React.PureComponent {
     if (nextProps.user.code === 200) {
       nextProps.form.resetFields();
       Toast.success('修改成功');
+    }else if(nextProps.user.code === 400 && nextProps.user.loading === false){
+      console.log('componentWillReceiveProps');
+      Toast.fail('修改失败！请检查你的原密码是否正确')
     }
   }
 
@@ -97,6 +100,7 @@ class ModifyPwd extends React.PureComponent {
             }}>保存</span>
           }
         >修改密码</NavBar>
+
         <div style={{display: 'none'}}>
           <InputItem {...getFieldProps('userId', {initialValue: currentUser.userid})}/>
         </div>

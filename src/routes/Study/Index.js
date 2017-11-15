@@ -3,7 +3,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import {connect} from "dva";
-import {Link} from "dva/router";
+import {Link,routerRedux} from "dva/router";
 import {Accordion, Flex, Icon, ListView, NavBar, PullToRefresh} from "antd-mobile";
 import {Pie} from "../../components/Charts";
 import classnames from "classnames";
@@ -106,7 +106,7 @@ class CourseComponent extends React.Component {
   }
 
   goToCourseDetails(id) {
-    window.location.href = '#/course/details/' + id;
+    this.props.dispatch(routerRedux.push('study/' + id));
   }
 
   onEndReached = (event) => {

@@ -5,7 +5,7 @@ export default {
   state: {
     code: undefined,
     list: [],
-    loading: false,
+    loading: true,
     currentUser: {},
   },
   effects: {

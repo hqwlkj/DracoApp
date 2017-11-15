@@ -15,6 +15,7 @@ import Login from '../routes/User/Login';
 
 import Home from '../routes/Home/Index';
 import Study from '../routes/Study/Index';
+import StudyDetails from '../routes/Study/Details';
 import Exam from '../routes/Exam/Index';
 import TestRecord from '../routes/Account/TestRecord';
 import ErrorRecord from '../routes/Account/ErrorRecord';
@@ -43,6 +44,10 @@ const data = [{
     name: '学习天地',
     path: 'study',
     component: Study,
+  }, {
+    name: '学习详情',
+    path: 'study/:id',
+    component: StudyDetails,
   }, {
     name: '在线考试',
     path: 'exam',
