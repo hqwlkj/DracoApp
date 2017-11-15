@@ -166,7 +166,7 @@ class TestComponent extends React.Component {
                 animate={false}
                 percent={this.state.currentDayPaper*100/this.state.allCurrentDayPaper}
                 subTitle="完成率"
-                total={this.state.currentDayPaper*100/this.state.allCurrentDayPaper+'%'}
+                total={`${this.state.currentDayPaper*100/this.state.allCurrentDayPaper}%`}
                 height={268}
                 lineWidth={1}
               />
