@@ -38,7 +38,7 @@ const proxy = {
   },
   'GET /api/all_notices': getNotices,
   'GET /api/notices': getNotices,
-  'GET /api/findAllExam': getExam,
+  'GET /api/paper/user_answer': getExam,
   'POST /api/login/account': (req, res) => {
     const {password, userName} = req.body;
     res.send({code: password === '123456' && userName === 'admin' ? 200 : 201, type: 'account'});
