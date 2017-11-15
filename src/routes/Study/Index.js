@@ -1,17 +1,16 @@
 'use strict';
 
-import React from 'react';
-import ReactDOM from 'react-dom';
-import {connect} from 'dva';
-import {Link} from 'dva/router';
-import {PullToRefresh, ListView, Accordion, Flex, NavBar, Icon} from 'antd-mobile';
-import {Pie} from '../../components/Charts';
-import classnames from 'classnames';
+import React from "react";
+import ReactDOM from "react-dom";
+import {connect} from "dva";
+import {Link} from "dva/router";
+import {Accordion, Flex, Icon, ListView, NavBar, PullToRefresh} from "antd-mobile";
+import {Pie} from "../../components/Charts";
+import classnames from "classnames";
 
-import styles from './Index.less';
+import styles from "./Index.less";
 
-
-const data = [
+const dataList = [
   {
     img: 'https://zos.alipayobjects.com/rmsportal/dKbkpPXKfvZzWCM.png',
     title: '一级分类名称',
@@ -28,7 +27,7 @@ const data = [
     des: '不是所有的兼职汪都需要风吹日晒',
   },
 ];
-let index = data.length - 1;
+let index = dataList.length - 1;
 
 let pageIndex = 0;
 
@@ -47,7 +46,7 @@ class CourseComponent extends React.Component {
       dataSource: dataSource.cloneWithRows(this.initData),
       refreshing: true,
       isLoading: true,
-      initData:this.initData,
+      initData: this.initData,
       height: document.documentElement.clientHeight
     };
   }
@@ -56,7 +55,7 @@ class CourseComponent extends React.Component {
     const hei = this.state.height - ReactDOM.findDOMNode(this.lv).offsetTop;
     setTimeout(() => {
       this.setState({
-        dataSource: this.state.dataSource.cloneWithRows(data),
+        dataSource: this.state.dataSource.cloneWithRows(dataList),
         height: hei,
         refreshing: false,
         isLoading: false,
@@ -64,17 +63,36 @@ class CourseComponent extends React.Component {
     }, 1500);
   }
 
-
-  componentWillUnmount() {
+  componentWillMount() {
+    this.loadStudyDirectory();
+    this.loadDirectory();
   }
 
+  componentWillUnmount() {
+
+  }
+
+  loadStudyDirectory() {
+    const {dispatch} = this.props;
+    dispatch({
+      type: 'study/feacthStudyDirectory',
+    });
+  }
+  loadDirectory() {
+    const {dispatch} = this.props;
+    const params = {type:2};
+    dispatch({
+      type: 'study/feacthDirectory',
+      payload: params,
+    });
+  }
 
   onRefresh = () => {
     console.log('onRefresh');
     this.setState({refreshing: true, isLoading: true});
     // simulate initial Ajax
     setTimeout(() => {
-      this.rData = data;
+      this.rData = dataList;
       this.setState({
         dataSource: this.state.dataSource.cloneWithRows(this.rData),
         refreshing: false,
@@ -101,13 +119,14 @@ class CourseComponent extends React.Component {
     this.setState({isLoading: true});
     setTimeout(() => {
       this.setState({
-        dataSource: this.state.dataSource.cloneWithRows(data),
+        dataSource: this.state.dataSource.cloneWithRows(dataList),
         isLoading: false,
       });
     }, 1000);
   };
 
   render() {
+    // const {study: {loading: refreshing, data = []}} = this.props;
     const separator = (sectionID, rowID) => (
       <div
         key={`${sectionID}-${rowID}`}
@@ -119,9 +138,9 @@ class CourseComponent extends React.Component {
     );
     const row = (rowData, sectionID, rowID) => {
       if (index < 0) {
-        index = data.length - 1;
+        index = dataList.length - 1;
       }
-      const obj = data[index--];
+      const obj = dataList[index--];
       return (
         <Accordion defaultActiveKey='0' accordion openAnimation={{}} className={styles.myAccordion}
                    onChange={this.onChange}
@@ -165,7 +184,7 @@ class CourseComponent extends React.Component {
 
     return (
       <div className={styles.courseComponent}>
-        <NavBar key='NavBar' icon={<Icon type="left" />}
+        <NavBar key='NavBar' icon={<Icon type="left"/>}
                 onLeftClick={() => window.history.go(-1)} rightContent={
           <i className={styles.carmeIcon} onClick={() => {
             window.location.href = '#/account';
@@ -203,7 +222,7 @@ class CourseComponent extends React.Component {
             scrollRenderAheadDistance={200}
             onEndReachedThreshold={50}
             scrollEventThrottle={20}
-            style={{height: this.state.height,overflow: 'auto'}}
+            style={{height: this.state.height, overflow: 'auto'}}
             scrollerOptions={{scrollbars: true}}
             pullToRefresh={<PullToRefresh
               refreshing={this.state.refreshing}
@@ -231,5 +250,6 @@ CourseComponent.displayName = 'PublicCourseComponent';
 // Uncomment properties you need
 // CourseComponent.propTypes = {};
 // CourseComponent.defaultProps = {};
-
-export default CourseComponent;
+export default connect(state => ({
+  study: state.study
+}))(CourseComponent);
