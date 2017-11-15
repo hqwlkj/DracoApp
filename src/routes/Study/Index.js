@@ -7,7 +7,6 @@ import {Link} from "dva/router";
 import {Accordion, Flex, Icon, ListView, NavBar, PullToRefresh} from "antd-mobile";
 import {Pie} from "../../components/Charts";
 import classnames from "classnames";
-
 import styles from "./Index.less";
 
 const dataList = [
@@ -46,16 +45,17 @@ class CourseComponent extends React.Component {
       dataSource: dataSource.cloneWithRows(this.initData),
       refreshing: true,
       isLoading: true,
-      initData: this.initData,
+      initData: [],//目录
       height: document.documentElement.clientHeight,
     };
+
+    this.updateDailyList = this.updateDailyList.bind(this);
   }
 
   componentDidMount() {
     const hei = this.state.height - ReactDOM.findDOMNode(this.lv).offsetTop;
     setTimeout(() => {
       this.setState({
-        dataSource: this.state.dataSource.cloneWithRows(dataList),
         height: hei,
         refreshing: false,
         isLoading: false,
@@ -70,6 +70,38 @@ class CourseComponent extends React.Component {
 
   componentWillUnmount() {
 
+  }
+
+  componentWillReceiveProps(nextProps) {
+    let {
+      study: {
+        studyOriginList = [],
+        directoryTree = [],
+      }
+    } = nextProps;
+    let initData = this.state.initData;
+
+    if ((directoryTree && directoryTree.length != 0) && (!initData || !initData.length )) {
+      this.setState({
+        initData: directoryTree,
+      }, () => this.onChange(directoryTree[0], null, 0));
+      return;
+    }
+
+    if (studyOriginList.length > 0) {
+      let id = parseInt(studyOriginList[0].pathCode.split("/")[0].replace('P', ''));
+      initData.forEach((i, index) => {
+        if (i.id == id && !i['studyOriginList']) {
+          initData[index]['studyOriginList'] = studyOriginList;
+          initData[index]['studyFilterPath'] = new Set();
+          initData[index]['studyList'] = studyOriginList;
+        }
+      })
+    }
+    this.setState({
+      initData: initData,
+      studyOriginList: studyOriginList,
+    });
   }
 
   getCourseList() {
@@ -102,11 +134,28 @@ class CourseComponent extends React.Component {
     }, 600);
   }
 
-  onChange = (key) => {
-    console.log(key);
+  //手风琴被点开的事件
+  onChange = (rowData, sectionID, rowID) => {
+    let initData = this.state.initData;
+    if (!!initData && initData.length > 0) {
+      //如果已经有学习列表,则不请求数据
+      if (initData[rowID]['studyOriginList']) {
+        this.setState({initData: initData});
+        return;
+      }
+      let path = rowData.path.replace('P', '');
+      let params = {pathCode: path};
+      const {dispatch} = this.props;
+      dispatch({
+        type: 'study/feacthStudyList',
+        payload: params,
+      });
+
+    }
   }
 
   goToCourseDetails(id) {
+    alert("id=" + id);
     window.location.href = '#/course/details/' + id;
   }
 
@@ -120,14 +169,39 @@ class CourseComponent extends React.Component {
     this.setState({isLoading: true});
     setTimeout(() => {
       this.setState({
-        dataSource: this.state.dataSource.cloneWithRows(dataList),
+        dataSource: this.state.dataSource.cloneWithRows([]),
         isLoading: false,
       });
     }, 1000);
   };
 
+  //当分类按钮被选中时,按照分类进行筛选
+  updateDailyList(index) {
+    let initData = this.state.initData;
+    let directory = initData[index];
+    let studyFilterPath = directory.studyFilterPath;
+    let studyOriginList = directory.studyOriginList;
+    if (studyOriginList && studyOriginList.length !== 0) {
+      //路径过滤集合studyFilterPath中没有值的时候就显示全部
+      directory.studyList = studyOriginList.filter(s => studyFilterPath.size === 0 || studyFilterPath.has(s.pathCode));
+      this.setState({initData});
+    }
+  }
+
   render() {
-    // const {study: {loading: refreshing, data = []}} = this.props;
+    let _this = this;
+    const {
+      study: {
+        loading: refreshing,
+        completeStudyNum = 0,
+        isStudyNum = 0,
+        notStudyNum = 0,
+        score = 0,
+        rank = 0,
+      }
+    } = this.props;
+    let studySum = completeStudyNum + isStudyNum + notStudyNum;
+    let dataSource = this.state.dataSource.cloneWithRows(this.state.initData);
     const separator = (sectionID, rowID) => (
       <div
         key={`${sectionID}-${rowID}`}
@@ -138,46 +212,35 @@ class CourseComponent extends React.Component {
       />
     );
     const row = (rowData, sectionID, rowID) => {
-      if (index < 0) {
-        index = dataList.length - 1;
-      }
-      const obj = dataList[index--];
       return (
         <Accordion defaultActiveKey='0' accordion openAnimation={{}} className={styles.myAccordion}
-                   onChange={this.onChange}
+                   onChange={() => this.onChange(rowData, sectionID, rowID)}
                    key={rowID}>
-          <Accordion.Panel header={obj.title} key={rowID}>
-            <div className={styles.searchContent}>
-              <ul>
-                <li>二级分类1</li>
-                <li className={styles.cur}>二级分类2</li>
-                <li className={styles.cur}>二级分类3</li>
-                <li className={styles.cur}>二级分类4</li>
-              </ul>
-            </div>
-            <div className={styles.courseList}>
-              <div className={styles.courseItem} onClick={() => {
-                this.goToCourseDetails(1);
-              }}>
-                <div className={styles.courseTitle}>第一课：知否知否，应是绿肥红瘦</div>
-                <div className={styles.courseScore}>90 <span className={styles.unit}>分</span></div>
-                <div className={styles.courseState}>已学习</div>
+          <Accordion.Panel header={rowData.name} key={rowID}>
+            {rowData.children ?
+              (<div className={styles.searchContent}>
+                <ul key={`ul_${rowID}`}>
+                  {rowData.children.map((c, _index) => (
+                    <StudyItem key={_index} secondDirectory={c} parent={_this} index={parseInt(rowID)}/>))}
+                </ul>
+              </div>)
+              : null}
+
+            {rowData.studyList && rowData.studyList.length !== 0 ? (
+              <div className={styles.courseList}>
+                {rowData.studyList.map((study, _index) => (
+                  <div className={styles.courseItem} key={_index} onClick={() => {
+                    this.goToCourseDetails(study.id);
+                  }}>
+                    <div className={styles.courseTitle}>{study.title}</div>
+                    <div className={styles.courseScore}>{study.state == 2 ? study.score : null}<span
+                      className={styles.unit}>{study.state == 2 ? '分' : null}</span></div>
+                    <div
+                      className={study.state == 2 ? (styles.courseScore) : (classnames(styles.courseState, styles.unread))}>{study.state == 0 ? '未学习' : (study.state == 1 ? '学习中' : '已完成')}</div>
+                  </div>
+                ))}
               </div>
-              <div className={styles.courseItem} onClick={() => {
-                this.goToCourseDetails(2);
-              }}>
-                <div className={styles.courseTitle}>第二课：知否知否，应是绿肥红瘦</div>
-                <div className={styles.courseScore}>90 <span className={styles.unit}>分</span></div>
-                <div className={styles.courseState}>已学习</div>
-              </div>
-              <div className={styles.courseItem} onClick={() => {
-                this.goToCourseDetails(3);
-              }}>
-                <div className={styles.courseTitle}>第三课：知否知否，应是绿肥红瘦</div>
-                <div className={styles.courseScore}></div>
-                <div className={classnames(styles.courseState, styles.unread)}>未学习</div>
-              </div>
-            </div>
+            ) : null}
           </Accordion.Panel>
         </Accordion>
       );
@@ -198,24 +261,24 @@ class CourseComponent extends React.Component {
                 animate={false}
                 percent={28}
                 subTitle="完成率"
-                total="28%"
+                total={ (studySum == 0 ? 0 : (completeStudyNum / studySum * 100).toFixed(2)) + "%"}
                 height={268}
                 lineWidth={1}
               />
             </Flex.Item>
             <Flex.Item className={styles.courseInfoBox}>
-              <p>已学习课程数：<span>3</span></p>
-              <p>学习中课程数：<span>4</span></p>
-              <p>未学习课程数：<span>1</span></p>
-              <p>当前总学分：<span>150 分</span></p>
-              <p>学分排名：<span>5</span></p>
+              <p>已学习课程数：<span>{completeStudyNum}</span></p>
+              <p>学习中课程数：<span>{isStudyNum}</span></p>
+              <p>未学习课程数：<span>{notStudyNum}</span></p>
+              <p>当前总学分：<span>{score} 分</span></p>
+              <p>学分排名：<span>{rank}</span></p>
             </Flex.Item>
           </Flex>
         </div>
         <div className={styles.courseBody}>
           <ListView
             ref={el => this.lv = el}
-            dataSource={this.state.dataSource}
+            dataSource={dataSource}
             renderRow={row}
             renderSeparator={separator}
             initialListSize={5}
@@ -243,6 +306,39 @@ class CourseComponent extends React.Component {
         </div>
       </div>
     );
+  }
+}
+
+class StudyItem extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      secondDirectory: this.props.secondDirectory,
+      parent: this.props.parent,
+      index: this.props.index,
+      isChecked: false
+    };
+  }
+
+  onClick(e) {
+    this.setState({isChecked: this.state.isChecked ^ true}, () => {
+      let initData = this.state.parent.state.initData;
+      let path = this.state.secondDirectory.path;
+      if (this.state.isChecked) {
+        initData[this.state.index].studyFilterPath.add(path);
+      } else {
+        initData[this.state.index].studyFilterPath.delete(path);
+      }
+      this.state.parent.setState({
+        initData
+      }, () => this.state.parent.updateDailyList(this.state.index));
+    });
+  }
+
+  render() {
+
+    return (<li className={this.state.isChecked ? styles.cur : null}
+                onClick={(e) => this.onClick(e)}>{this.state.secondDirectory.name}</li>);
   }
 }
 

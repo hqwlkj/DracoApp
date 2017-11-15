@@ -1,4 +1,4 @@
-import {getDirectory, getStudyDirectory} from "../services/study";
+import {getStudyList,getDirectory, getStudyDirectory} from "../services/study";
 import SS from "parsec-ss";
 
 export default {
@@ -47,6 +47,25 @@ export default {
       })
     },
 
+    *feacthStudyList({payload}, {call, put}){
+      //启用加载状态
+      yield put({
+        type: "checkLoading",
+        payload: true,
+      })
+      //发起请求
+      const response = yield call(getStudyList, payload);
+      yield put({
+        type: "saveStudyList",
+        payload: response,
+      })
+      //关闭加载状态
+      yield put({
+        type: "checkLoading",
+        payload: false,
+      })
+    },
+
   },
   reducers: {
     checkLoading(state, payload){
@@ -83,30 +102,41 @@ export default {
         let directoryMap = directoryListToMap(directoryList);
         SS.set('directoryMap', JSON.stringify(directoryMap));
         let directoryTree = directoryListToTree(directoryList, directoryMap);
-        const dataSource = new ListView.DataSource({
-          rowHasChanged: (row1, row2) => row1 !== row2
-        });
-        this.setState({
-            ...state,
-            completeStudyNum: courseList.completeStudyNum,
-            isStudyNum: courseList.isStudyNum,
-            notStudyNum: courseList.notStudyNum,
-            directoryList,
-            directoryMap,
-            initData: directoryTree,
-            refreshing: false,
-            directoryTree,
-          }, () => this.onChange(directoryTree[0], null, 0)
-        );
+        // const dataSource = new ListView.DataSource({
+        //   rowHasChanged: (row1, row2) => row1 !== row2
+        // });
         return {
           ...state,
+          completeStudyNum: courseList.completeStudyNum,
+          isStudyNum: courseList.isStudyNum,
+          notStudyNum: courseList.notStudyNum,
+          rank: courseList.rank,
+          score: courseList.score,
+          directoryList,
+          directoryMap,
+          initData: directoryTree,
+          refreshing: false,
+          directoryTree,
         }
       } else {
         return {
           ...state,
         }
       }
-    }
+    },
+
+    saveStudyList(state, response){
+      if (response && response.payload && response.payload.result) {
+        return {
+          ...state,
+          studyOriginList: response.payload.result.list,
+        }
+      } else {
+        return {
+          ...state,
+        }
+      }
+    },
   }
 }
 

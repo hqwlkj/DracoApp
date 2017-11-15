@@ -13,3 +13,7 @@ export async function getDirectory(options) {
 export async function getStudyDirectory(options) {
   return request('/api/study_directory');
 }
+
+export async function getStudyList(options) {
+  return request(`/api/study?${qs.stringify(options)}`);
+}
