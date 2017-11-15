@@ -24,17 +24,17 @@ export default {
       });
     },
     //查询最新的通知消息
-    *fetchNotices(_, { call, put }) {
-      yield put({
-        type: 'changeNoticeLoading',
-        payload: true,
-      });
-      const data = yield call(queryNotices);
-      yield put({
-        type: 'saveNotices',
-        payload: data,
-      });
-    },
+    // *fetchNotices(_, { call, put }) {
+    //   yield put({
+    //     type: 'changeNoticeLoading',
+    //     payload: true,
+    //   });
+    //   const data = yield call(queryNotices);
+    //   yield put({
+    //     type: 'saveNotices',
+    //     payload: data,
+    //   });
+    // },
     //查询错题汇总的总数量
     *fetchErrorTotalNum(_, { call, put }) {
       yield put({

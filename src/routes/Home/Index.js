@@ -94,7 +94,7 @@ class HomeIndex extends Component {
         </div>
         <div className={styles.accountInfo}>
           {currentUser.name ? (
-            <span><span className={styles.userName}>{currentUser.name}</span>
+            <span><span className={styles.userName}>{currentUser.userName}</span>
           <span className={styles.userScore}>学分：{currentUser.credit} 分</span></span>
           ) : <ActivityIndicator size="small" style={{ marginLeft: 8,marginTop:5 }} />}
         </div>

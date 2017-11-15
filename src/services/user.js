@@ -5,13 +5,12 @@ export async function query() {
 }
 
 export async function queryCurrent() {
-  return request('/api/currentUser');
+  return request('/api/user/currentUser');
 }
 
 
-//修改密码
 export async function fetchModifyPwd(params) {
-  return request('/api/updatePwd',{
+  return request('/api/user/updatePwd', {
     method: 'POST',
     body: params,
   });
