@@ -27,7 +27,7 @@ export default function request(url, options) {
     credentials: 'include',
   };
   const newOptions = {...defaultOptions, ...options};
-  debugger;
+
   newOptions.headers = {
     token: SS.get(Config.USER_TOKEN) === null ? 'eyJhbGciOiJIUzUxMiIsImNhbGciOiJHWklQIn0.H4sIAAAAAAAAAKtWyiwuVrJSSk4syk1V0lFKLE0B8gwNgczi0iQQE8hKrShQsjI0NTAxNje3NDCpBQBXkyoONQAAAA.d7kc-sToeUYyCwWsTQLQU21Rjdaw-50drcVTgUt3L5JVqyTQWK8OXCQ99OstBhJQ8cpdrcTEOmuqH7zc1xtqFA' : SS.get(Config.USER_TOKEN),
     tokenId: SS.get(Config.TOKEN_ID) === null ? '11' : SS.get(Config.TOKEN_ID),
