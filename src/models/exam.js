@@ -5,7 +5,9 @@ export default {
 
   state: {
     data: {
-      list: [],
+      result:{
+        list: []
+      },
       pagination: {},
     },
     loading: true,
