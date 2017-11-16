@@ -253,6 +253,7 @@ export default class Index extends React.Component {
   //单选被点击
   onItemClick(e, itemIndex, questionIndex) {
     let dataList = this.state.dataList;
+    debugger;
     dataList[questionIndex].itemList.forEach(i => i.checked = false);
     dataList[questionIndex].itemList[itemIndex].checked = true;
 
@@ -291,15 +292,20 @@ export default class Index extends React.Component {
 
   //渲染该条问题的所有答案
   getItemList(questionIndex) {
-    let itemList = this.state.dataList[questionIndex].itemList;
-    if (itemList) {
-      return itemList.map((item, itemIndex) => this.getQuestionItem(itemIndex, questionIndex));
-    } else
-      return null;
+    if (this.state.dataList && this.state.dataList.length > 1) {
+      let itemList = this.state.dataList[questionIndex].itemList;
+      if (!!itemList) {
+        return itemList.map((item, itemIndex) => this.getQuestionItem(itemIndex, questionIndex));
+      } else
+        return null;
+    }
   }
 
   //渲染该条问题的一条答案
   getQuestionItem(itemIndex, questionIndex) {
+    if (!this.state.dataList || this.state.dataList.length == 0) {
+      return null;
+    }
     let question = this.state.dataList[questionIndex].question;
     let item = this.state.dataList[questionIndex].itemList[itemIndex];
     let questionItem = null;
