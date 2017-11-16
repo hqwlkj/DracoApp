@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {connect} from 'dva';
+import {routerRedux} from 'dva/router';
 import {ListView, NavBar, List, Icon, PullToRefresh} from 'antd-mobile';
 import styles from './TestRecord.less';
 import request from '../../utils/request'
@@ -130,7 +131,7 @@ export default class TestRecord extends React.Component {
    * @param time 考试总时间 （分）
    */
   goToRanking(id, title) {
-    window.location.href = '#/paper/rank/' + id + '/' + title
+    this.props.dispatch(routerRedux.push('/paper/rank/' + id + '/' + title))
   }
 
 
@@ -170,7 +171,7 @@ export default class TestRecord extends React.Component {
       <div className={styles.test_record_component}>
         <NavBar
           mode='dark'
-          onLeftClick={() => window.location.href = '#/account'}
+          onLeftClick={() => this.props.dispatch(routerRedux.push('/account'))}
           icon={<Icon type='left'/>}
         >考试记录</NavBar>
         <div className={styles.test_body}>

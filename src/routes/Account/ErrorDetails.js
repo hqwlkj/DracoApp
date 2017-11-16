@@ -1,5 +1,6 @@
 import React from 'react';
 import {connect} from 'dva';
+import {routerRedux} from 'dva/router';
 import {List, Badge, NavBar, Button, Icon, Radio} from 'antd-mobile';
 import _ from 'lodash';
 import * as Tools from '../../utils/utils';
@@ -42,7 +43,7 @@ export default class ErrorDetails extends React.Component {
         <NavBar
           mode='dark'
           icon={<Icon type='left'/>}
-          onLeftClick={() => window.history.go(-1)}
+          onLeftClick={() => this.props.dispatch(routerRedux.goBack())}
         >错题解析</NavBar>
         <div className={styles.error_paper}>
           <div className={styles.question_title}>

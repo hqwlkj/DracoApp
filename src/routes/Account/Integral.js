@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {connect} from 'dva';
+import {routerRedux} from 'dva/router';
 import {NavBar, Icon, Badge, ListView, PullToRefresh, List} from 'antd-mobile';
 
 import styles from './Integral.less';
@@ -125,7 +126,7 @@ export default class Integral extends React.Component {
     return (<div className={styles.credit_component}>
       <NavBar
         mode='dark'
-        onLeftClick={() => window.location.href = '#/account'}
+        onLeftClick={() => this.props.dispatch(routerRedux.push('/account'))}
         icon={<Icon type='left'/>}
       >我的学分</NavBar>
       <div className={styles.credit_head}>

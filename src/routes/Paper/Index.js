@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import {routerRedux} from 'dva/router';
 import {connect} from 'dva';
 import {Badge, Carousel, Checkbox, Flex, Modal, NavBar, Pagination, Radio, Toast, Icon} from 'antd-mobile';
 import _ from 'lodash';
@@ -75,22 +75,23 @@ export default class Index extends React.Component {
 
   doProps(props) {
     this.props = props;
-    let param = this.props.params;
+    let param = this.props.match.params;
     this.setState({params: param});
-    // switch (param.type) {
-    //   case '1':
-    //     loadUrl = api.daily.paper + param.id;
-    //     break;
-    //   case '3':
-    //     loadUrl = api.test.questions + param.id + '/questions';
-    //     break;
-    //   case '4':
-    //     loadUrl = api.course.paper + param.id;
-    //     break;
-    //   default:
-    //     loadUrl = '';
-    //     break;
-    // }
+    switch (param.type) {
+      case '1':
+        loadUrl = 'feacthTestPaper';
+        break;
+      case '3':
+        loadUrl = 'feacthStudyPaper';
+        break;
+      default:
+        loadUrl = '';
+        break;
+    }
+    this.props.dispatch({
+      type:`paper/${loadUrl}`,
+      payload:''//参数
+    })
     // request.get(loadUrl).then(data => {
     //   if (data.code === 200 && data.result && data.result) {
     //     let completeData = [];
@@ -170,7 +171,7 @@ export default class Index extends React.Component {
         text: '确定', onPress: () => {
         //清除定时器
         clearInterval(timer);
-        window.history.go(-1)
+        this.props.dispatch(routerRedux.goBack());
       }
       }
     ])
@@ -220,7 +221,7 @@ export default class Index extends React.Component {
         Modal.alert('答题时间结束!', <p>放弃:放弃本次答题<br/>提交:提交当前答案</p>, [
           {
             text: '放弃', onPress: () => {
-            window.history.go(-1)
+            this.props.dispatch(routerRedux.goBack());
           }
           },
           {text: '提交', onPress: () => this.computeTrueOrFalseThenCommit}
@@ -418,7 +419,7 @@ export default class Index extends React.Component {
       if (data.code !== 200) {
         Toast.fail(data.message);
       } else {
-        window.history.go(-1);
+        this.props.dispatch(routerRedux.goBack());
       }
     });
 
@@ -458,6 +459,8 @@ export default class Index extends React.Component {
 
   render() {
     const {dataList = []} = this.props.paper;
+
+    console.table(dataList.list);
 
     const hProp = this.state.initialHeight ? {padding: '5px'} : {};
 

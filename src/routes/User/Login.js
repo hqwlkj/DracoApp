@@ -1,8 +1,8 @@
-import React, {Component} from 'react';
-import {connect} from 'dva';
-import {routerRedux, Link} from 'dva/router';
-import {InputItem, List, Flex, Button, Icon, Checkbox, Toast, Modal} from 'antd-mobile';
-import {createForm} from 'rc-form';
+import React, { Component } from 'react';
+import { connect } from 'dva';
+import { routerRedux } from 'dva/router';
+import { InputItem, List, Flex, Button, Checkbox, Toast, Modal } from 'antd-mobile';
+import { createForm } from 'rc-form';
 import Config from '../../utils/config';
 
 
@@ -16,9 +16,8 @@ class Login extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      count: 0,
       type: 'mobile',
-    }
+    };
   }
 
   componentWillReceiveProps(nextProps) {
@@ -33,21 +32,21 @@ class Login extends Component {
 
   handleSubmit = (e) => {
     e.preventDefault();
-    const {type} = this.state;
-    this.props.form.validateFields({force: true},(errors, values) => {
-      if (!!errors) {
-        for (let key in errors) {
+    const { type } = this.state;
+    this.props.form.validateFields({ force: true }, (errors, values) => {
+      if (errors) {
+        for (const key in errors) {
           this.renderMessage(errors[key].errors[0].message);
           return;
         }
         return;
       }
-      let userName =(values.userName || '').replace(/\s/g, '');//去掉所有的空格;
-      if(!Config.validateRules.isMobile(userName)){
+      const phone = (values.phone || '').replace(/\s/g, '');// 去掉所有的空格;
+      if (!Config.validateRules.isMobile(phone)) {
         this.renderMessage('请输入正确的手机号码');
         return;
       }
-      values.userName = userName;
+      values.phone = phone;
       this.props.dispatch({
         type: `login/${type}Submit`,
         payload: values,
@@ -62,8 +61,8 @@ class Login extends Component {
   }
 
   render() {
-    const {form, login} = this.props;
-    const {getFieldProps} = form;
+    const { form, login } = this.props;
+    const { getFieldProps } = form;
     return (
       <div className={styles.main}>
         {
@@ -74,46 +73,59 @@ class Login extends Component {
         }
         <List className={styles.additional}>
           <InputItem
-            {...getFieldProps('userName', {
+            {...getFieldProps('phone', {
               rules: [
                 {
-                  required: true, type:'string',message:'请输入手机号码',
-                }
-              ]
+                  required: true, type: 'string', message: '请输入手机号码',
+                },
+              ],
             })}
-            type='phone'
+            type="phone"
             labelNumber={3}
             placeholder="请输入手机号码"
-          >手机号</InputItem>
+          >手机号
+          </InputItem>
           <InputItem
-            {...getFieldProps('password', {
+            {...getFieldProps('pwd', {
               rules: [
                 {
-                  required: true, type:'string',message:'请输入密码', min:6 ,max:18
-                }
-              ]
+                  required: true, type: 'string', message: '请输入密码', min: 6, max: 18,
+                },
+              ],
             })}
             labelNumber={3}
-            type='password'
+            type="password"
             placeholder="请输入密码"
-          >密&nbsp;&nbsp;&nbsp;码</InputItem>
+          >密&nbsp;&nbsp;&nbsp;码
+          </InputItem>
           <Flex>
             <Flex.Item>
-              <Checkbox.AgreeItem data-seed="logId" className={styles.autoLogin}
-                                  onChange={e => console.log('checkbox', e)}>
+              <Checkbox.AgreeItem
+                data-seed="logId"
+                className={styles.autoLogin}
+                onChange={e => console.log('checkbox', e)}
+              >
                 自动登录
               </Checkbox.AgreeItem>
             </Flex.Item>
             <Flex.Item>
-              <a className={styles.forgot} onClick={(e) => {
+              <a
+                className={styles.forgot}
+                onClick={(e) => {
                 e.preventDefault();
                 Modal.alert('忘记密码', '如果你的密码丢失或遗忘，可以联系管理员找回密码。');
-              }}>忘记密码</a>
+              }}
+              >忘记密码
+              </a>
             </Flex.Item>
           </Flex>
           <div>
-            <Button size="large" loading={login.submitting} className={styles.submit}
-                    onClick={(e) => this.handleSubmit(e)}>
+            <Button
+              size="large"
+              loading={login.submitting}
+              className={styles.submit}
+              onClick={e => this.handleSubmit(e)}
+            >
               登录
             </Button>
           </div>
@@ -121,9 +133,9 @@ class Login extends Component {
         <div className={styles.other}>
           其他登录方式
           {/* 需要加到 Icon 中 */}
-          <span className={styles.iconAlipay}/>
-          <span className={styles.iconTaobao}/>
-          <span className={styles.iconWeibo}/>
+          <span className={styles.iconAlipay} />
+          <span className={styles.iconTaobao} />
+          <span className={styles.iconWeibo} />
         </div>
       </div>
     );

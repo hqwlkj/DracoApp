@@ -8,7 +8,7 @@ import request from '../utils/request';
  * @returns {Object}
  */
 export async function queryErrorRecord(params) {
-  return request('/api/query_error_record',{body:params})
+  return request('/api/query_error_record', { body: params });
 }
 
 
@@ -22,5 +22,10 @@ export async function queryErrorRecordNum() {
 
 
 export async function getAllMessages() {
-  return request('/api/query_all_message')
+  return request('/api/message');
+}
+
+
+export async function queryUnReadNum() {
+  return request('/api/message/unRead');
 }
