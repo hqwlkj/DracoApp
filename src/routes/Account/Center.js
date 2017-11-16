@@ -36,11 +36,10 @@ export default class CenterComponent extends PureComponent {
     });
   }
 
-  // 查询设置消息的未读数
+  //查询设置消息的未读数
   setMessageNoReadNum = () => {
-    debugger;
     this.props.dispatch({
-      type: 'message/fetchUnReadNum',
+      type: 'messages/fetchUnReadNum',
     });
   };
 

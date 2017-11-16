@@ -1,10 +1,14 @@
-import { getAllMessages } from '../services/account';
+import { getAllMessages, queryUnReadNum, readAllMessage, getMessageDetail } from '../services/account';
 
 export default {
   namespace: 'messages',
   state: {
     data: {
       list: [],
+      pageNo: 1,
+      pageSize: 10,
+      pages: 1,
+      total: 1,
     },
     loading: false,
     unReadNum: 0,
@@ -33,18 +37,24 @@ export default {
       });
     },
     * fetchUnReadNum({ payload }, { call, put }) {
-      yield put({
-        type: 'checkLoading',
-        payload: true,
-      });
       const response = yield call(queryUnReadNum, payload);
       yield put({
-        type: 'unReadNum',
+        type: 'getUnReadNum',
         payload: response,
       });
+    },
+    * fetchReadAll({ payload }, { call, put }) {
+      const response = yield call(readAllMessage, payload);
       yield put({
-        type: 'checkLoading',
-        payload: false,
+        type: 'updateAllMessage',
+        payload: response,
+      });
+    },
+    * fetchMessageDetail({ payload }, { call, put }) {
+      const response = yield call(getMessageDetail, payload);
+      yield put({
+        type: 'messageDetail',
+        payload: response,
       });
     },
   },
@@ -59,14 +69,24 @@ export default {
     saveData(state, action) {
       return {
         ...state,
-        data: action.payload,
+        data: action.payload.result,
       };
     },
-    unReadNum(state, action) {
-      debugger;
+    getUnReadNum(state, action) {
       return {
         ...state,
         unReadNum: action.payload.result,
+      };
+    },
+    updateAllMessage(state) {
+      return {
+        ...state,
+      };
+    },
+    messageDetail(state, action) {
+      return {
+        ...state,
+        data: action.payload.result,
       };
     },
   },
