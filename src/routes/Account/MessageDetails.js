@@ -1,5 +1,6 @@
 import React from 'react';
 import {connect} from 'dva';
+import {routerRedux} from 'dva/router';
 import {NavBar,Icon} from 'antd-mobile';
 import styles from './MessageDetails.less';
 
@@ -21,7 +22,7 @@ export default class MessageDetails extends React.Component {
         <NavBar
           mode="dark"
           icon={<Icon type='left'/>}
-          onLeftClick={() => window.history.go(-1)}
+          onLeftClick={() => this.props.dispatch(routerRedux.goBack())}
         >消息详情</NavBar>
         <div className={styles.message_details_container}>
           <h2 className={styles.msg_title}>{this.state.message.title}</h2>

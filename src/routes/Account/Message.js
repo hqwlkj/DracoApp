@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {connect} from 'dva';
+import {routerRedux} from 'dva/router';
 import {NavBar, Popover, Icon, List, PullToRefresh, Badge, ListView} from 'antd-mobile';
 import classnames from 'classnames';
 import styles from './Message.less';
@@ -103,13 +104,13 @@ export default class Message extends React.Component {
    * @param time 考试总时间 （分）
    */
   goToMessageDetails(id) {
-    window.location.href = '#/account/message/' + id;
+    this.props.dispatch(routerRedux.push('/account/message/'+id));
     // requestService.post(dataApi['message']['readMsg'] + id, null, {'tokenId': SS.get(Config.TOKEN_ID)}).then((data) => {
     //   if (data.code === 200) {
     //     this.state.msgList.map((item) => {
     //       if (item.id === id) {
     //         SS.setObj('msgDetail', item);
-    //         window.location.href = '#/account/message/' + id;
+    //         this.props.dispatch(routerRedux.push('/account/message'+ id))
     //       }
     //     });
     //   }
@@ -180,7 +181,7 @@ export default class Message extends React.Component {
     return (<div className={styles.message_component}>
       <NavBar
         mode='dark'
-        onLeftClick={() => window.location.href = '#/account'}
+        onLeftClick={() => this.props.dispatch(routerRedux.push('/account'))}
         icon={<Icon type='left'/>}
         rightContent={
           <Popover mask

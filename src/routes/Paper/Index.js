@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import {routerRedux} from 'dva/router';
 import {connect} from 'dva';
 import {Badge, Carousel, Checkbox, Flex, Modal, NavBar, Pagination, Radio, Toast, Icon} from 'antd-mobile';
 import _ from 'lodash';
@@ -171,7 +171,7 @@ export default class Index extends React.Component {
         text: '确定', onPress: () => {
         //清除定时器
         clearInterval(timer);
-        window.history.go(-1)
+        this.props.dispatch(routerRedux.goBack());
       }
       }
     ])
@@ -221,7 +221,7 @@ export default class Index extends React.Component {
         Modal.alert('答题时间结束!', <p>放弃:放弃本次答题<br/>提交:提交当前答案</p>, [
           {
             text: '放弃', onPress: () => {
-            window.history.go(-1)
+            this.props.dispatch(routerRedux.goBack());
           }
           },
           {text: '提交', onPress: () => this.computeTrueOrFalseThenCommit}
@@ -419,7 +419,7 @@ export default class Index extends React.Component {
       if (data.code !== 200) {
         Toast.fail(data.message);
       } else {
-        window.history.go(-1);
+        this.props.dispatch(routerRedux.goBack());
       }
     });
 

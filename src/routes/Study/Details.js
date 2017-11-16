@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'dva';
+import {routerRedux} from 'dva/router';
 import {NavBar,Icon} from 'antd-mobile';
 import Config from '../../utils/config';
 import * as Tools from '../../utils/utils';
@@ -49,7 +50,7 @@ class StudyDetails extends React.Component{
   }
 
   goBackOff() {
-    window.history.go(-1);
+    this.props.dispatch(routerRedux.goBack());
   }
 
   /**
@@ -57,7 +58,7 @@ class StudyDetails extends React.Component{
    * @param id 数据Id
    */
   goToPaper(id) {
-    window.location.href = '#/public/paper/4/' + id + '/0/0';
+    this.props.dispatch(routerRedux.push('/paper/4/' + id + '/0/0'));
   }
 
   downloadAttachments(key) {

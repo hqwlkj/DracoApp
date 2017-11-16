@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import {List, NavBar, Icon, ListView, PullToRefresh} from 'antd-mobile';
 import {connect} from 'dva';
+import {routerRedux} from 'dva/router';
 
 import styles from './WrongTitle.less';
 
@@ -180,7 +181,7 @@ export default class WrongTitle extends React.Component {
    * @param time 考试总时间 （分）
    */
   goToRanking(id) {
-    window.location.href = '#/account/error/record/' + id;
+    this.props.dispatch(routerRedux.push('/account/error/record/' + id))
   }
 
   render() {
@@ -223,7 +224,7 @@ export default class WrongTitle extends React.Component {
         <NavBar
           mode='dark'
           icon={<Icon type='left'/>}
-          onLeftClick={() => window.location.href = '#/account/error/record'}
+          onLeftClick={() => this.props.dispatch(routerRedux.push('/account/error/record'))}
         >{`${this.props.match.params.type === '1' ? '单' : '多'}选题列表`}</NavBar>
         <div className={styles.error_body}>
           <ListView
