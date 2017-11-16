@@ -8,23 +8,23 @@ import SS from 'parsec-ss';
 import Config from './utils/config';
 
 
-//权限验证(是否登录)
-const handleAuth = function () {
-  if (SS.get(Config.USER_TOKEN) === null) {
-    fakeAuth.signout();
-  }else{
-    fakeAuth.authenticate();
-  }
-}
+// //权限验证(是否登录)
+// const handleAuth = function () {
+//   if (SS.get(Config.USER_TOKEN) === null) {
+//     fakeAuth.signout();
+//   }else{
+//     fakeAuth.authenticate();
+//   }
+// }
 
 const fakeAuth = {
-  isAuthenticated: false,
-  authenticate() {
-    this.isAuthenticated = true;
-  },
-  signout() {
-    this.isAuthenticated = false;
-  }
+  isAuthenticated: SS.get(Config.USER_TOKEN) === null ? false : true,
+  // authenticate() {
+  //   this.isAuthenticated = true;
+  // },
+  // signout() {
+  //   this.isAuthenticated = false;
+  // }
 };
 
 
@@ -42,7 +42,7 @@ const PrivateRoute = ({ component: Component, ...rest }) => (
 )
 
 function RouterConfig({ history }) {
-  handleAuth();
+  // handleAuth();
   return (
     <LocaleProvider locale={zhCN}>
       <Router history={history}>

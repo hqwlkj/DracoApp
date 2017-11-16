@@ -58,12 +58,15 @@ export default {
   reducers: {
     changeLoginStatus(state, { payload }) {
       if(payload.code === 200){
-        SS.set(Config.USER_TOKEN,payload.result.token)
+        SS.set(Config.USER_TOKEN, payload.result.token);
+        SS.set(Config.USER, payload.result.user);
+        SS.set(Config.USER_ID, payload.result.user.id);
+        SS.set(Config.TOKEN_ID, payload.result.user.id);
       }
       return {
         ...state,
         code: payload.code,
-        type: payload.type,
+        // type: payload.type,
       };
     },
     changeSubmitting(state, { payload }) {

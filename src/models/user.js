@@ -1,15 +1,15 @@
-import {query as queryUsers, queryCurrent, fetchModifyPwd} from '../services/user'
+import { query as queryUsers, queryCurrent, fetchModifyPwd } from '../services/user';
 
 export default {
   namespace: 'user',
   state: {
     code: undefined,
     list: [],
-    loading: false,
-    currentUser: {}
+    loading: true,
+    currentUser: {},
   },
   effects: {
-    * fetch(_, {call, put}) {
+    * fetch(_, { call, put }) {
       yield put({
         type: 'changeLoading',
         payload: true,
@@ -24,15 +24,14 @@ export default {
         payload: false,
       });
     },
-    * fetchCurrent(_, {call, put}) {
+    * fetchCurrent(_, { call, put }) {
       const response = yield call(queryCurrent);
       yield put({
         type: 'saveCurrentUser',
         payload: response,
       });
     },
-    * fetchModifyPwd({payload}, {call, put}) {
-      debugger;
+    * fetchModifyPwd({ payload }, { call, put }) {
       yield put({
         type: 'changeLoading',
         payload: true,
@@ -46,7 +45,7 @@ export default {
         type: 'changeLoading',
         payload: false,
       });
-    }
+    },
   },
 
   reducers: {
@@ -63,20 +62,18 @@ export default {
         submitting: action.payload,
       };
     },
-    changeModifyPwdStatus(state, {payload}) {
-      debugger;
+    changeModifyPwdStatus(state, action) {
       return {
         ...state,
-        code: payload.code,
-        submitting: payload
-      }
-
+        code: action.payload.code,
+        submitting: action.payload,
+      };
     },
     saveCurrentUser(state, action) {
       return {
         ...state,
-        currentUser: action.payload,
+        currentUser: action.payload.result,
       };
     },
   },
-}
+};

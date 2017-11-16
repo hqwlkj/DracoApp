@@ -24,6 +24,9 @@ class ModifyPwd extends React.PureComponent {
     if (nextProps.user.code === 200) {
       nextProps.form.resetFields();
       Toast.success('修改成功');
+    }else if(nextProps.user.code === 400 && nextProps.user.loading === false){
+      console.log('componentWillReceiveProps');
+      Toast.fail('修改失败！请检查你的原密码是否正确')
     }
   }
 
@@ -73,7 +76,6 @@ class ModifyPwd extends React.PureComponent {
     }
 
     let values = {};
-    values['userId'] = userId;
     values['oldPwd'] = oldPwd;
     values['newPwd'] = newPwd;
     this.props.dispatch({
@@ -85,7 +87,7 @@ class ModifyPwd extends React.PureComponent {
 
   render() {
     const {user, currentUser} = this.props;
-    const {getFieldProps, getFieldError,} = this.props.form;
+    const {getFieldProps, getFieldError} = this.props.form;
     return (
       <div className={styles.modify_pwd_component}>
         <NavBar
@@ -98,11 +100,7 @@ class ModifyPwd extends React.PureComponent {
             }}>保存</span>
           }
         >修改密码</NavBar>
-        {
-          user.code !== 200 &&
-          user.submitting === false &&
-          Toast.fail('修改失败！请检查你的原密码是否正确')
-        }
+
         <div style={{display: 'none'}}>
           <InputItem {...getFieldProps('userId', {initialValue: currentUser.userid})}/>
         </div>
