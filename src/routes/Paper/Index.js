@@ -2,6 +2,7 @@ import React from "react";
 import {connect} from "dva";
 import {Badge, Carousel, Checkbox, Flex, Icon, Modal, NavBar, Pagination, Radio} from "antd-mobile";
 import _ from "lodash";
+import classnames from 'classnames';
 import SS from "parsec-ss";
 import Config from "../../utils/config";
 import styles from "./Index.less";
@@ -30,7 +31,6 @@ export default class Index extends React.Component {
       answerTime: null,//每道题的答题开始时间
       recordTime: null,//每道题道题时长,单位s
       questionTypeMap: {1: '单选题', 2: '多选题'},
-
       showAnalyse: [],
     }
 
@@ -292,7 +292,7 @@ export default class Index extends React.Component {
     switch (question.questionType) {
       case 1:
         questionItem = (
-          <div className='my-radio' key={`question_item_${_.uniqueId()}`}>
+          <div className={styles.my_radio} key={`question_item_${_.uniqueId()}`}>
             <Radio checked={!!item.checked}
                    onChange={e => this.onItemClick(e, itemIndex, questionIndex)}>{item.title}
             </Radio>
@@ -423,17 +423,17 @@ export default class Index extends React.Component {
       rowData.push(c);
     }
     let array = (rowData.map((s, index) => {
-      return (<Flex className='paper-list' key={`paper-list-${index}`}>
+      return (<Flex className={styles.paper_list} key={`paper-list-${index}`}>
         {s.map((i, cindex) => {
           return (i !== -1 ? (<Flex.Item key={`paper-list-item-${index}-${cindex}`}>
             <div
-              className={`paper-item ${this.state.current === i - 1 ? 'current' : ''} ${this.state.answeredIds.filter(x => x === i - 1).length === 1 ? 'success' : ''}`}
+              className={classnames(styles.paper_item,this.state.current === i - 1 ? styles.current : '',this.state.answeredIds.filter(x => x === i - 1).length === 1 ? styles.success : '')}
               onClick={() => {
                 this.selectedPaperItem(i - 1);
               }}>{i}
             </div>
           </Flex.Item>) : (
-            <Flex.Item className='paper-item no-data' key={`paper-list-item-${index}-${cindex}`}>&nbsp;</Flex.Item>))
+            <Flex.Item className={classnames(styles.paper_item,styles.no_data)} key={`paper-list-item-${index}-${cindex}`}>&nbsp;</Flex.Item>))
         })}
       </Flex>)
     }));
@@ -446,26 +446,24 @@ export default class Index extends React.Component {
     let analysis = (dd, questionIndex) => {
       if (this.props.match.params.type === '2' && dd.question.analysis !== 'close') {
         if (dd.question.analysis !== '') {
-          return (<div className='question-analysis'
+          return (<div className={styles.question_analysis}
                        style={{display: this.state.showAnalyse[questionIndex] ? 'block' : 'none'}}>
-            <div className='analysis-title'>题目解析</div>
-            <div className='analysis-info clearfix'>
-              {/*<div className='analysis-answer'>答案：{answer}</div>*/}
-            </div>
-            <div className='analysis-desc'>
+            <div className={styles.analysis_title}>题目解析</div>
+            <div className={styles.analysis_info}></div>
+            <div className={styles.analysis_desc}>
               <span dangerouslySetInnerHTML={{__html: Tools.formatFontSize(dd.question.analysis)}}/>
             </div>
           </div>);
         } else {
           return (
-            <div className='question-analysis'
+            <div className={styles.question_analysis}
                  style={{display: this.state.showDifficulty[questionIndex] ? 'block' : 'none'}}>
-              <div className='analysis-title'>题目解析</div>
-              <div className='analysis-desc'>
+              <div className={styles.analysis_title}>题目解析</div>
+              <div className={styles.analysis_desc}>
                 {/*没有解释的时候显示这个*/}
-                <div className='no-data'>
-                  <i className='carme-icon'>&#xe6f7;</i>
-                  <div className='no-data-text'>
+                <div className={styles.noData}>
+                  <i className={styles.carmeIcon}>&#xe6f7;</i>
+                  <div className={styles.noDataText}>
                     <p>Sorry</p>
                     <p>该试题,没有错题解析</p>
                   </div>
@@ -490,7 +488,7 @@ export default class Index extends React.Component {
           </span>,] : null}>{this.state.navbarTitle}</NavBar>
 
         <div className={styles.test_paper_container}>
-          <Pagination mode='number' total={this.state.dataList.length} current={this.state.current}/>
+          <Pagination mode='number' total={this.state.dataList.length} current={this.state.current + 1}/>
           <Carousel
             className={styles.my_carousel}
             autoplay={false}
