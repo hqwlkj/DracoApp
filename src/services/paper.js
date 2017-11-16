@@ -13,7 +13,6 @@ export async function getStudyPaper(options) {
 }
 
 export async function submitPaper(options) {
-  debugger;
   return request('/api/answers', {
     method: 'POST',
     body: options,

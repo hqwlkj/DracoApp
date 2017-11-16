@@ -1,6 +1,6 @@
 import React from "react";
 import {connect} from "dva";
-import {Carousel, Checkbox, Flex, Icon, Modal, NavBar, Pagination, Radio} from "antd-mobile";
+import {Carousel, Checkbox, Flex, Icon, Modal, NavBar, Pagination, Radio, Toast} from "antd-mobile";
 import _ from "lodash";
 import classnames from "classnames";
 import SS from "parsec-ss";
@@ -89,6 +89,7 @@ export default class Index extends React.Component {
   componentWillReceiveProps(nextProps) {
     let {
       paper: {
+        submitPaper = null,
         dataList = [],
         answerTime = {},
       }
@@ -97,6 +98,16 @@ export default class Index extends React.Component {
       dataList: dataList,
       answerTimeId: answerTime.id,
     }, this.assembleQuestion);
+
+    //答题提交完返回上一级
+    if (submitPaper != null) {
+      console.log(submitPaper);
+      if (submitPaper.code !== 200) {
+        Toast.fail(submitPaper.message);
+      } else {
+        window.history.go(-1);
+      }
+    }
   }
 
   doProps(props) {
@@ -410,7 +421,7 @@ export default class Index extends React.Component {
     //     window.history.go(-1);
     //   }
     // });
-    debugger;
+
     let params = {};
     params['timeConsuming'] = Math.ceil(timeConsuming);
     params['completeData'] = this.state.completeData;
