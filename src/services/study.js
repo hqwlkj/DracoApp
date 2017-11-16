@@ -17,3 +17,7 @@ export async function getStudyDirectory(options) {
 export async function getStudyList(options) {
   return request(`/api/study?${qs.stringify(options)}`);
 }
+
+export async function getStudyDetail(options) {
+  return request(`api/studyItem?${qs.stringify(options)}`);
+}

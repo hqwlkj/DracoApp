@@ -1,4 +1,4 @@
-import {getStudyList,getDirectory, getStudyDirectory} from "../services/study";
+import {getStudyDetail,getStudyList,getDirectory, getStudyDirectory} from "../services/study";
 import SS from "parsec-ss";
 
 export default {
@@ -57,6 +57,25 @@ export default {
       const response = yield call(getStudyList, payload);
       yield put({
         type: "saveStudyList",
+        payload: response,
+      })
+      //关闭加载状态
+      yield put({
+        type: "checkLoading",
+        payload: false,
+      })
+    },
+
+    *feacthStudyDetail({payload}, {call, put}){
+      //启用加载状态
+      yield put({
+        type: "checkLoading",
+        payload: true,
+      })
+      //发起请求
+      const response = yield call(getStudyDetail, payload);
+      yield put({
+        type: "saveStudyDetail",
         payload: response,
       })
       //关闭加载状态
@@ -130,6 +149,20 @@ export default {
         return {
           ...state,
           studyOriginList: response.payload.result.list,
+        }
+      } else {
+        return {
+          ...state,
+        }
+      }
+    },
+
+    saveStudyDetail(state, response){
+      debugger;
+      if (response && response.payload && response.payload.result) {
+        return {
+          ...state,
+          studyDetail: response.payload.result,
         }
       } else {
         return {
