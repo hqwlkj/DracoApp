@@ -11,3 +11,11 @@ export async function getTestPaper() {
 export async function getStudyPaper(options) {
   return request('/api/study_question/' + options.id);
 }
+
+export async function submitPaper(options) {
+  debugger;
+  return request('/api/answers', {
+    method: 'POST',
+    body: options,
+  });
+}

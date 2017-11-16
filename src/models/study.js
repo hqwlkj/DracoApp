@@ -162,6 +162,7 @@ export default {
         return {
           ...state,
           studyDetail: response.payload.result,
+
         }
       } else {
         return {

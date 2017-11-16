@@ -1,12 +1,12 @@
 import React from "react";
 import {connect} from "dva";
-import {Badge, Carousel, Checkbox, Flex, Icon, Modal, NavBar, Pagination, Radio} from "antd-mobile";
+import {Carousel, Checkbox, Flex, Icon, Modal, NavBar, Pagination, Radio} from "antd-mobile";
 import _ from "lodash";
-import classnames from 'classnames';
+import classnames from "classnames";
 import SS from "parsec-ss";
 import Config from "../../utils/config";
 import styles from "./Index.less";
-import * as Tools from '../../utils/utils';
+import * as Tools from "../../utils/utils";
 
 let timer = 0;
 let loadUrl = null;
@@ -29,6 +29,7 @@ export default class Index extends React.Component {
       dataList: [],//问题列表
       completeData: [],//完成答题列表
       answerTime: null,//每道题的答题开始时间
+      answerTimeId: null,//
       recordTime: null,//每道题道题时长,单位s
       questionTypeMap: {1: '单选题', 2: '多选题'},
       showAnalyse: [],
@@ -89,10 +90,12 @@ export default class Index extends React.Component {
     let {
       paper: {
         dataList = [],
+        answerTime = {},
       }
     } = nextProps;
     this.setState({
       dataList: dataList,
+      answerTimeId: answerTime.id,
     }, this.assembleQuestion);
   }
 
@@ -396,7 +399,9 @@ export default class Index extends React.Component {
       timeConsuming += i.recordTime;
       i.recordTime = Math.ceil(i.recordTime);
     });
+
     let headers = {'Content-type': 'application/json'};
+
     // request.post(api.answer + '?timeConsuming=' + Math.ceil(timeConsuming),
     //   JSON.stringify(this.state.completeData), headers).then(data => {
     //   if (data.code !== 200) {
@@ -405,7 +410,15 @@ export default class Index extends React.Component {
     //     window.history.go(-1);
     //   }
     // });
-
+    debugger;
+    let params = {};
+    params['timeConsuming'] = Math.ceil(timeConsuming);
+    params['completeData'] = this.state.completeData;
+    params['answerTimeId'] = this.state.answerTimeId;
+    this.props.dispatch({
+      type: 'paper/submitPaper',
+      payload: params//参数
+    })
   }
 
   paperChooseItem() {
@@ -427,13 +440,14 @@ export default class Index extends React.Component {
         {s.map((i, cindex) => {
           return (i !== -1 ? (<Flex.Item key={`paper-list-item-${index}-${cindex}`}>
             <div
-              className={classnames(styles.paper_item,this.state.current === i - 1 ? styles.current : '',this.state.answeredIds.filter(x => x === i - 1).length === 1 ? styles.success : '')}
+              className={classnames(styles.paper_item, this.state.current === i - 1 ? styles.current : '', this.state.answeredIds.filter(x => x === i - 1).length === 1 ? styles.success : '')}
               onClick={() => {
                 this.selectedPaperItem(i - 1);
               }}>{i}
             </div>
           </Flex.Item>) : (
-            <Flex.Item className={classnames(styles.paper_item,styles.no_data)} key={`paper-list-item-${index}-${cindex}`}>&nbsp;</Flex.Item>))
+            <Flex.Item className={classnames(styles.paper_item, styles.no_data)}
+                       key={`paper-list-item-${index}-${cindex}`}>&nbsp;</Flex.Item>))
         })}
       </Flex>)
     }));
@@ -526,7 +540,7 @@ export default class Index extends React.Component {
                   {this.getItemList(questionIndex)}
                 </div>
                 {/*{*/}
-                  {/*analysis(dd, questionIndex)*/}
+                {/*analysis(dd, questionIndex)*/}
                 {/*}*/}
               </div>
             ))}

@@ -33,20 +33,6 @@ class StudyDetails extends React.Component {
       type: 'study/feacthStudyDetail',
       payload: params,
     });
-    // let fetchApi = api.course.studyItem;
-
-    // request.get(fetchApi, params).then((data) => {
-    //   let directoryMap = sessionStorage.getItem('directoryMap');
-    //   if (directoryMap) {
-    //     directoryMap = JSON.parse(directoryMap);
-    //     let catePathName = [];
-    //     data.result.obj.pathCode.split('/').forEach(i => {
-    //       catePathName.push(directoryMap[parseInt(i)].name);
-    //     });
-    //     data.result.obj.catePathName = catePathName
-    //   }
-    //   this.setState({study: data.result.obj, existQuestion: data.result.existQuestion});
-    // });
   }
 
   componentWillMount() {
@@ -57,9 +43,21 @@ class StudyDetails extends React.Component {
   componentWillReceiveProps(nextProps) {
     let {
       study: {
-        studyDetail = [],
+        studyDetail,
       }
     } = nextProps;
+    let directoryMap = sessionStorage.getItem('directoryMap');
+    if (!!directoryMap && !!studyDetail) {
+      directoryMap = JSON.parse(directoryMap);
+      let catePathName = [];
+      studyDetail.obj.pathCode.split('/').forEach(i => {
+        if (i !== '') {
+          catePathName.push(directoryMap[parseInt(i.replace('P', ''))].name);
+        }
+      });
+      studyDetail.obj.catePathName = catePathName;
+      this.setState({study: studyDetail.obj || {}, existQuestion: studyDetail.existQuestion});
+    }
 
   }
 
@@ -72,7 +70,7 @@ class StudyDetails extends React.Component {
    * @param id 数据Id
    */
   goToPaper(id) {
-    window.location.href = '#/public/paper/4/' + id + '/0/0';
+    window.location.href = '#/paper/2/' + id + '/0/0';
   }
 
   downloadAttachments(key) {
@@ -95,14 +93,10 @@ class StudyDetails extends React.Component {
 
 
   render() {
-    const {study} = this.props;
-    debugger;
     let offsetX = -10; // just for pc demo
     if (/(iPhone|iPad|iPod|iOS|Android)/i.test(navigator.userAgent)) {
       offsetX = -26;
     }
-
-    let x = this.state.study.catePathName;
     let attachment = this.state.study.attachment;
     return (<div className={classnames(styles.course_details_component)}>
       <NavBar onLeftClick={() => {
@@ -147,4 +141,6 @@ class StudyDetails extends React.Component {
   }
 }
 
-export default connect(state => ({}))(StudyDetails);
+export default connect(state => ({
+  study: state.study
+}))(StudyDetails);
