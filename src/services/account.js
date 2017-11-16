@@ -17,7 +17,7 @@ export async function queryErrorRecord(params) {
  * @returns {Object}
  */
 export async function queryErrorRecordNum() {
-  return request('/api/query_error_record_num')
+  return request('/api/error_answers_num')
 }
 
 

@@ -57,6 +57,7 @@ export default class Rank extends React.Component{
 
   componentWillReceiveProps(nextProps) {
     let data = nextProps.exam.data;
+    debugger;
     this.setState({
       dataSource: this.state.dataSource.cloneWithRows((data || {}).list),
     });
@@ -87,7 +88,7 @@ export default class Rank extends React.Component{
       this.manuallyRefresh = false;
     }
     this.loadData();
-  }
+  };
 
   /**
    * 上拉加载更多
@@ -103,7 +104,7 @@ export default class Rank extends React.Component{
       return;
     }
     this.loadData(this.state.pageNo + 1);
-  }
+  };
 
   render(){
     const {exam: {loading: refreshing, data}} = this.props;
