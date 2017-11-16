@@ -4,9 +4,10 @@ import Config from './config';
 import SS from 'parsec-ss';
 
 function checkStatus(response) {
-  console.log(response);
-  console.log(response.headers.get('token'));
-  // let token = (response.headers || {}).token;
+
+  if(response.headers.has('token')){
+    SS.set(Config.USER_TOKEN,response.headers.get('token'));
+  }
   if (response.status >= 200 && response.status < 300) {
     return response;
   }
