@@ -22,6 +22,7 @@ class Login extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.login.code === 200) {
+      debugger;
       this.props.dispatch(routerRedux.push('/'));
     }
   }
@@ -130,13 +131,6 @@ class Login extends Component {
             </Button>
           </div>
         </List>
-        <div className={styles.other}>
-          其他登录方式
-          {/* 需要加到 Icon 中 */}
-          <span className={styles.iconAlipay} />
-          <span className={styles.iconTaobao} />
-          <span className={styles.iconWeibo} />
-        </div>
       </div>
     );
   }

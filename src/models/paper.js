@@ -59,7 +59,7 @@ export default {
       //发起请求
       const response = yield call(submitPaper, payload);
       yield put({
-        type: "submitPaper",
+        type: "checkSubmitPaper",
         payload: response,
       })
       //关闭加载状态
@@ -71,23 +71,23 @@ export default {
     }
   },
   reducers: {
-    checkLoading(state, payload){
+    checkLoading(state, {payload}){
       return {
         ...state,
         loading: payload
       }
     },
-    saveData(state, payload){
+    saveData(state, {payload}){
       return {
         ...state,
-        dataList: payload.payload.result.list,
-        answerTime: payload.payload.result.answerTime,
+        dataList: payload.result.list,
+        answerTime: payload.result.answerTime,
       }
     },
-    submitPaper(state, payload){
+    checkSubmitPaper(state, {payload}){
       return {
         ...state,
-        submitPaper: payload.payload,
+        submitPaper: payload,
       }
     }
   }
