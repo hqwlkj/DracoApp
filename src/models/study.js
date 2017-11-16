@@ -158,7 +158,6 @@ export default {
     },
 
     saveStudyDetail(state, response){
-      debugger;
       if (response && response.payload && response.payload.result) {
         return {
           ...state,
