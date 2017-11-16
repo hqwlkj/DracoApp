@@ -4,7 +4,9 @@ import {NavBar,Icon} from 'antd-mobile';
 import styles from './MessageDetails.less';
 
 
-@connect(state => ({}))
+@connect(state => ({
+  messages: state.messages,
+}))
 export default class MessageDetails extends React.Component {
   constructor(props) {
     super(props);
@@ -12,7 +14,38 @@ export default class MessageDetails extends React.Component {
     this.state = {
       msgId,//消息Id
       message: {},//本条消息详情
+    };
+  }
+
+
+  componentWillMount() {
+
+  }
+
+  componentDidMount() {
+    this.getMessageDetail();
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const msg = nextProps.messages.data;
+    this.setState({
+      message: msg,
+    });
+  }
+
+
+
+  // 消息列表数据
+  getMessageDetail() {
+    const { dispatch } = this.props;
+    const params = {
+      id: this.state.msgId,
     }
+    console.log(params);
+    dispatch({
+      type: 'messages/fetchMessageDetail',
+      payload: params.id,
+    });
   }
 
   render() {

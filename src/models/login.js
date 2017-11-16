@@ -11,7 +11,7 @@ export default {
   },
 
   effects: {
-    //账号密码登录
+    // 账号密码登录
     *accountSubmit({ payload }, { call, put }) {
       yield put({
         type: 'changeSubmitting',
@@ -27,13 +27,13 @@ export default {
         payload: false,
       });
     },
-    //手机号码和密码登录
+    // 手机号码和密码登录
     *mobileSubmit({ payload }, { call, put }) {
       yield put({
         type: 'changeSubmitting',
         payload: true,
       });
-      const response = yield call(fakeMobileLogin,payload);
+      const response = yield call(fakeMobileLogin, payload);
       yield put({
         type: 'changeLoginStatus',
         payload: response,
@@ -43,7 +43,7 @@ export default {
         payload: false,
       });
     },
-    //登出
+    // 登出
     *logout(_, { put }) {
       yield put({
         type: 'changeLoginStatus',
@@ -57,11 +57,15 @@ export default {
 
   reducers: {
     changeLoginStatus(state, { payload }) {
-      if(payload.code === 200){
+      if (payload.code === 200) {
         SS.set(Config.USER_TOKEN, payload.result.token);
         SS.set(Config.USER, payload.result.user);
         SS.set(Config.USER_ID, payload.result.user.id);
         SS.set(Config.TOKEN_ID, payload.result.user.id);
+        SS.setObj('loginUser', {
+          phone: payload.result.user.phone,
+          pwd: payload.result.user.pwd,
+        });
       }
       return {
         ...state,
