@@ -1,10 +1,11 @@
 import React from "react";
 import {connect} from "dva";
-import {Badge, Carousel, Checkbox, Flex, Icon, Modal, NavBar, Pagination, Radio, Toast} from "antd-mobile";
+import {Badge, Carousel, Checkbox, Flex, Icon, Modal, NavBar, Pagination, Radio} from "antd-mobile";
 import _ from "lodash";
 import SS from "parsec-ss";
-import Config from 'config';
+import Config from "../../utils/config";
 import styles from "./Index.less";
+import * as Tools from '../../utils/utils';
 
 let timer = 0;
 let loadUrl = null;
@@ -16,7 +17,7 @@ export default class Index extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      navbarTitle: '在线考试',
+      navbarTitle: '',
       params: {},
       progressNum: 10,
       current: 0, //当前答题呈现的 试题
@@ -29,7 +30,8 @@ export default class Index extends React.Component {
       answerTime: null,//每道题的答题开始时间
       recordTime: null,//每道题道题时长,单位s
       questionTypeMap: {1: '单选题', 2: '多选题'},
-      difficulty: [],//难度对象数组
+
+      showAnalyse: [],
     }
 
     this.countdown = this.countdown.bind(this);
@@ -49,10 +51,24 @@ export default class Index extends React.Component {
   }
 
 
+  componentWillMount() {
+    this.doProps(this.props);
+  }
+
   componentDidMount() {
-    this.assembleQuestion();
-    let navbarTitle = this.state.navbarTitle;
-    if (this.props.match.params.type !== '4') {
+    let param = this.props.match.params;
+    let navbarTitle;
+    switch (param.type) {
+      case '1':
+        navbarTitle = '在线考试';
+        break;
+      case '2':
+        navbarTitle = '学习答题';
+        break;
+      default:
+        break;
+    }
+    if (this.props.match.params.type !== '2') {
       navbarTitle = '倒计时 00:00';
     } else {
       this.setState({answerTime: new Date(new Date().getTime() + 1000)});//感觉还是补偿1秒比较好
@@ -62,14 +78,48 @@ export default class Index extends React.Component {
       this.setState({
         navbarTitle,
       }, () => {
-        if (this.props.match.params.type !== '4') {
+        if (this.props.match.params.type !== '2') {
           this.countdown();
         }
       });
     }, 100);
   }
 
-  //装配习题
+  componentWillReceiveProps(nextProps) {
+    let {
+      paper: {
+        dataList = [],
+      }
+    } = nextProps;
+    this.setState({
+      dataList: dataList,
+    }, this.assembleQuestion);
+  }
+
+  doProps(props) {
+    this.props = props;
+    let param = this.props.match.params;
+    this.setState({params: param});
+    const queryString = {
+      id: param.id,
+    };
+    switch (param.type) {
+      case '1':
+        loadUrl = 'feacthTestPaper';
+        break;
+      case '2':
+        loadUrl = 'feacthStudyPaper';
+        break;
+      default:
+        break;
+    }
+    this.props.dispatch({
+      type: `paper/${loadUrl}`,
+      payload: queryString//参数
+    })
+  }
+
+  //装配习题答题情况
   assembleQuestion() {
     let param = this.props.match.params;
     let dataList = this.state.dataList;
@@ -95,104 +145,6 @@ export default class Index extends React.Component {
     this.setState({
       completeData
     });
-    debugger;
-  }
-
-  componentWillMount() {
-    this.doProps(this.props);
-  }
-
-  componentWillReceiveProps(nextProps) {
-    let {
-      paper: {
-        dataList = [],
-      }
-    } = nextProps;
-    this.setState({
-      dataList: dataList,
-    });
-  }
-
-  doProps(props) {
-    this.props = props;
-    let param = this.props.match.params;
-    this.setState({params: param});
-    const queryString = {
-      id: param.id,
-    };
-    switch (param.type) {
-      case '1':
-        loadUrl = 'feacthTestPaper';
-        break;
-      case '2':
-        loadUrl = 'feacthStudyPaper';
-        break;
-      default:
-        break;
-    }
-    this.props.dispatch({
-      type: `paper/${loadUrl}`,
-      payload: queryString//参数
-    })
-    // request.get(loadUrl).then(data => {
-    //   if (data.code === 200 && data.result && data.result) {
-    //     let completeData = [];
-    //     switch (param.type) {
-    //       case '1':
-    //         data.result.list.forEach((m, index) => {
-    //           completeData[index] = {
-    //             questionId: m.question.id,
-    //             category: param.type,
-    //             cateId: param.id,
-    //             questionOwner: SS.get(Config.USER_ID),
-    //             answererId: SS.get(Config.TOKEN_ID),
-    //             isCorrect: 0,
-    //             recordTime: null
-    //           };
-    //         });
-    //         break;
-    //       case '3':  //1和4都是一样的，我也复制一个来玩儿🐒
-    //         data.result.forEach((m, index) => {
-    //           completeData[index] = {
-    //             questionId: m.question.id,
-    //             category: param.type,
-    //             cateId: param.id,
-    //             questionOwner: SS.get(Config.USER_ID),
-    //             answererId: SS.get(Config.TOKEN_ID),
-    //             isCorrect: 0,
-    //             recordTime: null
-    //           };
-    //         });
-    //         break;
-    //       case '4':
-    //         data.result.list.forEach((m, index) => {
-    //           completeData[index] = {
-    //             questionId: m.question.id,
-    //             category: param.type,
-    //             cateId: param.id,
-    //             questionOwner: SS.get(Config.USER_ID),
-    //             answererId: SS.get(Config.TOKEN_ID),
-    //             isCorrect: 0,
-    //             recordTime: null
-    //           };
-    //         });
-    //         break;
-    //       default:
-    //         break;
-    //     }
-    //     let difficulty = {};
-    //     if (data.result.difficulty) {
-    //       data.result.difficulty.forEach(i => {
-    //         difficulty[i.value] = i.text;
-    //       });
-    //     }
-    //     this.setState({
-    //       completeData,
-    //       difficulty,
-    //       dataList: data.result.list || data.result,
-    //     });
-    //   }
-    // });
   }
 
   /**
@@ -340,14 +292,17 @@ export default class Index extends React.Component {
     switch (question.questionType) {
       case 1:
         questionItem = (
-          <div className='my-radio' key={`question_item_${_.uniqueId()}`}><Radio checked={!!item.checked}
-                                                                                 onChange={e => this.onItemClick(e, itemIndex, questionIndex)}>{item.title}</Radio>
+          <div className='my-radio' key={`question_item_${_.uniqueId()}`}>
+            <Radio checked={!!item.checked}
+                   onChange={e => this.onItemClick(e, itemIndex, questionIndex)}>{item.title}
+            </Radio>
           </div>);
         break;
       case 2:
         questionItem = (
           <Checkbox.AgreeItem key={`question_item_${_.uniqueId()}`} checked={!!item.checked}
-                              onChange={e => this.onItemClick2(e, itemIndex, questionIndex)}>{item.title}</Checkbox.AgreeItem>);
+                              onChange={e => this.onItemClick2(e, itemIndex, questionIndex)}>{item.title}
+          </Checkbox.AgreeItem>);
         break;
       default:
         questionItem = null;
@@ -368,27 +323,14 @@ export default class Index extends React.Component {
     });
     let completeData = this.state.completeData;
     completeData[questionIndex].isCorrect = result;
-    if (!isCarousel && this.props.match.params.type === '4' && (!result)) {
-      let showDifficulty = this.state.showDifficulty;
-      this.setState({completeData}, () => {
-        if (!showDifficulty[questionIndex]) {
-          showDifficulty[questionIndex] = 1;
-          this.setState({showDifficulty});
-        } else if (!!showDifficulty[questionIndex]) {
-          showDifficulty[questionIndex] = 0;
-          this.setState({completeData, showDifficulty}, () => this.goForward(questionIndex));
-        }
-      });
-    } else {
-      this.setState({completeData}, () => {
-        if (!isCarousel) this.goForward(questionIndex)
-      });
-    }
+    this.setState({completeData}, () => {
+      if (!isCarousel) this.goForward(questionIndex)
+    });
   }
 
   computeTrueOrFalseThenCommit() {
     let questionIndex = this.state.current;
-    if (!this.state.showAnalyse[questionIndex]) this.updateAnswerTime(questionIndex);
+    this.updateAnswerTime(questionIndex);
     let itemList = this.state.dataList[questionIndex].itemList;
     let result = true;
     itemList.forEach(i => {
@@ -404,8 +346,7 @@ export default class Index extends React.Component {
 
   //结束一道题需要操作一些数据,如计算答案,道题时长,重置答题开始时间
   endOneQuestion(current) {
-    //不是在显示解析页时
-    if (!this.state.showDifficulty[current]) this.updateAnswerTime(current);
+    this.updateAnswerTime(current);
     //跳至下一页前计算当前题的正确还是错误
     this.computeTrueOrFalse();
   }
@@ -456,14 +397,14 @@ export default class Index extends React.Component {
       i.recordTime = Math.ceil(i.recordTime);
     });
     let headers = {'Content-type': 'application/json'};
-    request.post(api.answer + '?timeConsuming=' + Math.ceil(timeConsuming),
-      JSON.stringify(this.state.completeData), headers).then(data => {
-      if (data.code !== 200) {
-        Toast.fail(data.message);
-      } else {
-        window.history.go(-1);
-      }
-    });
+    // request.post(api.answer + '?timeConsuming=' + Math.ceil(timeConsuming),
+    //   JSON.stringify(this.state.completeData), headers).then(data => {
+    //   if (data.code !== 200) {
+    //     Toast.fail(data.message);
+    //   } else {
+    //     window.history.go(-1);
+    //   }
+    // });
 
   }
 
@@ -501,21 +442,15 @@ export default class Index extends React.Component {
 
   render() {
     const {dataList = []} = this.props.paper;
-
-    console.table(dataList.list);
-
     const hProp = this.state.initialHeight ? {padding: '5px'} : {};
-
     let analysis = (dd, questionIndex) => {
-      if (this.props.match.params.type === '4' && dd.question.analysis !== 'close') {
+      if (this.props.match.params.type === '2' && dd.question.analysis !== 'close') {
         if (dd.question.analysis !== '') {
           return (<div className='question-analysis'
                        style={{display: this.state.showAnalyse[questionIndex] ? 'block' : 'none'}}>
             <div className='analysis-title'>题目解析</div>
             <div className='analysis-info clearfix'>
-              <div className='analysis-answer'>答案：{answer}</div>
-              <div className='analysis-difficulty'>
-                难度：<span>{this.state.difficulty[dd.question.difficulty]}</span></div>
+              {/*<div className='analysis-answer'>答案：{answer}</div>*/}
             </div>
             <div className='analysis-desc'>
               <span dangerouslySetInnerHTML={{__html: Tools.formatFontSize(dd.question.analysis)}}/>
@@ -549,11 +484,10 @@ export default class Index extends React.Component {
         <NavBar onLeftClick={() => {
           this.goBackOff()
         }}
-                icon={<Icon type='left'/>} rightContent={this.props.match.params.type !== '4' ? [
-          <span key='0' style={{fontSize: '0.28rem'}} onClick={() => this.ensureSubmit()}><i
-            className={styles.carmeIcon}
-            style={{fontSize: '0.28rem'}}>&#xe600;</i>交卷</span>,
-        ] : null}>{this.state.navbarTitle}</NavBar>
+                icon={<Icon type='left'/>} rightContent={this.props.match.params.type !== '2' ? [
+          <span key='0' style={{fontSize: '0.28rem'}} onClick={() => this.ensureSubmit()}>
+            <i className={styles.carmeIcon} style={{fontSize: '0.28rem'}}>&#xe600;</i>交卷
+          </span>,] : null}>{this.state.navbarTitle}</NavBar>
 
         <div className={styles.test_paper_container}>
           <Pagination mode='number' total={this.state.dataList.length} current={this.state.current}/>
@@ -566,13 +500,11 @@ export default class Index extends React.Component {
             swipeSpeed={35}
 
             beforeChange={(from, to) => {
+              //这个比较可以判断是点击下一页还是左右翻页
               if (this.state.current === from) {
                 this.computeTrueOrFalse(true);
-                let showDifficulty = this.state.showDifficulty;
-                showDifficulty[from] = 0;
-                this.setState({current: to, showDifficulty}, () => {
+                this.setState({current: to}, () => {
                   this.updateAnswerTime(from);
-                  //跳至下一页前计算当前题的正确还是错误
                 });
               }
             }}
@@ -589,16 +521,15 @@ export default class Index extends React.Component {
               >
                 <div className={styles.question_title}>
                   <span className={styles.tags}>{this.state.questionTypeMap[dd.question.questionType]}</span>
-                  {dd.question.willnot ? <Badge hot text='智能推荐' className={styles.recommend}/> : null}
                   <span
                     dangerouslySetInnerHTML={{__html: dd.question.content}}/>
                 </div>
                 <div className={styles.question_content}>
                   {this.getItemList(questionIndex)}
                 </div>
-                {
-                  analysis(dd, questionIndex)
-                }
+                {/*{*/}
+                  {/*analysis(dd, questionIndex)*/}
+                {/*}*/}
               </div>
             ))}
           </Carousel>
