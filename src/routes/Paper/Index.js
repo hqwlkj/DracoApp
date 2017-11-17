@@ -54,6 +54,11 @@ export default class Index extends React.Component {
 
 
   componentWillMount() {
+    //清除垃圾数据
+    SS.remove('dataList');
+    SS.remove('completeData');
+    SS.remove('timeConsuming');
+    SS.remove('paperType');
     this.doProps(this.props);
   }
 
@@ -105,8 +110,6 @@ export default class Index extends React.Component {
       console.log(submitPaper);
       if (submitPaper.code !== 200) {
         Toast.fail(submitPaper.message);
-      } else {
-        window.history.go(-1);
       }
     }
   }
@@ -419,6 +422,7 @@ export default class Index extends React.Component {
     params['timeConsuming'] = Math.ceil(timeConsuming);
     params['completeData'] = this.state.completeData;
     params['answerTimeId'] = this.state.answerTimeId;
+    params['paperType'] = this.props.match.params.type;
     this.props.dispatch({
       type: 'paper/submitPaper',
       payload: params//参数
@@ -459,48 +463,16 @@ export default class Index extends React.Component {
   }
 
   render() {
-    const {dataList = []} = this.props.paper;
+    const {paper: {dataList = []}, match} = this.props;
     const hProp = this.state.initialHeight ? {padding: '5px'} : {};
-    let analysis = (dd, questionIndex) => {
-      if (this.props.match.params.type === '2' && dd.question.analysis !== 'close') {
-        if (dd.question.analysis !== '') {
-          return (<div className={styles.question_analysis}
-                       style={{display: this.state.showAnalyse[questionIndex] ? 'block' : 'none'}}>
-            <div className={styles.analysis_title}>题目解析</div>
-            <div className={styles.analysis_info}></div>
-            <div className={styles.analysis_desc}>
-              <span dangerouslySetInnerHTML={{__html: Tools.formatFontSize(dd.question.analysis)}}/>
-            </div>
-          </div>);
-        } else {
-          return (
-            <div className={styles.question_analysis}
-                 style={{display: this.state.showDifficulty[questionIndex] ? 'block' : 'none'}}>
-              <div className={styles.analysis_title}>题目解析</div>
-              <div className={styles.analysis_desc}>
-                {/*没有解释的时候显示这个*/}
-                <div className={styles.noData}>
-                  <i className={styles.carmeIcon}>&#xe6f7;</i>
-                  <div className={styles.noDataText}>
-                    <p>Sorry</p>
-                    <p>该试题,没有错题解析</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          );
-        }
-      } else {
-        return null;
-      }
-    };
+    const paperType = match.params.type;
 
     return (
       <div className={styles.test_paper_component}>
         <NavBar onLeftClick={() => {
           this.goBackOff()
         }}
-                icon={<Icon type='left'/>} rightContent={this.props.match.params.type !== '2' ? [
+                icon={<Icon type='left'/>} rightContent={paperType !== '2' ? [
           <span key='0' style={{fontSize: '0.28rem'}} onClick={() => this.ensureSubmit()}>
             <i className={styles.carmeIcon} style={{fontSize: '0.28rem'}}>&#xe600;</i>交卷
           </span>,] : null}>{this.state.navbarTitle}</NavBar>
@@ -543,9 +515,6 @@ export default class Index extends React.Component {
                 <div className={styles.question_content}>
                   {this.getItemList(questionIndex)}
                 </div>
-                {/*{*/}
-                {/*analysis(dd, questionIndex)*/}
-                {/*}*/}
               </div>
             ))}
           </Carousel>
@@ -553,7 +522,7 @@ export default class Index extends React.Component {
 
 
         {
-          this.props.match.params.type === '3' ?
+          paperType === '3' ?
             <div>
               <div className={styles.test_paper_footer} style={{bottom: !!this.state.hidden ? '-2rem' : '0'}}>
                 <div className={styles.selected_topic} onClick={() => {

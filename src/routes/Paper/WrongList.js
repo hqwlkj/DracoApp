@@ -1,90 +1,47 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {routerRedux} from 'dva';
+import {routerRedux} from 'dva/router';
 import {Checkbox, NavBar, Radio, Icon, ListView} from 'antd-mobile';
 import _ from 'lodash';
-import classNames from 'classnames';
+import SS from 'parsec-ss';
 import * as Tools from '../../utils/utils';
 import styles from './wrong_list.less';
 
 
-const data = [
-  {
-    img: 'https://zos.alipayobjects.com/rmsportal/dKbkpPXKfvZzWCM.png',
-    title: 'Meet hotel',
-    des: '不是所有的兼职汪都需要风吹日晒',
-  },
-  {
-    img: 'https://zos.alipayobjects.com/rmsportal/XmwCzSeJiqpkuMB.png',
-    title: 'McDonald\'s invites you',
-    des: '不是所有的兼职汪都需要风吹日晒',
-  },
-  {
-    img: 'https://zos.alipayobjects.com/rmsportal/hfVtzEhPzTUewPm.png',
-    title: 'Eat the week',
-    des: '不是所有的兼职汪都需要风吹日晒',
-  },
-];
-const NUM_SECTIONS = 5;
-const NUM_ROWS_PER_SECTION = 5;
-let pageIndex = 0;
-
-const dataBlobs = {};
-let sectionIDs = [];
-let rowIDs = [];
-
-function genData(pIndex = 0) {
-  for (let i = 0; i < NUM_SECTIONS; i++) {
-    const ii = (pIndex * NUM_SECTIONS) + i;
-    const sectionName = `Section ${ii}`;
-    sectionIDs.push(sectionName);
-    dataBlobs[sectionName] = sectionName;
-    rowIDs[ii] = [];
-
-    for (let jj = 0; jj < NUM_ROWS_PER_SECTION; jj++) {
-      const rowName = `S${ii}, R${jj}`;
-      rowIDs[ii].push(rowName);
-      dataBlobs[rowName] = rowName;
-    }
-  }
-  sectionIDs = [...sectionIDs];
-  rowIDs = [...rowIDs];
-}
-
 export default class WrongList extends React.Component {
   constructor(props) {
     super(props);
-    const getSectionData = (dataBlob, sectionID) => dataBlob[sectionID];
-    const getRowData = (dataBlob, sectionID, rowID) => dataBlob[rowID];
-
     const dataSource = new ListView.DataSource({
-      getRowData,
-      getSectionHeaderData: getSectionData,
-      rowHasChanged: (row1, row2) => row1 !== row2,
-      sectionHeaderHasChanged: (s1, s2) => s1 !== s2,
+      rowHasChanged: (row1, row2) => row1 !== row2
     });
 
     this.state = {
       dataSource,
       isLoading: true,
-      height: document.documentElement.clientHeight * 3 / 4,
+      dataList: [],
+      completeData: [],
+      height: document.documentElement.clientHeight,
+      questionTypeMap: {1: '单选题', 2: '多选题'},
     };
+  }
+
+  componentWillMount() {
+    const dataList = SS.getObj('dataList');
+    const completeData = SS.getObj('completeData');
+    this.setState({
+      dataList, completeData,
+      isLoading: false,
+      dataSource: this.state.dataSource.cloneWithRows(dataList),
+    });
   }
 
   componentDidMount() {
     // you can scroll to the specified position
     // setTimeout(() => this.lv.scrollTo(0, 120), 800);
-
     const hei = document.documentElement.clientHeight - ReactDOM.findDOMNode(this.lv).parentNode.offsetTop;
-    // simulate initial Ajax
-    setTimeout(() => {
-      genData();
-      this.setState({
-        dataSource: this.state.dataSource.cloneWithRowsAndSections(dataBlobs, sectionIDs, rowIDs),
-        isLoading: false,
-        height: hei,
-      });
-    }, 600);
+    this.setState({
+      height: hei,
+    });
   }
 
 
@@ -106,9 +63,7 @@ export default class WrongList extends React.Component {
     console.log('reach end', event);
     this.setState({isLoading: true});
     setTimeout(() => {
-      genData(++pageIndex);
       this.setState({
-        dataSource: this.state.dataSource.cloneWithRowsAndSections(dataBlobs, sectionIDs, rowIDs),
         isLoading: false,
       });
     }, 1000);
@@ -131,14 +86,14 @@ export default class WrongList extends React.Component {
     switch (question.questionType) {
       case 1:
         questionItem = (
-          <div className='my-radio' key={`question_item_${_.uniqueId()}`}><Radio checked={!!item.checked}
-                                                                                 onChange={e => this.onItemClick(e, itemIndex, questionIndex)}>{item.title}</Radio>
+          <div className={styles.my_radio} key={`question_item_${_.uniqueId()}`}><Radio checked={!!item.checked}
+                                                                                 onChange={e => {}}>{item.title}</Radio>
           </div>);
         break;
       case 2:
         questionItem = (
           <Checkbox.AgreeItem key={`question_item_${_.uniqueId()}`} checked={!!item.checked}
-                              onChange={e => this.onItemClick2(e, itemIndex, questionIndex)}>{item.title}</Checkbox.AgreeItem>);
+                              onChange={e => {}}>{item.title}</Checkbox.AgreeItem>);
         break;
       default:
         questionItem = null;
@@ -162,14 +117,15 @@ export default class WrongList extends React.Component {
     );
 
     let analysis = (dd, questionIndex) => {
-      if (dd === 1) {
+      if (dd.question.analysis !== '') {
         return (<div className={styles.question_analysis}>
           <div className={styles.analysis_title}>题目解析</div>
           <div className={styles.analysis_info}>
             <div className={styles.analysis_answer}>答案：A.XXXXXXXXX</div>
+            <div className={styles.analysis_difficulty}>&nbsp;</div>
           </div>
           <div className={styles.analysis_desc}>
-            <span dangerouslySetInnerHTML={{__html: Tools.formatFontSize('<p>解析的内容</p><p>解析的内容</p><p>解析的内容</p>')}}/>
+            <span dangerouslySetInnerHTML={{__html: Tools.formatFontSize(dd.question.analysis)}}/>
           </div>
         </div>);
       } else {
@@ -190,12 +146,9 @@ export default class WrongList extends React.Component {
       }
     };
 
-    let index = data.length - 1;
+
     const row = (rowData, sectionID, rowID) => {
-      if (index < 0) {
-        index = data.length - 1;
-      }
-      const obj = data[index--];
+      console.log('rowData',rowData);
       return (
         <div key={rowID} style={{padding: '25px'}}>
           <div
@@ -205,17 +158,17 @@ export default class WrongList extends React.Component {
               fontSize: 32,
               padding: '10px 0'
             }}
+            className={styles.question_title}
           >
-            <span className={styles.tags}>单选题</span>
-            <span
-              dangerouslySetInnerHTML={{__html: obj.title}}/>
+            <span className={styles.tags}>{this.state.questionTypeMap[rowData.question.questionType]}</span>
+            <span dangerouslySetInnerHTML={{__html: rowData.question.content}}/>
           </div>
           <div style={{padding: '15px 0'}}>
             <div style={{lineHeight: 1}}>
               <div className={styles.question_content}>
-                {/*{this.getItemList(1)}*/}
+                {this.getItemList(rowID)}
               </div>
-              {analysis(1,)}
+              {analysis(rowData,rowID)}
             </div>
           </div>
         </div>
@@ -225,8 +178,7 @@ export default class WrongList extends React.Component {
     return (<div className={styles.wrong_list}>
       <NavBar onLeftClick={() => {
         this.props.dispatch(routerRedux.goBack());
-      }}
-              icon={<Icon type='left'/>}>错题列表</NavBar>
+      }} icon={<Icon type='left'/>}>错题列表</NavBar>
 
       <div className={styles.wrong_list_component}>
         <ListView
@@ -234,16 +186,13 @@ export default class WrongList extends React.Component {
           dataSource={this.state.dataSource}
           renderFooter={() => this.state.isLoading ?
             <div className={styles.loadMore}><Icon type='loading' size='xs'/> 数据加载中...</div> :
-            (((data || {}).list || []).length > 0 ? <div className={styles.noMore}>我是有底线的</div> :
+            (this.state.dataList.length > 0 ? <div className={styles.noMore}>我是有底线的</div> :
               <div className={styles.noDataContainer} style={{height: (this.state.height - 100)}}>
                 <div className={styles.wrong_list_component}>
                   <i className={styles.carmeIcon}>&#xe6f7;</i>
                   <div className={styles.info}>没有任何数据</div>
                 </div>
               </div>)}
-          // renderSectionHeader={sectionData => (
-          //   <div className={styles.item_title}>{`Task ${sectionData.split(' ')[1]}`}</div>
-          // )}
           renderBodyComponent={() => <MyBody/>}
           initialListSize={10}
           renderRow={row}
@@ -253,11 +202,7 @@ export default class WrongList extends React.Component {
             overflow: 'auto',
           }}
           pageSize={10}
-          onScroll={() => {
-            console.log('scroll');
-          }}
           scrollRenderAheadDistance={500}
-          onEndReached={this.onEndReached}
           onEndReachedThreshold={10}
         />
       </div>

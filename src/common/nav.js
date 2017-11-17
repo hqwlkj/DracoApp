@@ -101,37 +101,7 @@ const data = [{
     name: '试卷结果',
     path: 'paper/result',
     component: PaperResult,
-  }],
-}, {
-  component: UserLayout,
-  layout: 'UserLayout',
-  name: '', // for breadcrumb
-  path: '',
-  children: [{
-    name: '帐户',
-    icon: 'user',
-    path: 'user',
-    children: [{
-      name: '登录',
-      path: 'login',
-      component: Login,
-    }],
-  }],
-}, {
-  component: BlankLayout,
-  layout: 'BlankLayout',
-  children: {
-    name: '法规查询',
-    path: '',
-    target: '_blank',
-    icon: 'book',
-  },
-}, {
-  component: PublicLayout,
-  layout: 'PublicLayout',
-  name: '首页', // for breadcrumb
-  path: '',
-  children: [{
+  }, {
     name: '结果',
     path: 'result',
     icon: 'check-circle-o',
@@ -161,7 +131,31 @@ const data = [{
       path: '500',
       component: Exception500,
     }],
-  }]
+  }],
+}, {
+  component: UserLayout,
+  layout: 'UserLayout',
+  name: '', // for breadcrumb
+  path: '',
+  children: [{
+    name: '帐户',
+    icon: 'user',
+    path: 'user',
+    children: [{
+      name: '登录',
+      path: 'login',
+      component: Login,
+    }],
+  }],
+}, {
+  component: BlankLayout,
+  layout: 'BlankLayout',
+  children: {
+    name: '法规查询',
+    path: '',
+    target: '_blank',
+    icon: 'book',
+  },
 }];
 
 export function getNavData() {

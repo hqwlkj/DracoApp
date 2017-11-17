@@ -3,35 +3,55 @@
 @import "../../utils/App.less"; // 用于覆盖上面定义的变量
 
 .result {
-  text-align: center;
-  width: 72%;
-  margin: 0 auto;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 100%;
+  background: url("../../assets/bg/result_bg.png") center no-repeat;
+  background-size: cover;
+  .result_content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    width: 72%;
+    margin: 0 auto;
+    background: #ffffff;
+    border-radius: 7px;
+    padding: 35px 25px 50px;
+  }
 
   .icon {
     font-size: 72px;
     line-height: 72px;
     margin-bottom: 24px;
-
     & > .success {
       color: @brand-primary;
+      width: 140px;
+      height: 140px;
     }
 
     & > .error {
       color: @brand-error;
+      width: 140px;
+      height: 140px;
     }
   }
 
   .title {
-    font-size: 24px;
+    font-size: 48px;
     color: @color-text-base;
     font-weight: 500;
     line-height: 32px;
-    margin-bottom: 16px;
+    margin-bottom: 25px;
   }
 
   .description {
-    font-size: 14px;
-    line-height: 22px;
+    font-size: 22px;
+    line-height: 32px;
     color: @color-text-base;
     margin-bottom: 24px;
   }
