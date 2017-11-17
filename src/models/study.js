@@ -13,14 +13,13 @@ export default {
       yield put({
         type: "checkLoading",
         payload: true,
-      })
+      });
       //发起请求
       const response = yield call(getDirectory, payload);
-      debugger;
       yield put({
         type: "saveDirectoryData",
         payload: response,
-      })
+      });
       //关闭加载状态
       yield put({
         type: "checkLoading",
@@ -34,13 +33,13 @@ export default {
       yield put({
         type: "checkLoading",
         payload: true,
-      })
+      });
       //发起请求
       const response = yield call(getStudyDirectory, payload);
       yield put({
         type: "saveStudyDirectory",
         payload: response,
-      })
+      });
       //关闭加载状态
       yield put({
         type: "checkLoading",
@@ -57,14 +56,12 @@ export default {
       }
     },
     saveDirectoryData(state, payload){
-      debugger;
       return {
         ...state,
         dataList: payload
       }
     },
     saveStudyDirectory(state, payload){
-      debugger;
       return {
         ...state,
         dataList: payload

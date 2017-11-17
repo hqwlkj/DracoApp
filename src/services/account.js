@@ -8,7 +8,8 @@ import request from '../utils/request';
  * @returns {Object}
  */
 export async function queryErrorRecord(params) {
-  return request('/api/query_error_record', { body: params });
+  return request(`/api/error_answers?questionType=${params.questionType}&pageSize=${params.pageSize}
+  &pageNo=${params.currentPage}`, { body: params });
 }
 
 
