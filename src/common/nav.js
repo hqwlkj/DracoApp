@@ -30,6 +30,7 @@ import Center from '../routes/Account/Center';
 import ModifyPwd from '../routes/Account/ModifyPwd';
 
 import Paper from '../routes/Paper/Index';
+import PaperResult from '../routes/Paper/WrongList';
 
 const data = [{
   component: BasicLayout,
@@ -96,6 +97,10 @@ const data = [{
     name: '试卷页面',
     path: 'paper/:type/:id/:time/:subcateId',
     component: Paper,
+  }, {
+    name: '试卷结果',
+    path: 'paper/result',
+    component: PaperResult,
   }],
 }, {
   component: UserLayout,

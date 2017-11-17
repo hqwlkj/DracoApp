@@ -21,11 +21,19 @@ export async function queryErrorRecordNum() {
 }
 
 
-export async function getAllMessages() {
-  return request('/api/message');
+export async function getAllMessages(params) {
+  return request('/api/message', { method: 'POST', body: params });
 }
 
 
 export async function queryUnReadNum() {
   return request('/api/message/unRead');
+}
+
+export async function readAllMessage() {
+  return request('/api/message/read');
+}
+
+export async function getMessageDetail(params) {
+  return request('/api/message/detail/'+params);
 }
