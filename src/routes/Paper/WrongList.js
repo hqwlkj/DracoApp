@@ -1,5 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import {connect} from 'dva';
 import {routerRedux} from "dva/router";
 import {Checkbox, Icon, ListView, NavBar, Radio} from "antd-mobile";
 import _ from "lodash";
@@ -7,7 +8,7 @@ import SS from "parsec-ss";
 import * as Tools from "../../utils/utils";
 import styles from "./wrong_list.less";
 
-
+@connect(state =>{})
 export default class WrongList extends React.Component {
   constructor(props) {
     super(props);
