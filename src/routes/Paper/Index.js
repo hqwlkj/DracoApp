@@ -253,7 +253,6 @@ export default class Index extends React.Component {
   //单选被点击
   onItemClick(e, itemIndex, questionIndex) {
     let dataList = this.state.dataList;
-    debugger;
     dataList[questionIndex].itemList.forEach(i => i.checked = false);
     dataList[questionIndex].itemList[itemIndex].checked = true;
 

@@ -122,7 +122,7 @@ class CourseComponent extends React.Component {
   }
 
   onRefresh = () => {
-    this.setState({refreshing: true, isLoading: true});
+    this.setState({refreshing: true, isLoading: true ,initData:[]},this.getDirectory);
     // simulate initial Ajax
     setTimeout(() => {
       this.rData = dataList;
