@@ -1,4 +1,4 @@
-import {getStudyDetail,getStudyList,getDirectory, getStudyDirectory} from "../services/study";
+import {getDirectory, getStudyDetail, getStudyDirectory, getStudyList} from "../services/study";
 import SS from "parsec-ss";
 
 export default {
@@ -117,13 +117,18 @@ export default {
             }
           }
         }
+        let sortedDirectoryByStudyRate = courseList.sortedDirectoryByStudyRate || [];
         let directoryList = state.directoryOriginList.filter((direct) => studyIds.has(direct.id));
         let directoryMap = directoryListToMap(directoryList);
         SS.set('directoryMap', JSON.stringify(directoryMap));
-        let directoryTree = directoryListToTree(directoryList, directoryMap);
-        // const dataSource = new ListView.DataSource({
-        //   rowHasChanged: (row1, row2) => row1 !== row2
-        // });
+        directoryListToTree(directoryList, directoryMap);
+        //按当前分类完成课程的比例由小到大排序
+        let tmp = [];
+        let index = 0;
+        sortedDirectoryByStudyRate.forEach(i => {
+          if (!!directoryMap[i])
+            tmp[index++] = directoryMap[i];
+        });
         return {
           ...state,
           completeStudyNum: courseList.completeStudyNum,
@@ -133,9 +138,9 @@ export default {
           score: courseList.score,
           directoryList,
           directoryMap,
-          initData: directoryTree,
+          initData: tmp,
           refreshing: false,
-          directoryTree,
+          directoryTree: tmp,
         }
       } else {
         return {
