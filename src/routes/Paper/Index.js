@@ -420,6 +420,7 @@ export default class Index extends React.Component {
 
     let params = {};
     params['timeConsuming'] = Math.ceil(timeConsuming);
+    params['dataList'] = this.state.dataList;
     params['completeData'] = this.state.completeData;
     params['answerTimeId'] = this.state.answerTimeId;
     params['paperType'] = this.props.match.params.type;

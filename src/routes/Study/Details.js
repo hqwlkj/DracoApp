@@ -54,7 +54,7 @@ class StudyDetails extends React.Component {
       directoryMap = JSON.parse(directoryMap);
       let catePathName = [];
       studyDetail.obj.pathCode.split('/').forEach(i => {
-        if (i !== '') {
+        if (i !== '' && !!i) {
           catePathName.push(directoryMap[parseInt(i.replace('P', ''))].name);
         }
       });

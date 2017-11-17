@@ -58,13 +58,11 @@ export default {
         type: "checkLoading",
         payload: true,
       });
-      const paper = yield select(state => state.paper);
-      console.log('paper',paper);
+
       yield put({
         type:'saveSubmitData',
         payload:{
-          ...payload,
-          dataList:paper.dataList
+          ...payload
         }
       });
       //发起请求
@@ -79,12 +77,9 @@ export default {
         payload: false,
       });
       //跳转地址
-      console.log('response',response);
       if(response.code === 200){
-        console.log('success');
         yield put(routerRedux.push('/result/success'));
       }else{
-        console.log('fail');
         yield put(routerRedux.push('/result/fail'));
       }
     }

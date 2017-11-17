@@ -260,7 +260,7 @@ class CourseComponent extends React.Component {
                 animate={false}
                 percent={28}
                 subTitle="完成率"
-                total={ (studySum == 0 ? 0 : (completeStudyNum / studySum * 100).toFixed(2)) + "%"}
+                total={ (studySum == 0 ? 0 : (completeStudyNum / studySum * 100).toFixed(1)) + "%"}
                 height={268}
                 lineWidth={1}
               />

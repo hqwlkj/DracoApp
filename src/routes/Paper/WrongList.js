@@ -1,11 +1,11 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import {routerRedux} from 'dva/router';
-import {Checkbox, NavBar, Radio, Icon, ListView} from 'antd-mobile';
-import _ from 'lodash';
-import SS from 'parsec-ss';
-import * as Tools from '../../utils/utils';
-import styles from './wrong_list.less';
+import React from "react";
+import ReactDOM from "react-dom";
+import {routerRedux} from "dva/router";
+import {Checkbox, Icon, ListView, NavBar, Radio} from "antd-mobile";
+import _ from "lodash";
+import SS from "parsec-ss";
+import * as Tools from "../../utils/utils";
+import styles from "./wrong_list.less";
 
 
 export default class WrongList extends React.Component {
@@ -26,10 +26,15 @@ export default class WrongList extends React.Component {
   }
 
   componentWillMount() {
-    const dataList = SS.getObj('dataList');
+    let dataList = SS.getObj('dataList');
     const completeData = SS.getObj('completeData');
+    let questionIds = completeData.filter(i => i.isCorrect === 0).map(i => i.questionId);
+    let tmp = new Set();
+    for (let i of questionIds) tmp.add(i);
+    dataList = dataList.filter(i => tmp.has(i.question.id));
     this.setState({
-      dataList, completeData,
+      dataList,
+      completeData,
       isLoading: false,
       dataSource: this.state.dataSource.cloneWithRows(dataList),
     });
@@ -87,13 +92,15 @@ export default class WrongList extends React.Component {
       case 1:
         questionItem = (
           <div className={styles.my_radio} key={`question_item_${_.uniqueId()}`}><Radio checked={!!item.checked}
-                                                                                 onChange={e => {}}>{item.title}</Radio>
+                                                                                        onChange={e => {
+                                                                                        }}>{item.title}</Radio>
           </div>);
         break;
       case 2:
         questionItem = (
           <Checkbox.AgreeItem key={`question_item_${_.uniqueId()}`} checked={!!item.checked}
-                              onChange={e => {}}>{item.title}</Checkbox.AgreeItem>);
+                              onChange={e => {
+                              }}>{item.title}</Checkbox.AgreeItem>);
         break;
       default:
         questionItem = null;
@@ -115,13 +122,13 @@ export default class WrongList extends React.Component {
         }}
       />
     );
-
     let analysis = (dd, questionIndex) => {
       if (dd.question.analysis !== '') {
         return (<div className={styles.question_analysis}>
           <div className={styles.analysis_title}>题目解析</div>
           <div className={styles.analysis_info}>
-            <div className={styles.analysis_answer}>答案：A.XXXXXXXXX</div>
+            <div className={styles.analysis_answer}>
+              答案：<span>{_.map(_.filter(dd.itemList, o => o.flag === 'T'), o => o.title).join(',')}</span></div>
             <div className={styles.analysis_difficulty}>&nbsp;</div>
           </div>
           <div className={styles.analysis_desc}>
@@ -148,7 +155,7 @@ export default class WrongList extends React.Component {
 
 
     const row = (rowData, sectionID, rowID) => {
-      console.log('rowData',rowData);
+      console.log('rowData', rowData);
       return (
         <div key={rowID} style={{padding: '25px'}}>
           <div
@@ -168,7 +175,7 @@ export default class WrongList extends React.Component {
               <div className={styles.question_content}>
                 {this.getItemList(rowID)}
               </div>
-              {analysis(rowData,rowID)}
+              {analysis(rowData, rowID)}
             </div>
           </div>
         </div>
@@ -194,14 +201,12 @@ export default class WrongList extends React.Component {
                 </div>
               </div>)}
           renderBodyComponent={() => <MyBody/>}
-          initialListSize={10}
           renderRow={row}
           renderSeparator={separator}
           style={{
             height: this.state.height,
             overflow: 'auto',
           }}
-          pageSize={10}
           scrollRenderAheadDistance={500}
           onEndReachedThreshold={10}
         />
