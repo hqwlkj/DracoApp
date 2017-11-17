@@ -287,7 +287,7 @@ export default class WrongTitle extends React.Component {
             onEndReached={this.onEndReached}
             renderFooter={() => refreshing ?
               <div className={styles.loadMore}><Icon type='loading' size='xs'/> 数据加载中...</div> :
-              (((data || {}).list || []).length > 0 ? <div className={styles.noMore}>我是有底线的</div> :
+              (((data || {}).result.list || []).length > 0 ? <div className={styles.noMore}>我是有底线的</div> :
                 <div className={styles.noDataContainer} style={{height: (this.state.height - 100)}}>
                   <div className={styles.noDataContent}>
                     <i className={styles.carmeIcon}>&#xe6f7;</i>

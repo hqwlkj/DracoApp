@@ -38,3 +38,7 @@ export async function readAllMessage() {
 export async function getMessageDetail(params) {
   return request('/api/message/detail/'+params);
 }
+
+export async function getErrorRecordDetail(params) {
+  return request(`/api/level/questions/${params.id}`);
+}
