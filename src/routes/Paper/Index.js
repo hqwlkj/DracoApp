@@ -1,6 +1,7 @@
-import React from "react";
-import {connect} from "dva";
-import {Carousel, Checkbox, Flex, Icon, Modal, NavBar, Pagination, Radio, Toast} from "antd-mobile";
+import React from 'react';
+import {routerRedux} from 'dva/router';
+import {connect} from 'dva';
+import {Badge, Carousel, Checkbox, Flex, Modal, NavBar, Pagination, Radio, Toast, Icon} from 'antd-mobile';
 import _ from "lodash";
 import classnames from "classnames";
 import SS from "parsec-ss";
@@ -179,7 +180,7 @@ export default class Index extends React.Component {
         text: '确定', onPress: () => {
         //清除定时器
         clearInterval(timer);
-        window.history.go(-1)
+        this.props.dispatch(routerRedux.goBack());
       }
       }
     ])
@@ -229,7 +230,7 @@ export default class Index extends React.Component {
         Modal.alert('答题时间结束!', <p>放弃:放弃本次答题<br/>提交:提交当前答案</p>, [
           {
             text: '放弃', onPress: () => {
-            window.history.go(-1)
+            this.props.dispatch(routerRedux.goBack());
           }
           },
           {text: '提交', onPress: () => this.computeTrueOrFalseThenCommit}
@@ -253,7 +254,6 @@ export default class Index extends React.Component {
   //单选被点击
   onItemClick(e, itemIndex, questionIndex) {
     let dataList = this.state.dataList;
-    debugger;
     dataList[questionIndex].itemList.forEach(i => i.checked = false);
     dataList[questionIndex].itemList[itemIndex].checked = true;
 
@@ -303,9 +303,6 @@ export default class Index extends React.Component {
 
   //渲染该条问题的一条答案
   getQuestionItem(itemIndex, questionIndex) {
-    if (!this.state.dataList || this.state.dataList.length == 0) {
-      return null;
-    }
     let question = this.state.dataList[questionIndex].question;
     let item = this.state.dataList[questionIndex].itemList[itemIndex];
     let questionItem = null;
@@ -417,16 +414,6 @@ export default class Index extends React.Component {
       i.recordTime = Math.ceil(i.recordTime);
     });
 
-    let headers = {'Content-type': 'application/json'};
-
-    // request.post(api.answer + '?timeConsuming=' + Math.ceil(timeConsuming),
-    //   JSON.stringify(this.state.completeData), headers).then(data => {
-    //   if (data.code !== 200) {
-    //     Toast.fail(data.message);
-    //   } else {
-    //     window.history.go(-1);
-    //   }
-    // });
 
     let params = {};
     params['timeConsuming'] = Math.ceil(timeConsuming);

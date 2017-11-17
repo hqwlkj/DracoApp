@@ -1,6 +1,7 @@
-import React, { PureComponent } from 'react';
-import { connect } from 'dva';
-import { NavBar, List, Badge, Icon } from 'antd-mobile';
+import React, {PureComponent} from 'react';
+import {connect} from 'dva';
+import {routerRedux} from 'dva/router';
+import {NavBar, List, Badge, Icon} from 'antd-mobile';
 import classnames from 'classnames';
 import styles from './Center.less';
 
@@ -35,11 +36,10 @@ export default class CenterComponent extends PureComponent {
     });
   }
 
-  // 查询设置消息的未读数
+  //查询设置消息的未读数
   setMessageNoReadNum = () => {
-    debugger;
     this.props.dispatch({
-      type: 'message/fetchUnReadNum',
+      type: 'messages/fetchUnReadNum',
     });
   };
 
@@ -52,13 +52,13 @@ export default class CenterComponent extends PureComponent {
 
 
   render() {
-    const { currentUser, notices = [], errorNum = 0, unReadNum = 0 } = this.props;
+    const {currentUser, notices = [], errorNum = 0, unReadNum = 0} = this.props;
     return (
       <div className={styles.center_component}>
         <NavBar
           mode="dark"
-          onLeftClick={() => window.location.href = '#/'}
-          icon={<Icon type="left" />}
+          onLeftClick={() => this.props.dispatch(routerRedux.push('/'))}
+          icon={<Icon type="left"/>}
         >个人中心
         </NavBar>
 
@@ -89,7 +89,7 @@ export default class CenterComponent extends PureComponent {
               arrow="horizontal"
               thumb={<i className={styles.carmeIcon}>&#xe692;</i>}
               onClick={() => {
-                window.location.href = '#/account/pwd';
+                this.props.dispatch(routerRedux.push('/account/pwd'));
               }}
             >
               修改密码
@@ -101,7 +101,7 @@ export default class CenterComponent extends PureComponent {
               arrow="horizontal"
               thumb={<i className={classnames(styles.carmeIcon, styles.exam)}>&#xe61b;</i>}
               onClick={() => {
-                window.location.href = '#/account/test/record';
+                this.props.dispatch(routerRedux.push('/account/test/record'));
               }}
             >
               考试记录
@@ -110,9 +110,9 @@ export default class CenterComponent extends PureComponent {
               arrow="horizontal"
               thumb={<i className={classnames(styles.carmeIcon, styles.wrong_title)}>&#xe62a;</i>}
               onClick={() => {
-                window.location.href = '#/account/error/record';
+                this.props.dispatch(routerRedux.push('/account/error/record'));
               }}
-              extra={<Badge text={errorNum} overflowCount={99} />}
+              extra={<Badge text={errorNum} overflowCount={99}/>}
             >
               错题汇总
             </List.Item>
@@ -120,9 +120,9 @@ export default class CenterComponent extends PureComponent {
               arrow="horizontal"
               thumb={<i className={classnames(styles.carmeIcon, styles.message)}>&#xe628;</i>}
               onClick={() => {
-                window.location.href = '#/account/message';
+                this.props.dispatch(routerRedux.push('/account/message'));
               }}
-              extra={unReadNum === 0 ? null : <Badge text={unReadNum} overflowCount={99} />}
+              extra={unReadNum === 0 ? null : <Badge text={unReadNum} overflowCount={99}/>}
             >
               我的消息
             </List.Item>
@@ -130,7 +130,7 @@ export default class CenterComponent extends PureComponent {
               arrow="horizontal"
               thumb={<i className={classnames(styles.carmeIcon, styles.ranking)}>&#xe638;</i>}
               onClick={() => {
-                window.location.href = '#/account/credit';
+                this.props.dispatch(routerRedux.push('/account/credit'));
               }}
             >
               我的学分
@@ -139,7 +139,7 @@ export default class CenterComponent extends PureComponent {
               arrow="horizontal"
               thumb={<i className={classnames(styles.carmeIcon, styles.ranking)}>&#xe6f1;</i>}
               onClick={() => {
-                window.location.href = '#/account/rank';
+                this.props.dispatch(routerRedux.push('/account/rank'));
               }}
             >
               我的排名

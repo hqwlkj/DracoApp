@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {connect} from 'dva';
+import {routerRedux} from 'dva/router';
 import {NavBar, Icon, ListView, Tabs, PullToRefresh, List,Flex} from 'antd-mobile';
 
 
@@ -137,7 +138,7 @@ export default class Rank extends React.Component{
     return(<div className={styles.rank_component}>
       <NavBar
         mode='dark'
-        onLeftClick={() => window.location.href = '#/account'}
+        onLeftClick={() => this.props.dispatch(routerRedux.push('/account'))}
         icon={<Icon type='left'/>}
       >我的排名</NavBar>
       <div className={styles.rank_header}>

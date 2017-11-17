@@ -155,9 +155,7 @@ class CourseComponent extends React.Component {
   }
 
   goToCourseDetails(id) {
-    // alert("id=" + id);
-    // window.location.href = '#/course/details/' + id;
-    this.props.dispatch(routerRedux.push('study/' + id));
+    this.props.dispatch(routerRedux.push('/study/' + id));
   }
 
   onEndReached = (event) => {
@@ -250,9 +248,9 @@ class CourseComponent extends React.Component {
     return (
       <div className={styles.courseComponent}>
         <NavBar key='NavBar' icon={<Icon type="left"/>}
-                onLeftClick={() => window.history.go(-1)} rightContent={
+                onLeftClick={() => this.props.dispatch(routerRedux.goBack())} rightContent={
           <i className={styles.carmeIcon} onClick={() => {
-            window.location.href = '#/account';
+            this.props.dispatch(routerRedux.push('/account'));
           }}>&#xe604;</i>
         }>学习天地</NavBar>
         <div className={styles.courseHeader}>

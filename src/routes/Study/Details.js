@@ -1,11 +1,14 @@
-import React from "react";
-import {connect} from "dva";
-import {Icon, NavBar} from "antd-mobile";
-import Config from "../../utils/config";
-import * as Tools from "../../utils/utils";
-import moment from "moment";
-import classnames from "classnames";
-import styles from "./Details.less";
+import React from 'react';
+import { connect } from 'dva';
+import {routerRedux} from 'dva/router';
+import {NavBar,Icon} from 'antd-mobile';
+import PhotoSwipe from '../../components/PhotoSwipe/index';
+import 'react-photoswiper/lib/photoswipe.css';
+import Config from '../../utils/config';
+import * as Tools from '../../utils/utils';
+import moment from 'moment';
+import classnames from 'classnames';
+import styles from './Details.less';
 
 
 class StudyDetails extends React.Component {
@@ -62,7 +65,7 @@ class StudyDetails extends React.Component {
   }
 
   goBackOff() {
-    window.history.go(-1);
+    this.props.dispatch(routerRedux.goBack());
   }
 
   /**
@@ -70,7 +73,7 @@ class StudyDetails extends React.Component {
    * @param id 数据Id
    */
   goToPaper(id) {
-    window.location.href = '#/paper/2/' + id + '/0/0';
+    this.props.dispatch(routerRedux.push('/paper/2/' + id + '/0/0'));
   }
 
   downloadAttachments(key) {
@@ -134,6 +137,9 @@ class StudyDetails extends React.Component {
         {/*<div className='course-details-content'>&nbsp;*/}
         {/*{(this.state.study || {}).content}</div>*/}
       </div>
+
+        <PhotoSwipe gallerySelector={'course-details-content'} currentId={this.state.imgIndex} options={{}}
+                    isOpen={this.state.isOpen} handleClose={this.handleClose.bind(this)}/>
       {/*{ !!this.state.isOpen ?*/}
       {/*<PhotoSwipe gallerySelector={'.course-details-content'} currentId={this.state.imgIndex} options={{}}*/}
       {/*isOpen={this.state.isOpen} handleClose={this.handleClose.bind(this)}/> : null}*/}

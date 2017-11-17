@@ -3,7 +3,7 @@ import {connect} from 'dva';
 import {NavBar, List, InputItem, Toast, Icon} from 'antd-mobile';
 import {createForm} from 'rc-form';
 import Config from '../../utils/config';
-import SS from 'parsec-ss';
+import {routerRedux} from 'dva/router';
 import styles from './ModifyPwd.less';
 
 class ModifyPwd extends React.PureComponent {
@@ -92,7 +92,7 @@ class ModifyPwd extends React.PureComponent {
       <div className={styles.modify_pwd_component}>
         <NavBar
           mode="dark"
-          onLeftClick={() => window.location.href = '#/account'}
+          onLeftClick={() => this.props.dispatch(routerRedux.goBack())}
           icon={<Icon type='left'/>}
           rightContent={
             <span style={{fontSize: '0.28rem'}} onClick={() => {

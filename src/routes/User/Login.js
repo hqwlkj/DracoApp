@@ -4,6 +4,7 @@ import { routerRedux } from 'dva/router';
 import { InputItem, List, Flex, Button, Checkbox, Toast, Modal } from 'antd-mobile';
 import { createForm } from 'rc-form';
 import Config from '../../utils/config';
+import SS from 'parsec-ss';
 
 
 import styles from './Login.less';
@@ -18,6 +19,12 @@ class Login extends Component {
     this.state = {
       type: 'mobile',
     };
+  }
+
+  componentDidMount() {
+    const loginUser = (SS.getObj('loginUser') || {});
+    this.props.form.setFieldsValue({ phone: loginUser.phone });
+    this.props.form.setFieldsValue({ pwd: loginUser.pwd });
   }
 
   componentWillReceiveProps(nextProps) {

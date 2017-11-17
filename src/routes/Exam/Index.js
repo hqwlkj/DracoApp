@@ -3,14 +3,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {connect} from 'dva';
-import {Link} from 'dva/router';
+import {Link, routerRedux} from 'dva/router';
 import {PullToRefresh, ListView, List, Badge, Flex, NavBar, Icon, Toast} from 'antd-mobile';
 import {Pie} from '../../components/Charts';
 import moment from 'moment';
 import classnames from 'classnames';
 
 import styles from './Index.less';
-
 
 
 class TestComponent extends React.Component {
@@ -45,7 +44,7 @@ class TestComponent extends React.Component {
   componentDidMount() {
     const hei = this.state.height - ReactDOM.findDOMNode(this.lv).offsetTop;
     setTimeout(() => {
-      this.loadData({current:1,pageSize:10});
+      this.loadData({current: 1, pageSize: 10});
       this.setState({
         height: hei,
         refreshing: false,
@@ -56,10 +55,10 @@ class TestComponent extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     let data = nextProps.exam.data;
-    console.log('data',data);
-    console.log('data',((data || {}).result || {}).list);
+    console.log('data', data);
+    console.log('data', ((data || {}).result || {}).list);
     this.setState({
-      currentDayPaper: ((data || {}).result || {}).list.filter(s=>s.answered>0).length,
+      currentDayPaper: ((data || {}).result || {}).list.filter(s => s.answered > 0).length,
       allCurrentDayPaper: ((data || {}).result || {}).list.length,
       dataSource: this.state.dataSource.cloneWithRows(((data || {}).result || {}).list),
       refreshing: false,
@@ -82,7 +81,7 @@ class TestComponent extends React.Component {
     } else {
       this.manuallyRefresh = false;
     }
-    this.loadData({current:1,pageSize:10});
+    this.loadData({current: 1, pageSize: 10});
   };
 
   /**
@@ -91,13 +90,13 @@ class TestComponent extends React.Component {
    * @param time 考试总时间 （分）
    */
   goToPaper(id, time) {
-    window.location.href = '#/paper/3/' + id + '/' + time + '/0'
+    this.props.dispatch(routerRedux.push('/paper/3/' + id + '/' + time + '/0'))
   }
 
 
   render() {
     const {exam: {loading: refreshing, data}} = this.props;
-    console.log('data',data);
+    console.log('data', data);
     const separator = (sectionID, rowID) => (
       <div
         key={`${sectionID}-${rowID}`}
@@ -113,11 +112,11 @@ class TestComponent extends React.Component {
       // }
       let badge;
       // let state = calculatPaperTimeRelation(rowData.startTime, rowData.endTime);
-      if (rowData.answered==0) {
-          badge = <Badge text='进行中...'
-                         style={{marginRight: 12, padding: '0 0.06rem', backgroundColor: '#21b68a', borderRadius: 2}}/>;
+      if (rowData.answered == 0) {
+        badge = <Badge text='进行中...'
+                       style={{marginRight: 12, padding: '0 0.06rem', backgroundColor: '#21b68a', borderRadius: 2}}/>;
       }
-      if (rowData.answered>0) {
+      if (rowData.answered > 0) {
         badge = <Badge text='已完成' style={{
           marginRight: 12,
           padding: '0 0.06rem',
@@ -135,7 +134,7 @@ class TestComponent extends React.Component {
             arrow='horizontal'
             multipleLine
             onClick={() => {
-              if (rowData.answered >0) {
+              if (rowData.answered > 0) {
                 Toast.fail('你已经完成了本次考试');
                 return;
               }
@@ -154,9 +153,9 @@ class TestComponent extends React.Component {
     return (
       <div className={styles.test_component}>
         <NavBar key='NavBar' icon={<Icon type="left"/>}
-                onLeftClick={() => window.history.go(-1)} rightContent={
+                onLeftClick={() => this.props.dispatch(routerRedux.push('/'))} rightContent={
           <i className={styles.carmeIcon} onClick={() => {
-            window.location.href = '#/account';
+            this.props.dispatch(routerRedux.push('/account'))
           }}>&#xe604;</i>
         }>在线考试</NavBar>
         <div className={styles.test_header}>
@@ -164,9 +163,9 @@ class TestComponent extends React.Component {
             <Flex.Item>
               <Pie
                 animate={false}
-                percent={this.state.currentDayPaper*100/this.state.allCurrentDayPaper}
+                percent={this.state.currentDayPaper * 100 / this.state.allCurrentDayPaper}
                 subTitle="完成率"
-                total={`${this.state.currentDayPaper*100/this.state.allCurrentDayPaper}%`}
+                total={`${this.state.currentDayPaper * 100 / this.state.allCurrentDayPaper}%`}
                 height={268}
                 lineWidth={1}
               />

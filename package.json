@@ -41,7 +41,8 @@
     "react-container-query": "^0.9.1",
     "react-document-title": "^2.0.3",
     "react-dom": "^16.0.0",
-    "react-fittext": "^1.0.0"
+    "react-fittext": "^1.0.0",
+    "react-photoswiper": "^1.0.4"
   },
   "devDependencies": {
     "babel-eslint": "^8.0.1",
