@@ -1,4 +1,4 @@
-import {queryExam, queryExamCredit} from "../services/exam";
+import {queryExam, queryCredit,queryCreditRank} from "../services/exam";
 
 export default {
   namespace: 'exam',
@@ -37,7 +37,7 @@ export default {
         type: 'changeLoading',
         payload: true,
       });
-      const response = yield call(queryExamCredit, payload);
+      const response = yield call(queryCredit, payload);
       yield put({
         type: 'saveCredit',
         payload: response,
@@ -46,8 +46,23 @@ export default {
         type: 'changeLoading',
         payload: false,
       });
-    }
+    },
 
+    * fetchCreditRank({payload}, {call, put}) {
+      yield put({
+        type: 'changeLoading',
+        payload: true,
+      });
+      const response = yield call(queryCreditRank, payload);
+      yield put({
+        type: 'saveCreditRank',
+        payload: response,
+      });
+      yield put({
+        type: 'changeLoading',
+        payload: false,
+      });
+    },
 
   },
   reducers: {
@@ -67,6 +82,13 @@ export default {
       return {
         ...state,
         data: action.payload.result,
+      };
+    },
+
+    saveCreditRank(state, action) {
+      return {
+        ...state,
+        creditRank: action.payload.result.list,
       };
     },
   },
