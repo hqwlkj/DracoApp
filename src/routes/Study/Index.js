@@ -248,7 +248,7 @@ class CourseComponent extends React.Component {
     return (
       <div className={styles.courseComponent}>
         <NavBar key='NavBar' icon={<Icon type="left"/>}
-                onLeftClick={() => this.props.dispatch(routerRedux.goBack())} rightContent={
+                onLeftClick={() => this.props.dispatch(routerRedux.push('/'))} rightContent={
           <i className={styles.carmeIcon} onClick={() => {
             this.props.dispatch(routerRedux.push('/account'));
           }}>&#xe604;</i>

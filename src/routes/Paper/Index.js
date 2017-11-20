@@ -295,7 +295,7 @@ export default class Index extends React.Component {
 
   //渲染该条问题的所有答案
   getItemList(questionIndex) {
-    if (this.state.dataList && this.state.dataList.length > 1) {
+    if (this.state.dataList && this.state.dataList.length >= 1) {
       let itemList = this.state.dataList[questionIndex].itemList;
       if (!!itemList) {
         return itemList.map((item, itemIndex) => this.getQuestionItem(itemIndex, questionIndex));
