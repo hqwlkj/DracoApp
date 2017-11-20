@@ -1,13 +1,13 @@
-import React, {Component} from 'react';
-import {connect} from 'dva';
-import {Link} from 'dva/router';
-import {Carousel, Flex, Icon, ActivityIndicator} from 'antd-mobile';
-import styles from './Index.less';
-import img_a from '../../assets/swiper/1.jpg';
-import img_b from '../../assets/swiper/2.jpg';
-import img_c from '../../assets/swiper/3.jpg';
-import img_d from '../../assets/swiper/4.jpg';
-import img_e from '../../assets/swiper/5.jpg';
+import React, {Component} from "react";
+import {connect} from "dva";
+import {Link} from "dva/router";
+import {ActivityIndicator, Carousel, Flex, Icon} from "antd-mobile";
+import styles from "./Index.less";
+import img_a from "../../assets/swiper/1.jpg";
+import img_b from "../../assets/swiper/2.jpg";
+import img_c from "../../assets/swiper/3.jpg";
+import img_d from "../../assets/swiper/4.jpg";
+import img_e from "../../assets/swiper/5.jpg";
 
 
 class HomeIndex extends Component {
@@ -38,10 +38,15 @@ class HomeIndex extends Component {
     this.props.dispatch({
       type: 'user/fetchCurrent',
     });
+
+    this.props.dispatch({
+      type: 'user/fetchCredit',
+    });
   }
 
   render() {
-    const { currentUser } = this.props;
+    const {currentUser, userCredit=0} = this.props;
+    console.log(userCredit);
     const hProp = this.state.initialHeight ? {height: this.state.initialHeight} : {};
 
     return (<div className={styles.main}>
@@ -95,8 +100,8 @@ class HomeIndex extends Component {
         <div className={styles.accountInfo}>
           {currentUser.userName ? (
             <span><span className={styles.userName}>{currentUser.userName}</span>
-          <span className={styles.userScore}>学分：{currentUser.credit} 分</span></span>
-          ) : <ActivityIndicator size="small" style={{ marginLeft: 8,marginTop:5 }} />}
+          <span className={styles.userScore}>学分：{userCredit} 分</span></span>
+          ) : <ActivityIndicator size="small" style={{marginLeft: 8, marginTop: 5}}/>}
         </div>
         <div className={styles.accountArrow}>
           <Icon type='right'/>
@@ -109,4 +114,5 @@ class HomeIndex extends Component {
 
 export default connect(state => ({
   currentUser: state.user.currentUser,
+  userCredit: state.user.userCredit,
 }))(HomeIndex)

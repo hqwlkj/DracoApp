@@ -15,3 +15,7 @@ export async function fetchModifyPwd(params) {
     body: params,
   });
 }
+
+export async function fetchCredit(params) {
+  return request('/api/credit');
+}
