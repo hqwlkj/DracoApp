@@ -53,6 +53,8 @@ class TestComponent extends React.Component {
     }, 1500);
   }
 
+
+
   componentWillReceiveProps(nextProps) {
     let data = nextProps.exam.data;
     console.log('data', data);
@@ -90,7 +92,7 @@ class TestComponent extends React.Component {
    * @param time 考试总时间 （分）
    */
   goToPaper(id, time) {
-    this.props.dispatch(routerRedux.push('/paper/3/' + id + '/' + time + '/0'))
+    this.props.dispatch(routerRedux.push('/paper/1/' + id + '/' + time + '/0'))
   }
 
 
