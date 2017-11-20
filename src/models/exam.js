@@ -1,18 +1,18 @@
-import {queryExam} from '../services/exam';
+import {queryExam, queryExamCredit} from "../services/exam";
 
 export default {
   namespace: 'exam',
 
   state: {
     data: {
-      result:{
+      result: {
         list: []
       },
       pagination: {},
     },
     loading: true,
-    question:{
-      questionTypeMap:[]
+    question: {
+      questionTypeMap: []
     }
   },
   effects: {
@@ -30,7 +30,25 @@ export default {
         type: 'changeLoading',
         payload: false,
       });
+    },
+
+    * fetchCredit({payload}, {call, put}) {
+      yield put({
+        type: 'changeLoading',
+        payload: true,
+      });
+      const response = yield call(queryExamCredit, payload);
+      yield put({
+        type: 'saveCredit',
+        payload: response,
+      });
+      yield put({
+        type: 'changeLoading',
+        payload: false,
+      });
     }
+
+
   },
   reducers: {
     save(state, action) {
@@ -43,6 +61,12 @@ export default {
       return {
         ...state,
         loading: action.payload,
+      };
+    },
+    saveCredit(state, action) {
+      return {
+        ...state,
+        data: action.payload.result,
       };
     },
   },
