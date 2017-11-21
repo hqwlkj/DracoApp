@@ -15,14 +15,14 @@ export default {
       yield put({
         type: "checkLoading",
         payload: true,
-      })
+      });
       //发起请求
 
       const response = yield call(getTestPaper, payload);
       yield put({
         type: "saveData",
         payload: response,
-      })
+      });
       //关闭加载状态
       yield put({
         type: "checkLoading",
@@ -36,14 +36,14 @@ export default {
       yield put({
         type: "checkLoading",
         payload: true,
-      })
+      });
       //发起请求
 
       const response = yield call(getStudyPaper, payload);
       yield put({
         type: "saveData",
         payload: response,
-      })
+      });
       //关闭加载状态
       yield put({
         type: "checkLoading",
@@ -94,7 +94,7 @@ export default {
     saveData(state, {payload}) {
       return {
         ...state,
-        dataList: payload.result.list,
+        dataList:(payload.result instanceof Array)?payload.result: payload.result.list,
         answerTime: payload.result.answerTime,
       }
     },

@@ -5,8 +5,8 @@
 
 import request from "../utils/request";
 
-export async function getTestPaper() {
-  return request('/api/findTestPaper');
+export async function getTestPaper(options) {
+  return request(`/api/paper/test/${options.id}/questions`);
 }
 export async function getStudyPaper(options) {
   return request('/api/study_question/' + options.id);
