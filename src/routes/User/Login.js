@@ -21,7 +21,7 @@ class Login extends Component {
     };
   }
 
-  componentDidMount() {
+  componentWillMount() {
     const loginUser = (SS.getObj('loginUser') || {});
     this.props.form.setFieldsValue({ phone: loginUser.phone });
     this.props.form.setFieldsValue({ pwd: loginUser.pwd });
@@ -29,13 +29,8 @@ class Login extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.login.code === 200) {
-      debugger;
       this.props.dispatch(routerRedux.push('/'));
     }
-  }
-
-  componentWillUnmount() {
-    clearInterval(this.interval);
   }
 
   handleSubmit = (e) => {
@@ -74,8 +69,7 @@ class Login extends Component {
     return (
       <div className={styles.main}>
         {
-          login.code !== 200 &&
-          login.type === 'mobile' &&
+          login.code === 400 &&
           login.submitting === false &&
           this.renderMessage('手机号码或密码错误')
         }
