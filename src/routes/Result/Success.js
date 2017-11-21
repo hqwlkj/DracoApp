@@ -9,7 +9,7 @@ import SS from "parsec-ss";
 
 export default () => {
   const dataList = SS.getObj('dataList');
-  const completeData = SS.getObj('completeData');<div className={styles.resultIcon}><i className={styles.carmeIcon}>&#xe624;</i></div>
+  const completeData = SS.getObj('completeData');<div className={styles.resultIcon}><i className={styles.carmeIcon}>&#xe624;</i></div>;
   const timeConsuming = SS.get('timeConsuming');
   const paperType = SS.get('paperType');
   let answerResult = true;
@@ -34,13 +34,13 @@ export default () => {
           <div className={styles.resultIcon}><i className={styles.carmeIcon}>&#xe624;</i></div>
           <p>返回试题</p></Link>
       </Flex.Item>
-      <Flex.Item>
+      {parseInt(paperType) === 2 && <Flex.Item>
         <Link to={'/paper/result'}>
           <div className={classNames(styles.resultIcon, styles.error)}><i className={styles.carmeIcon}>&#xe62a;</i>
           </div>
           <p>查看错题</p>
         </Link>
-      </Flex.Item>
+      </Flex.Item>}
     </Flex>
   );
   return (<Result
