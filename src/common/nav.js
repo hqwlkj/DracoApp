@@ -150,9 +150,10 @@ const data = [{
 }, {
   component: BlankLayout,
   layout: 'BlankLayout',
+  path: 'laws',
   children: {
     name: '法规查询',
-    path: '',
+    path: `http://file.eastonpharma.cn/interface.aspx?key=c8282564bab13ef344b88740fc2b369c&name=15998914691`,
     target: '_blank',
     icon: 'book',
   },

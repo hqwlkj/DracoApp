@@ -34,7 +34,7 @@ export default class Index extends React.Component {
       recordTime: null,//每道题道题时长,单位s
       questionTypeMap: {1: '单选题', 2: '多选题'},
       showAnalyse: [],
-    }
+    };
 
     this.countdown = this.countdown.bind(this);
     this.goForward = this.goForward.bind(this);
@@ -142,23 +142,17 @@ export default class Index extends React.Component {
     let param = this.props.match.params;
     let dataList = this.state.dataList;
     let completeData = [];
-    switch (param.type) {
-      case '2':
-        dataList.forEach((m, index) => {
-          completeData[index] = {
-            questionId: m.question.id,
-            category: param.type,
-            cateId: param.id,
-            questionOwner: SS.get(Config.USER_ID),
-            answererId: SS.get(Config.TOKEN_ID),
-            isCorrect: 0,
-            recordTime: null
-          };
-        });
-        break;
-      default:
-        break;
-    }
+    dataList.forEach((m, index) => {
+      completeData[index] = {
+        questionId: m.question.id,
+        category: param.type,
+        cateId: param.id,
+        questionOwner: SS.get(Config.USER_ID),
+        answererId: SS.get(Config.TOKEN_ID),
+        isCorrect: 0,
+        recordTime: null
+      };
+    });
 
     this.setState({
       completeData
@@ -266,7 +260,7 @@ export default class Index extends React.Component {
         if (answeredIds.filter(s => s === questionIndex).length === 0) {
           answeredIds.push(questionIndex);
         }
-        return;
+
       }
     });
 
@@ -285,7 +279,7 @@ export default class Index extends React.Component {
         if (answeredIds.filter(s => s === questionIndex).length === 0) {
           answeredIds.push(questionIndex);
         }
-        return;
+
       }
     });
 

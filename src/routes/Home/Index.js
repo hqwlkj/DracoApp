@@ -87,7 +87,7 @@ class HomeIndex extends Component {
           </Link>
         </Flex.Item>
         <Flex.Item>
-          <a className={styles.btnItem} href='http://www.baidu.com'>
+          <a className={styles.btnItem} href={`http://file.eastonpharma.cn/interface.aspx?key=c8282564bab13ef344b88740fc2b369c&name=${currentUser.phone}`}>
             <img src={require('../../assets/btns/message.png')} alt=""/>
             <span>法规查询</span>
           </a>
