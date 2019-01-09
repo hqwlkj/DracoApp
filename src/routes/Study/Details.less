@@ -1,0 +1,76 @@
+@import "~antd-mobile/dist/antd-mobile.less";
+// 引入官方提供的 less 样式入口文件
+@import "../../utils/App.less"; // 用于覆盖上面定义的变量
+
+
+.course_details_component {
+  .am-navbar{
+    position: fixed;
+    width: 100%;
+  }
+  .course_details_container {
+    padding:25px;
+    margin: 0 auto;
+    h3{
+      width: 100%;
+      text-align: left;
+      font-weight: 400;
+      margin-bottom: 15px;
+    }
+    .course_details_info{
+      font-size: 28px;
+      color: #474747;
+      p{
+        margin: 15px 0;
+      }
+      .classify{
+
+      }
+      .time{
+
+      }
+    }
+    .course_details_content {
+      padding: 15px 0;
+      font-size: medium;
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        line-height: 1;
+      }
+      img, iframe {
+        width: 100% !important;
+      }
+      h1, h2, h3, h4, h5, p {
+        width: 100%;
+        margin: 10px 0;
+        line-height: 1.8;
+      }
+      p {
+        word-break: break-all; /* 只对英文起作用，以字母作为换行依据。 */
+        word-wrap: break-word; /* 只对英文起作用，以单词作为换行依据。*/
+        white-space: pre-wrap; /* 只对中文起作用，强制换行。*/
+        img, iframe {
+          width: 100% !important;
+        }
+      }
+      pre {
+        width: 100%;
+        border: 1px solid #ccc;
+        background-color: #f8f8f8;
+        padding: 10px;
+        margin: 5px 0;
+        font-size: .8em;
+        border-radius: 3px;
+        code {
+          width: 100%;
+          line-height: 1.5;
+          word-break: break-all; /* 只对英文起作用，以字母作为换行依据。 */
+          word-wrap: break-word; /* 只对英文起作用，以单词作为换行依据。*/
+          white-space: pre-wrap; /* 只对中文起作用，强制换行。*/
+        }
+      }
+    }
+  }
+}

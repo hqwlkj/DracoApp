@@ -1,8 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {connect} from 'dva';
+import {routerRedux} from 'dva/router';
 import {ListView, NavBar, List, Icon, PullToRefresh} from 'antd-mobile';
 import styles from './TestRecord.less';
+import request from '../../utils/request'
 
 
 Array.prototype.unique = function () {
@@ -15,7 +17,7 @@ Array.prototype.unique = function () {
     }
   }
   return a;
-}
+};
 @connect(state => ({
   exam: state.exam
 }))
@@ -49,30 +51,35 @@ export default class TestRecord extends React.Component {
     if (pageNo === 1) {
       originData = [];
     }
-    // this.setState({isLoading: true}, () => {
+    // request('api/answers/papers').then(data=> {
+    //   console.log(data);
     //   request.get(api.test.record + '?tokenId=' + SS.get(Config.TOKEN_ID) + '&pageNo=' + pageNo).then((data) => {
-    //     if (data.code === 200 && data.result && data.result.list) {
-    //       if (data.result) {
-    //         originData = originData.concat(data.result.list || [])
-    //         // const dataSource = new ListView.DataSource({rowHasChanged: (row1, row2) => row1 !== row2});
-    //         this.setState({
-    //           dataSource: this.state.dataSource.cloneWithRows(originData),
-    //           dataIndex: (data.result.list || []).length - 1,
-    //           originData: originData,
-    //           refreshing: false,
-    //           isLoading: false,
-    //           hasMore: !data.result.pageNo == data.result.pages,//是否是最有一页
-    //           pageNo: pageNo,
-    //           pages: data.result.pages
-    //         });
-    //       } else {
-    //       }
     //
-    //     } else {
-    //       Toast.fail(data.message);
-    //     }
-    //   });
     // })
+    this.setState({isLoading: true}, () => {
+      request('api/answers/papers').then(data=> {
+        if (data.code === 200 && data.result && data.result.list) {
+          if (data.result) {
+            originData = originData.concat(data.result.list || []);
+            // const dataSource = new ListView.DataSource({rowHasChanged: (row1, row2) => row1 !== row2});
+            this.setState({
+              dataSource: this.state.dataSource.cloneWithRows(originData),
+              dataIndex: (data.result.list || []).length - 1,
+              originData: originData,
+              refreshing: false,
+              isLoading: false,
+              hasMore: !data.result.pageNo == data.result.pages,//是否是最有一页
+              pageNo: pageNo,
+              pages: data.result.pages
+            });
+          } else {
+          }
+
+        } else {
+          Toast.fail(data.message);
+        }
+      });
+    })
 
   }
 
@@ -100,7 +107,7 @@ export default class TestRecord extends React.Component {
       this.manuallyRefresh = false;
     }
     this.loadData();
-  }
+  };
 
   /**
    * 上拉加载更多
@@ -116,7 +123,7 @@ export default class TestRecord extends React.Component {
       return;
     }
     this.loadData(this.state.pageNo + 1);
-  }
+  };
 
   /**
    * 跳转到试卷页面
@@ -124,7 +131,7 @@ export default class TestRecord extends React.Component {
    * @param time 考试总时间 （分）
    */
   goToRanking(id, title) {
-    window.location.href = '#/paper/rank/' + id + '/' + title
+    this.props.dispatch(routerRedux.push('/paper/rank/' + id + '/' + title))
   }
 
 
@@ -164,7 +171,7 @@ export default class TestRecord extends React.Component {
       <div className={styles.test_record_component}>
         <NavBar
           mode='dark'
-          onLeftClick={() => window.location.href = '#/account'}
+          onLeftClick={() => this.props.dispatch(routerRedux.push('/account'))}
           icon={<Icon type='left'/>}
         >考试记录</NavBar>
         <div className={styles.test_body}>
@@ -209,4 +216,4 @@ const MyBody = (props) => {
       {props.children}
     </div>
   );
-}
+};

@@ -8,23 +8,23 @@ import SS from 'parsec-ss';
 import Config from './utils/config';
 
 
-//权限验证(是否登录)
-const handleAuth = function () {
-  if (SS.get(Config.USER_TOKEN) === null) {
-    fakeAuth.signout();
-  }else{
-    fakeAuth.authenticate();
-  }
-}
+// //权限验证(是否登录)
+// const handleAuth = function () {
+//   if (SS.get(Config.USER_TOKEN) === null) {
+//     fakeAuth.signout();
+//   }else{
+//     fakeAuth.authenticate();
+//   }
+// }
 
 const fakeAuth = {
-  isAuthenticated: false,
-  authenticate() {
-    this.isAuthenticated = true;
-  },
-  signout() {
-    this.isAuthenticated = false;
-  }
+  isAuthenticated: SS.get(Config.USER_TOKEN) === null ? false : true,
+  // authenticate() {
+  //   this.isAuthenticated = true;
+  // },
+  // signout() {
+  //   this.isAuthenticated = false;
+  // }
 };
 
 
@@ -42,11 +42,13 @@ const PrivateRoute = ({ component: Component, ...rest }) => (
 )
 
 function RouterConfig({ history }) {
-  handleAuth();
+  // handleAuth();
   return (
     <LocaleProvider locale={zhCN}>
       <Router history={history}>
         <Switch>
+          {/* 用了Switch 这里每次只匹配一个路由，所有只有一个节点。 */}
+          {/* 不用 Switch 这里可能就会匹配多个路由了，即便匹配不到，也会返回一个null，使动画计算增加了一些麻烦。 */}
           <Route path="/user" component={UserLayout} />
           <PrivateRoute path="/" component={BasicLayout}/>
           <Redirect to="/" />

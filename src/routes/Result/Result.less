@@ -1,0 +1,28 @@
+@import "~antd-mobile/dist/antd-mobile.less";
+// 引入官方提供的 less 样式入口文件
+@import "../../utils/App.less"; // 用于覆盖上面定义的变量
+
+:global{
+  .am-flexbox-item{
+    text-align: center;
+    a{
+      color: rgb(120, 122, 122);
+    }
+  }
+}
+
+.resultIcon{
+  background: rgb(47, 170, 74);
+  border-radius: 50%;
+  width: 100px;
+  height: 100px;
+  line-height: 110px;
+  margin: 0 auto 15px;
+  text-align: center;
+  &.error{
+    background: rgb(126, 150, 196);
+  }
+  .carmeIcon{
+    color: #ffffff;
+  }
+}

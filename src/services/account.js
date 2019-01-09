@@ -8,7 +8,8 @@ import request from '../utils/request';
  * @returns {Object}
  */
 export async function queryErrorRecord(params) {
-  return request('/api/query_error_record',{body:params})
+  return request(`/api/error_answers?questionType=${params.questionType}&pageSize=${params.pageSize}
+  &pageNo=${params.currentPage}`, { body: params });
 }
 
 
@@ -17,5 +18,27 @@ export async function queryErrorRecord(params) {
  * @returns {Object}
  */
 export async function queryErrorRecordNum() {
-  return request('/api/query_error_record_num')
+  return request('/api/error_answers_num')
+}
+
+
+export async function getAllMessages(params) {
+  return request('/api/message', { method: 'POST', body: params });
+}
+
+
+export async function queryUnReadNum() {
+  return request('/api/message/unRead');
+}
+
+export async function readAllMessage() {
+  return request('/api/message/read');
+}
+
+export async function getMessageDetail(params) {
+  return request('/api/message/detail/'+params);
+}
+
+export async function getErrorRecordDetail(params) {
+  return request(`/api/level/questions/${params.id}`);
 }

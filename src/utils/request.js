@@ -1,7 +1,13 @@
 import fetch from 'dva/fetch';
-import { Toast } from 'antd-mobile';
+import {Toast} from 'antd-mobile';
+import Config from './config';
+import SS from 'parsec-ss';
 
 function checkStatus(response) {
+
+  if(response.headers.has('token')){
+    SS.set(Config.USER_TOKEN,response.headers.get('token'));
+  }
   if (response.status >= 200 && response.status < 300) {
     return response;
   }
@@ -24,7 +30,14 @@ export default function request(url, options) {
   const defaultOptions = {
     credentials: 'include',
   };
-  const newOptions = { ...defaultOptions, ...options };
+  const newOptions = {...defaultOptions, ...options};
+
+  newOptions.headers = {
+    token: SS.get(Config.USER_TOKEN),
+    tokenId: SS.get(Config.TOKEN_ID),
+    userId: SS.get(Config.USER_ID)
+  };
+
   if (newOptions.method === 'POST' || newOptions.method === 'PUT') {
     newOptions.headers = {
       Accept: 'application/json',

@@ -1,7 +1,7 @@
-import {getExam} from './mock/exam';
-import {imgMap} from './mock/utils';
-import {getNotices} from './mock/notices';
-import {format, delay} from 'roadhog-api-doc';
+import {getExam} from "./mock/exam";
+import {imgMap} from "./mock/utils";
+import {getNotices} from "./mock/notices";
+import {delay} from "roadhog-api-doc";
 
 // 是否禁用代理
 const noProxy = process.env.NO_PROXY === 'true';
@@ -10,13 +10,15 @@ const noProxy = process.env.NO_PROXY === 'true';
 const proxy = {
   // 支持值为 Object 和 Array
   'GET /api/currentUser': {
-    $desc: "获取当前用户接口",
+    $desc: "获取当前用户接口", //接口说明
+    //接口参数说明，对象描述各个参数的意义
     $params: {
       pageSize: {
         desc: '分页',
         exp: 2,
       },
     },
+    //数据返回结果，通常就是 mock 的数据
     $body: {
       name: '张三',
       avatar: imgMap.user,
@@ -36,7 +38,7 @@ const proxy = {
   },
   'GET /api/all_notices': getNotices,
   'GET /api/notices': getNotices,
-  'GET /api/findAllExam': getExam,
+  'GET /api/paper/user_answer': getExam,
   'POST /api/login/account': (req, res) => {
     const {password, userName} = req.body;
     res.send({code: password === '123456' && userName === 'admin' ? 200 : 201, type: 'account'});
@@ -55,7 +57,10 @@ const proxy = {
   },
   'GET /api/query_error_record_num': (req, res) => {
     res.send({code: 200, allNum: 20, radioNum: 15, checkboxNum: 5});
-  }
+  },
+  'GET /api/findTestPaper': getExam,
+  'GET /api/findStudyPaper': getExam,
+  'GET /api/query_all_message': getExam,
 };
 
 export default noProxy ? {} : delay(proxy, 1000);

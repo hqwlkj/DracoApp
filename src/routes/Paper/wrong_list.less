@@ -1,18 +1,24 @@
 @import "~antd-mobile/dist/antd-mobile.less";
 // 引入官方提供的 less 样式入口文件
 @import "../../utils/App.less"; // 用于覆盖上面定义的变量
-@import "../../utils/utils";
 
-.error_details_component {
-  background-color: white;
-  min-height: calc(100vh - 2rem);
-  overflow: hidden;
-  .am_navbar{
-    position: fixed;
+.wrong_list {
+  .wrong_list_component{
+    position: relative;
     width: 100%;
-  }
-  .error_paper{
-    padding: 25px;
+    height: 100%;
+    background-color: white;
+    overflow: hidden;
+    .tags {
+      background: #3cbaff;
+      padding: 3px 15px;
+      border: none;
+      border-radius: 5px;
+      color: #fff;
+      font-size: 24px;
+      font-weight: 200;
+      margin-right: 15px;
+    }
     .question_title {
       margin-bottom: 25px;
       line-height: 1.7;
@@ -130,7 +136,6 @@
       }
     }
     .question_analysis {
-      margin-top: 100px;
       .analysis_title {
         position: relative;
         width: 100%;
@@ -157,7 +162,6 @@
       .analysis_info {
         text-align: left;
         width: 100%;
-        .clearfix();
         .analysis_answer {
           float: left;
           width: 59%;
@@ -171,12 +175,10 @@
         }
       }
       .analysis_desc {
-        margin: .5rem 0;
-        //font-size: 26px;
+        margin: 100px 0;
         font-size: medium;
         position: relative;
         width: 100%;
-        min-height: 5rem;
         * {
           margin: 0;
           padding: 0;
@@ -217,15 +219,8 @@
         }
       }
     }
-    .tags {
-      background: #3cbaff;
-      padding: 3px 15px;
-      border: none;
-      border-radius: 5px;
-      color: #fff;
-      font-size: 24px;
-      font-weight: 200;
-      margin-right: 15px;
+    .item_title{
+      margin-top:25px;
     }
   }
 }

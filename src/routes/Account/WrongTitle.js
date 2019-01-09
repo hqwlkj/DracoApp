@@ -2,11 +2,12 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import {List, NavBar, Icon, ListView, PullToRefresh} from 'antd-mobile';
 import {connect} from 'dva';
+import {routerRedux} from 'dva/router';
 
 import styles from './WrongTitle.less';
 
 @connect(state => ({
-  exam: state.exam
+  wrongTitle: state.wrongTitle
 }))
 export default class WrongTitle extends React.Component {
   constructor(props) {
@@ -33,16 +34,27 @@ export default class WrongTitle extends React.Component {
     this.getAllChildCateId = this.getAllChildCateId.bind(this);
   }
 
+  loadDirectory() {
+    const {dispatch} = this.props;
+    const params = {type: 1};
+    dispatch({
+      type: 'wrongTitle/feacthDirectory',
+      payload: params,
+    });
+  }
+
   getDataList(pageNo = 1) {
     const {dispatch} = this.props;
     const params = {
       currentPage: pageNo,
       pageSize: 10,
+      questionType: this.props.match.params.type,
     };
     dispatch({
-      type: 'exam/fetch',
+      type: 'wrongTitle/fetch',
       payload: params,
     });
+    console.log("param", params);
     // requestService.get(dataApi['error_record']['list'], {
     //   'pageNo': pageNo,
     //   'pageSize': this.state.pageSize,
@@ -69,8 +81,9 @@ export default class WrongTitle extends React.Component {
   }
 
   componentWillMount() {
-    // this.getDataList();
-    let headers = {};
+    this.loadDirectory();
+    this.getDataList();
+    // let headers = {};
     // requestService.get(dataApi['directory']['list'], {type: 1}, headers).then((data) => {
     //   if (data.code !== 200) {
     //     Toast.error(data.message);
@@ -139,9 +152,37 @@ export default class WrongTitle extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    let data = nextProps.exam.data;
-    this.setState({
-      dataSource: this.state.dataSource.cloneWithRows((data || {}).list),
+    let data = nextProps.wrongTitle.data.result;
+    let list =[];
+    if (!!data.list&&!!this.state.options) {
+      list = (data.list || []).map(s => {
+        let fullPath =this.state.options.map(o=>{
+          let fullPathName = this.getFullPathName(o,s.cateId);
+              return fullPathName
+        }).filter(s=>s)[0];
+        s.typeName = fullPath;
+        return s
+      });
+      console.log("receive", nextProps.wrongTitle);
+      console.log("list", list);
+      this.setState({
+        dataSource: this.state.dataSource.cloneWithRows(list),
+      });
+
+    }
+
+    const options = [];//树形结构的目录
+    let node = {};
+    let result = nextProps.wrongTitle.directoryList;
+    result.forEach(function (o) {
+      node[o.id] = {value: o.id + "", label: o.name, children: []};
+      if (o.parentId === 0) {
+        options.push(node[o.id]);
+      } else {
+        node[o.parentId + ""].children.push(node[o.id]);
+      }
+    });
+    this.setState({options: options}, () => {
     });
   }
 
@@ -180,14 +221,13 @@ export default class WrongTitle extends React.Component {
    * @param time 考试总时间 （分）
    */
   goToRanking(id) {
-    window.location.href = '#/account/error/record/' + id;
+    this.props.dispatch(routerRedux.push('/account/error/record/' + id))
   }
 
   render() {
+    // console.log("this.props", this.props);
+    const {wrongTitle: {loading: refreshing, data}} = this.props;
 
-    const {exam: {loading: refreshing, data}} = this.props;
-
-    console.log('==>',this.props);
     const separator = (sectionID, rowID) => (
       <div
         key={`${sectionID}-${rowID}`}
@@ -198,6 +238,9 @@ export default class WrongTitle extends React.Component {
       />
     );
     const row = (rowData, sectionID, rowID) => {
+      // debugger
+      // let fullPathName = this.getFullPathName(this.state.options,rowData.cateId);
+      // debugger
       return (
         <List className='test-list' key={rowID}>
           <List.Item
@@ -223,7 +266,7 @@ export default class WrongTitle extends React.Component {
         <NavBar
           mode='dark'
           icon={<Icon type='left'/>}
-          onLeftClick={() => window.location.href = '#/account/error/record'}
+          onLeftClick={() => this.props.dispatch(routerRedux.push('/account/error/record'))}
         >{`${this.props.match.params.type === '1' ? '单' : '多'}选题列表`}</NavBar>
         <div className={styles.error_body}>
           <ListView
@@ -244,7 +287,7 @@ export default class WrongTitle extends React.Component {
             onEndReached={this.onEndReached}
             renderFooter={() => refreshing ?
               <div className={styles.loadMore}><Icon type='loading' size='xs'/> 数据加载中...</div> :
-              (((data || {}).list || []).length > 0 ? <div className={styles.noMore}>我是有底线的</div> :
+              (((data || {}).result.list || []).length > 0 ? <div className={styles.noMore}>我是有底线的</div> :
                 <div className={styles.noDataContainer} style={{height: (this.state.height - 100)}}>
                   <div className={styles.noDataContent}>
                     <i className={styles.carmeIcon}>&#xe6f7;</i>
@@ -261,3 +304,11 @@ export default class WrongTitle extends React.Component {
     );
   }
 }
+WrongTitle.displayName = 'WrongTitle';
+
+// Uncomment properties you need
+// CourseComponent.propTypes = {};
+// CourseComponent.defaultProps = {};
+// export default connect(state => ({
+//   wrongTitle: state.wrongTitle
+// }))(WrongTitle);

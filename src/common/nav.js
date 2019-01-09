@@ -15,6 +15,7 @@ import Login from '../routes/User/Login';
 
 import Home from '../routes/Home/Index';
 import Study from '../routes/Study/Index';
+import StudyDetails from '../routes/Study/Details';
 import Exam from '../routes/Exam/Index';
 import TestRecord from '../routes/Account/TestRecord';
 import ErrorRecord from '../routes/Account/ErrorRecord';
@@ -29,6 +30,7 @@ import Center from '../routes/Account/Center';
 import ModifyPwd from '../routes/Account/ModifyPwd';
 
 import Paper from '../routes/Paper/Index';
+import PaperResult from '../routes/Paper/WrongList';
 
 const data = [{
   component: BasicLayout,
@@ -43,6 +45,10 @@ const data = [{
     name: '学习天地',
     path: 'study',
     component: Study,
+  }, {
+    name: '学习详情',
+    path: 'study/:id',
+    component: StudyDetails,
   }, {
     name: '在线考试',
     path: 'exam',
@@ -91,37 +97,11 @@ const data = [{
     name: '试卷页面',
     path: 'paper/:type/:id/:time/:subcateId',
     component: Paper,
-  }],
-}, {
-  component: UserLayout,
-  layout: 'UserLayout',
-  name: '', // for breadcrumb
-  path: '',
-  children: [{
-    name: '帐户',
-    icon: 'user',
-    path: 'user',
-    children: [{
-      name: '登录',
-      path: 'login',
-      component: Login,
-    }],
-  }],
-}, {
-  component: BlankLayout,
-  layout: 'BlankLayout',
-  children: {
-    name: '法规查询',
-    path: '',
-    target: '_blank',
-    icon: 'book',
-  },
-}, {
-  component: PublicLayout,
-  layout: 'PublicLayout',
-  name: '首页', // for breadcrumb
-  path: '',
-  children: [{
+  }, {
+    name: '试卷结果',
+    path: 'paper/result',
+    component: PaperResult,
+  }, {
     name: '结果',
     path: 'result',
     icon: 'check-circle-o',
@@ -151,7 +131,31 @@ const data = [{
       path: '500',
       component: Exception500,
     }],
-  }]
+  }],
+}, {
+  component: UserLayout,
+  layout: 'UserLayout',
+  name: '', // for breadcrumb
+  path: '',
+  children: [{
+    name: '帐户',
+    icon: 'user',
+    path: 'user',
+    children: [{
+      name: '登录',
+      path: 'login',
+      component: Login,
+    }],
+  }],
+}, {
+  component: BlankLayout,
+  layout: 'BlankLayout',
+  children: {
+    name: '法规查询',
+    path: '',
+    target: '_blank',
+    icon: 'book',
+  },
 }];
 
 export function getNavData() {

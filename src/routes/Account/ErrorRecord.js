@@ -1,5 +1,6 @@
 import React from 'react';
 import {connect} from 'dva';
+import {routerRedux} from 'dva/router';
 import {List, Badge, NavBar, Button, Icon,Toast} from 'antd-mobile';
 import styles from './ErrorRecord.less';
 
@@ -58,29 +59,32 @@ export default class ErrorRecordComponent extends React.Component {
    * @param type 题目类型
    * */
   goToWrongTitle(type) {
-    window.location.href = '#/account/wrong/title/' + type;
+    this.props.dispatch(routerRedux.push('/account/wrong/title/' + type));
   }
 
 
   render() {
     const {data = {}, loading} = this.props.errorRecord;
     console.log(data);
+    data.radioNum=((data.result||[]).filter(s=>s.questionType==1)[0]||{num:0}).num;
+    data.checkboxNum=((data.result||[]).filter(s=>s.questionType==2)[0]||{num:0}).num;
+    console.log(data);
     return (
       <div className={styles.error_record_component}>
         <NavBar
           mode='dark'
-          onLeftClick={() => window.location.href = '#/account'}
+          onLeftClick={() => this.props.dispatch(routerRedux.push('/account'))}
           icon={<Icon type='left'/>}
         >错题汇总</NavBar>
 
         <div className={styles.error_header}>
           <div className={styles.error_header_content}>
             <p>全部错题</p>
-            <div className={styles.num}>{(data.allNum || 0)} <span>题</span></div>
+            <div className={styles.num}>{((data.radioNum+data.checkboxNum) || 0)} <span>题</span></div>
             <div className={styles.rond}>&nbsp;</div>
           </div>
           <Button className={styles.error_header_learn} onClick={() => {
-            window.location.href = '#/study';
+            this.props.dispatch(routerRedux.push('/study'))
           }}>我要练习</Button>
           <p className={styles.error_header_desc}>认真学习知识要点，让我这里变得冷清一点吧~</p>
         </div>

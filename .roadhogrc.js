@@ -18,6 +18,10 @@ export default {
       propWhiteList: []
     })
   ],
+  svgSpriteLoaderDirs:[
+    require.resolve('antd-mobile').replace(/warn\.js$/, ''), // antd-mobile 内置svg
+    // path.resolve(__dirname, 'src/assets/svg'),  // 业务代码本地私有 svg 存放目录
+  ],
   env:{
     development: {
       extraBabelPlugins: [
@@ -33,12 +37,13 @@ export default {
   },
   ignoreMomentLocale:true,
   theme: "./src/theme.js",
-  // proxy: {
-  //   "/api": {
-  //     target: "http://jsonplaceholder.typicode.com/",// 正式服务器地址
-  //     changeOrigin: true,
-  //     secure: false,
-  //     pathRewrite: { "^/api": "" }
-  //   }
-  // }
+  proxy: {
+    "/api": {
+      // target: "http://115.29.239.213:9002/",// 正式服务器地址
+      target: "http://localhost:9002/",// 正式服务器地址
+      changeOrigin: true,
+      secure: false,
+      // pathRewrite: { "^/api": "" }
+    }
+  }
 }

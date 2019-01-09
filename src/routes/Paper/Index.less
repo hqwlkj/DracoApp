@@ -1,6 +1,7 @@
 @import "~antd-mobile/dist/antd-mobile.less";
 // 引入官方提供的 less 样式入口文件
 @import "../../utils/App.less"; // 用于覆盖上面定义的变量
+@import "../../utils/utils";
 
 
 .test_paper_component {
@@ -15,9 +16,9 @@
     z-index: 100;
   }
   .test_paper_container {
-    padding: 110px 25px 125px 25px;
+    padding: 25px 25px 125px 25px;
     margin: 0 auto;
-    min-height: calc(100vh - 18rem);
+    min-height: ~'calc(100vh - 18rem)';
     //overflow: hidden;
     :global{
       .am-pagination {
@@ -191,6 +192,7 @@
       .analysis_info {
         text-align: left;
         width: 100%;
+        .clearfix();
         .analysis_answer {
           float: left;
           width: 59%;
@@ -353,7 +355,7 @@
           &:nth-child(6n) {
             margin-right: 0;
           }
-          &.noData {
+          &.no_data {
             border: none;
           }
           &.current {
