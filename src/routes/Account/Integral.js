@@ -1,10 +1,10 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import {connect} from 'dva';
-import {routerRedux} from 'dva/router';
-import {NavBar, Icon, Badge, ListView, PullToRefresh, List} from 'antd-mobile';
+import React from "react";
+import ReactDOM from "react-dom";
+import {connect} from "dva";
+import {routerRedux} from "dva/router";
+import {Icon, List, ListView, NavBar, PullToRefresh} from "antd-mobile";
 
-import styles from './Integral.less';
+import styles from "./Integral.less";
 
 @connect(state => ({
   exam: state.exam
@@ -39,28 +39,26 @@ export default class Integral extends React.Component {
     const {dispatch} = this.props;
     const params = {
       currentPage: pageNo,
-      pageSize: 10,
+      pageSize: 0x7fffffff,
     };
     dispatch({
-      type: 'exam/fetch',
+      type: 'exam/fetchCredit',
       payload: params,
     });
   }
 
   componentDidMount() {
     const hei = this.state.height - ReactDOM.findDOMNode(this.lv).offsetTop;
-    setTimeout(() => {
-      this.loadData();
-      this.setState({
-        height: hei
-      });
-    }, 1500);
+    this.loadData();
+    this.setState({
+      height: hei
+    });
   }
 
   componentWillReceiveProps(nextProps) {
-    let data = nextProps.exam.data;
+    let {list = [], score} = nextProps.exam.data;
     this.setState({
-      dataSource: this.state.dataSource.cloneWithRows((data || {}).list),
+      dataSource: this.state.dataSource.cloneWithRows(list),
     });
   }
 
@@ -111,14 +109,15 @@ export default class Integral extends React.Component {
 
     const row = (rowData, sectionID, rowID) => {
       return (
-        <List className='test-list' key={rowID}>
+        <List className={styles.test_list} key={rowID}>
           <List.Item
             data-seed='logId'
-            extra={<span><span style={{color:'#f40',fontWeight:500,fontSize:'36px'}}>{rowData.score}</span> 分</span>}
+            extra={<span><span
+              style={{color: '#f40', fontWeight: 500, fontSize: '36px'}}>{rowData.score}</span> 分</span>}
             multipleLine
           >
-            <div className='test-title'>{rowData.title}</div>
-            <List.Item.Brief>获得时间：<span>{rowData.startDay}</span></List.Item.Brief>
+            <div className={styles.test_title}>{rowData.source}</div>
+            <List.Item.Brief>获得时间：<span>{rowData.createTime}</span></List.Item.Brief>
           </List.Item>
         </List>
       );
@@ -131,7 +130,7 @@ export default class Integral extends React.Component {
       >我的学分</NavBar>
       <div className={styles.credit_head}>
         <p>当前总学分</p>
-        <strong className={styles.total_score}>{data.totalNum}</strong>
+        <strong className={styles.total_score}>{data.score}</strong>
         <p className={styles.credit_header_desc}>认真学习知识要点，才能获取更多的学分哦~</p>
       </div>
       <div className={styles.credit_body}>

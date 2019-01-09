@@ -1,17 +1,17 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import {connect} from 'dva';
-import {routerRedux} from 'dva/router';
-import {NavBar, Icon, ListView, Tabs, PullToRefresh, List,Flex} from 'antd-mobile';
+import React from "react";
+import ReactDOM from "react-dom";
+import {connect} from "dva";
+import {routerRedux} from "dva/router";
+import {Flex, Icon, List, ListView, NavBar, PullToRefresh, Tabs} from "antd-mobile";
 
 
-import styles from './Rank.less';
+import styles from "./Rank.less";
 
 const colors = ['#f50', '#f78e3d', '#108ee9', '#3dbd7d', '#87d068'];
 @connect(state => ({
   exam: state.exam
 }))
-export default class Rank extends React.Component{
+export default class Rank extends React.Component {
 
   constructor(props) {
     super(props);
@@ -41,26 +41,28 @@ export default class Rank extends React.Component{
   handleTabClick(key) {
     this.setState({
       tabActiveKey: key
-    },()=>{this.loadData()})
+    }, () => {
+      this.loadData()
+    })
   }
 
   loadData(pageNo = 1) {
     const {dispatch} = this.props;
     const params = {
-      currentPage: pageNo,
+      currentPage: 0x7fffffff,
       pageSize: 10,
     };
     dispatch({
-      type: 'exam/fetch',
+      type: 'exam/fetchCreditRank',
       payload: params,
     });
   }
 
   componentWillReceiveProps(nextProps) {
+    let creditRank = nextProps.exam.creditRank || [];
     let data = nextProps.exam.data;
-    debugger;
     this.setState({
-      dataSource: this.state.dataSource.cloneWithRows((data || {}).list),
+      dataSource: this.state.dataSource.cloneWithRows(creditRank),
     });
   }
 
@@ -107,7 +109,7 @@ export default class Rank extends React.Component{
     this.loadData(this.state.pageNo + 1);
   };
 
-  render(){
+  render() {
     const {exam: {loading: refreshing, data}} = this.props;
 
     const separator = (sectionID, rowID) => (
@@ -127,16 +129,18 @@ export default class Rank extends React.Component{
             multipleLine
           >
             <Flex>
-              <Flex.Item>第{parseInt(rowData.rankNum) + 1}名</Flex.Item>
-              <Flex.Item>{rowData.username}</Flex.Item>
-              <Flex.Item align='center' style={{color: colors[rowData.rankNum]}}>{rowData.score}</Flex.Item>
+              <Flex.Item>第{rowData.rownum}名</Flex.Item>
+              <Flex.Item>{rowData.answererName || ''}</Flex.Item>
+              <Flex.Item>{rowData.jobName || ''}</Flex.Item>
+              <Flex.Item align='center'
+                         style={{color: colors[rowData.score || Math.floor(Math.random() * 10)]}}>{rowData.score || 0}</Flex.Item>
             </Flex>
           </List.Item>
         </List>
       );
     };
 
-    return(<div className={styles.rank_component}>
+    return (<div className={styles.rank_component}>
       <NavBar
         mode='dark'
         onLeftClick={() => this.props.dispatch(routerRedux.push('/account'))}
@@ -154,7 +158,7 @@ export default class Rank extends React.Component{
         <p className={styles.rank_header_desc}>只有认真学习、认真答题，你的名字才会出现在这里哦~</p>
       </div>
       <div className={styles.rank_body}>
-        <Tabs initialPage={this.state.tabActiveKey} tabs={[{title:'学分排名'}]} animated={true} onTabClick={() => {
+        <Tabs initialPage={this.state.tabActiveKey} tabs={[{title: '学分排名'}]} animated={true} onTabClick={() => {
           this.handleTabClick.bind(this)
         }}>
           <div style={{

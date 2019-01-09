@@ -1,4 +1,4 @@
-import { query as queryUsers, queryCurrent, fetchModifyPwd } from '../services/user';
+import { fetchCredit,query as queryUsers, queryCurrent, fetchModifyPwd } from '../services/user';
 
 export default {
   namespace: 'user',
@@ -46,6 +46,22 @@ export default {
         payload: false,
       });
     },
+    //获取学分
+    * fetchCredit({ payload }, { call, put }) {
+      yield put({
+        type: 'changeLoading',
+        payload: true,
+      });
+      const response = yield call(fetchCredit, payload);
+      yield put({
+        type: 'fetchUserCredit',
+        payload: response,
+      });
+      yield put({
+        type: 'changeLoading',
+        payload: false,
+      });
+    },
   },
 
   reducers: {
@@ -73,6 +89,12 @@ export default {
       return {
         ...state,
         currentUser: action.payload.result,
+      };
+    },
+     fetchUserCredit(state, action) {
+      return {
+        ...state,
+        userCredit: action.payload.result.score,
       };
     },
   },
