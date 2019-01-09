@@ -21,10 +21,10 @@ English | [简体中文](./README.zh-CN.md)
 ## Usage
 
 ```bash
-$ git clone git@github.com:ant-design/ant-design-pro --depth=1
-$ cd ant-design-pro
+$ git clone git@gitlab.parsec.com.cn:Yanghc/DracoMobile
+$ cd DracoMobile
 $ npm install
-$ npm start         # visit http://localhost:8000
+$ npm start         # visit http://localhost:8002
 ```
 
 Or you can use the command tool: [ant-design-pro-cli](https://github.com/ant-design/ant-design-pro-cli)

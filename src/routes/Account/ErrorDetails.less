@@ -12,7 +12,7 @@
     width: 100%;
   }
   .error_paper{
-    padding: 125px 25px 0;
+    padding: 25px;
     .question_title {
       margin-bottom: 25px;
       line-height: 1.7;
@@ -22,16 +22,18 @@
       }
     }
     .question_content {
-      .am-checkbox-agree {
-        margin-left: 0;
-        .am-checkbox-wrapper {
-          font-size: 34px;
-          word-break: break-all; /* 只对英文起作用，以字母作为换行依据。 */
-          word-wrap: break-word; /* 只对英文起作用，以单词作为换行依据。*/
-          white-space: pre-wrap; /* 只对中文起作用，强制换行。*/
-          .am-checkbox {
-            .am-checkbox-inner {
-              border-radius: 5px;
+      :global{
+        .am-checkbox-agree {
+          margin-left: 0;
+          .am-checkbox-wrapper {
+            font-size: 34px;
+            word-break: break-all; /* 只对英文起作用，以字母作为换行依据。 */
+            word-wrap: break-word; /* 只对英文起作用，以单词作为换行依据。*/
+            white-space: pre-wrap; /* 只对中文起作用，强制换行。*/
+            .am-checkbox {
+              .am-checkbox-inner {
+                border-radius: 5px;
+              }
             }
           }
         }
@@ -48,48 +50,50 @@
         -webkit-align-items: stretch;
         align-items: stretch;
         margin-left: 0;
-        .am-radio-wrapper {
-          display: inline-block;
-          color: #000;
-          line-height: 1.5;
-          margin-left: 0.6rem;
-          margin-top: 0.02rem;
-          font-size: 34px;
-          word-break: break-all; /* 只对英文起作用，以字母作为换行依据。 */
-          word-wrap: break-word; /* 只对英文起作用，以单词作为换行依据。*/
-          white-space: pre-wrap; /* 只对中文起作用，强制换行。*/
-          .am-radio {
-            position: absolute;
-            left: 0;
-            top: 0;
-            width: 0.6rem;
-            height: 100%;
+        :global{
+          .am-radio-wrapper {
             display: inline-block;
-            vertical-align: middle;
-            .am-radio-inner {
+            color: #000;
+            line-height: 1.5;
+            margin-left: 0.6rem;
+            margin-top: 0.02rem;
+            font-size: 34px;
+            word-break: break-all; /* 只对英文起作用，以字母作为换行依据。 */
+            word-wrap: break-word; /* 只对英文起作用，以单词作为换行依据。*/
+            white-space: pre-wrap; /* 只对中文起作用，强制换行。*/
+            .am-radio {
               position: absolute;
-              right: 0;
               left: 0;
-              top: 24px;
-              width: 42px;
-              height: 42px;
-              border: 3px solid #888;
-              border-radius: 50%;
-              transform: rotate(0deg);
-              box-sizing: border-box;
-            }
-            &.am-radio-checked {
+              top: 0;
+              width: 0.6rem;
+              height: 100%;
+              display: inline-block;
+              vertical-align: middle;
               .am-radio-inner {
-                border-color: @brand-primary;
-                &:after {
-                  width: 25px;
-                  height: 25px;
-                  border: none;
-                  background-color: @brand-primary;
-                  border-radius: 50%;
-                  top: 50%;
-                  right: 0;
-                  transform: translate(-22%, -48%);
+                position: absolute;
+                right: 0;
+                left: 0;
+                top: 24px;
+                width: 42px;
+                height: 42px;
+                border: 3px solid #888;
+                border-radius: 50%;
+                transform: rotate(0deg);
+                box-sizing: border-box;
+              }
+              &.am-radio-checked {
+                .am-radio-inner {
+                  border-color: @brand-primary;
+                  &:after {
+                    width: 25px;
+                    height: 25px;
+                    border: none;
+                    background-color: @brand-primary;
+                    border-radius: 50%;
+                    top: 50%;
+                    right: 0;
+                    transform: translate(-22%, -48%);
+                  }
                 }
               }
             }

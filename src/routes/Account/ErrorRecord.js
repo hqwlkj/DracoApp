@@ -66,6 +66,9 @@ export default class ErrorRecordComponent extends React.Component {
   render() {
     const {data = {}, loading} = this.props.errorRecord;
     console.log(data);
+    data.radioNum=((data.result||[]).filter(s=>s.questionType==1)[0]||{num:0}).num;
+    data.checkboxNum=((data.result||[]).filter(s=>s.questionType==2)[0]||{num:0}).num;
+    console.log(data);
     return (
       <div className={styles.error_record_component}>
         <NavBar
@@ -77,7 +80,7 @@ export default class ErrorRecordComponent extends React.Component {
         <div className={styles.error_header}>
           <div className={styles.error_header_content}>
             <p>全部错题</p>
-            <div className={styles.num}>{(data.allNum || 0)} <span>题</span></div>
+            <div className={styles.num}>{((data.radioNum+data.checkboxNum) || 0)} <span>题</span></div>
             <div className={styles.rond}>&nbsp;</div>
           </div>
           <Button className={styles.error_header_learn} onClick={() => {

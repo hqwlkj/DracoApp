@@ -53,6 +53,8 @@ class TestComponent extends React.Component {
     }, 1500);
   }
 
+
+
   componentWillReceiveProps(nextProps) {
     let data = nextProps.exam.data;
     console.log('data', data);
@@ -90,7 +92,7 @@ class TestComponent extends React.Component {
    * @param time 考试总时间 （分）
    */
   goToPaper(id, time) {
-    this.props.dispatch(routerRedux.push('/paper/3/' + id + '/' + time + '/0'))
+    this.props.dispatch(routerRedux.push('/paper/1/' + id + '/' + time + '/0'))
   }
 
 
@@ -150,6 +152,7 @@ class TestComponent extends React.Component {
       );
     };
 
+    console.log("this.state.allCurrentDayPaper",!this.state.allCurrentDayPaper?100:this.state.currentDayPaper * 100 / this.state.allCurrentDayPaper);
     return (
       <div className={styles.test_component}>
         <NavBar key='NavBar' icon={<Icon type="left"/>}
@@ -163,9 +166,9 @@ class TestComponent extends React.Component {
             <Flex.Item>
               <Pie
                 animate={false}
-                percent={this.state.currentDayPaper * 100 / this.state.allCurrentDayPaper}
+                percent={!this.state.allCurrentDayPaper?100:this.state.currentDayPaper * 100 / this.state.allCurrentDayPaper}
                 subTitle="完成率"
-                total={`${this.state.currentDayPaper * 100 / this.state.allCurrentDayPaper}%`}
+                total={`${!this.state.allCurrentDayPaper?100:this.state.currentDayPaper * 100 / this.state.allCurrentDayPaper}%`}
                 height={268}
                 lineWidth={1}
               />

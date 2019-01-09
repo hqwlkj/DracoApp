@@ -40,7 +40,7 @@ export default {
   proxy: {
     "/api": {
       // target: "http://115.29.239.213:9002/",// 正式服务器地址
-      target: "http://127.0.0.1:9002/",// 正式服务器地址
+      target: "http://localhost:9002/",// 正式服务器地址
       changeOrigin: true,
       secure: false,
       // pathRewrite: { "^/api": "" }
